@@ -1,18 +1,60 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Sera",
+  "name": "SΞRA",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/images/hero-dark.svg",
+    "light": "/images/hero-light.svg"
   },
   "favicon": "/favicon.svg",
+  "theme": "prism",
+  "layout": "sidenav",
+  "backgroundImage": "/images/background-pattern.svg",
+  "font": {
+    "headings": {
+      "family": "Roboto"
+    },
+    "body": {
+      "family": "Open Sans"
+    }
+  },
+  "rounded": "sharp",
+  "codeBlock": {
+    "theme": "dracula",
+    "lineNumbers": true
+  },
+  "tabs": [
+    {
+      "name": "Documentation",
+      "url": "docs"
+    },
+    {
+      "name": "API Reference",
+      "url": "api"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Support",
+      "icon": "support",
+      "url": "mailto:support@sera.xyz"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/DataSphere-xyz"
+    }
+  ],
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#0EA5E9",
+    "light": "#F8FAFC",
+    "dark": "#0F172A",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#0EA5E9",
+      "to": "#3B82F6"
+    },
+    "background": {
+      "dark": "#111827",
+      "light": "#ffffff"
     }
   },
   "topbarLinks": [
@@ -60,9 +102,24 @@
       ]
     }
   ],
-  "footerSocials": {
-    "twitter": "https://twitter.com/DataSphere_xyz",
-    "github": "https://github.com/DataSphere-xyz",
-    "discord": "https://discord.gg/datasphere"
+  "footer": {
+    "socials": {
+      "twitter": "https://twitter.com/DataSphere_xyz",
+      "github": "https://github.com/DataSphere-xyz",
+      "discord": "https://discord.gg/datasphere"
+    }
+  },
+  "modeToggle": {
+    "default": "dark",
+    "isHidden": false
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true
+  },
+  "analytics": {
+    "plausible": {
+      "domain": "sera.xyz"
+    }
   }
 }

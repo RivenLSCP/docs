@@ -3,21 +3,25 @@ title: "AI-To-Earn"
 description: "Monetize your AI interactions while contributing to the advancement of artificial intelligence"
 ---
 
-AI-To-Earn revolutionizes data collection by enabling users to monetize their AI interactions while contributing to the advancement of artificial intelligence. Built natively on the SUI blockchain, our protocol transforms AI interactions into valuable digital assets, creating a decentralized ecosystem where contributors earn $SERA tokens for quality AI conversations and data contributions.
+**AI-To-Earn** revolutionizes data collection by enabling users to monetize their AI interactions while contributing to the advancement of artificial intelligence. Built natively on the SUI blockchain, our protocol transforms AI interactions into valuable digital assets, creating a decentralized ecosystem where contributors earn $SERA tokens for quality AI conversations and data contributions.
+
 
 ## How It Works
 
 <Steps>
-  1. **Connect Wallet**
-     Link your SUI wallet to start earning. Supported wallets include Sui Wallet, OKX Wallet, and other SUI-compatible wallets.
-     
-  2. **Start Contributing**
+  1. **Connect Wallet**  
+     Link your SUI wallet to start earning. Supported wallets include:
+     - Sui Wallet
+     - OKX Wallet
+     - Other SUI-compatible wallets
+
+  2. **Start Contributing**  
      Engage with supported AI models. Your interactions are securely recorded on-chain as verifiable contributions.
-     
-  3. **Earn SERA**
+
+  3. **Earn SERA**  
      Receive $SERA tokens based on your contribution quality, automatically distributed through smart contracts.
-     
-  4. **Boost Earnings**
+
+  4. **Boost Earnings**  
      Stake $SERA tokens to increase your earning multiplier and unlock premium features.
 </Steps>
 
@@ -59,39 +63,36 @@ AI-To-Earn revolutionizes data collection by enabling users to monetize their AI
 
 ## Reward Formula
 
-<div className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 rounded-xl p-6 my-4">
-  <div className="bg-white rounded-lg p-4 shadow-sm border border-indigo-100 mb-4">
-    $$
-    R = \alpha \cdot Q(c) \cdot V(s) \cdot e^{-\lambda t} \cdot (1 + \sum_{i=1}^{n} \beta_i M_i)
-    $$
-    <div className="text-sm text-gray-600 mt-2">
-      where α is the base rate, Q(c) measures conversation quality, V(s) represents value score, 
-      λt accounts for time decay, and βᵢMᵢ adds model-specific bonuses
-    </div>
-  </div>
 
-  <div className="grid gap-4 md:grid-cols-2">
-    <div className="bg-white rounded-lg p-4 shadow-sm border border-indigo-100">
-      <div className="text-sm font-medium mb-2">Quality Score Q(c)</div>
-      $$
-      Q(c) = \frac{1}{1 + e^{-k(q-q_0)}} \cdot \sqrt{\frac{\sigma^2}{\sigma^2 + \sigma_0^2}}
-      $$
-      <div className="text-sm text-gray-600 mt-2">
-        Evaluates conversation quality using engagement metrics and consistency measures
-      </div>
-    </div>
-    
-    <div className="bg-white rounded-lg p-4 shadow-sm border border-indigo-100">
-      <div className="text-sm font-medium mb-2">Value Score V(s)</div>
-      $$
-      V(s) = \log(1 + \frac{s}{s_0}) \cdot (1 + \gamma \cdot \text{unique}(s))
-      $$
-      <div className="text-sm text-gray-600 mt-2">
-        Calculates content value based on uniqueness and significance factors
-      </div>
-    </div>
-  </div>
-</div>
+  $$
+  R = \alpha \cdot Q(c) \cdot V(s) \cdot e^{-\lambda t} \cdot \left(1 + \sum_{i=1}^{n} \beta_i M_i\right)
+  $$
+
+  Where:
+  - $α$: Base rate
+  - $Q(c)$: Quality Score (engagement & consistency)
+  - $V(s)$: Value Score (uniqueness & significance)
+  - $λt$: Time decay factor
+  - $βᵢMᵢ$: Model-specific multipliers
+
+
+#### Quality Score $Q(c)$
+
+$$
+Q(c) = \frac{1}{1 + e^{-k(q - q_0)}} \cdot \sqrt{\frac{\sigma^2}{\sigma^2 + \sigma_0^2}}
+$$
+
+- **Description**: Evaluates conversation quality using engagement metrics and consistency measures.
+
+#### Value Score $V(s)$
+
+$$
+V(s) = \log(1 + \frac{s}{s_0}) \cdot (1 + \gamma \cdot \text{unique}(s))
+$$
+
+- **Description**: Calculates content value based on uniqueness and significance factors.
+
+
 ## Model-Specific Multipliers
 
 <CardGroup cols={2}>
@@ -214,7 +215,6 @@ AI-To-Earn revolutionizes data collection by enabling users to monetize their AI
     - Quality competitions
     - Innovation challenges
   </Accordion>
-  
   <Accordion title="Monthly Championships">
     - Grand prizes
     - Multiple categories
