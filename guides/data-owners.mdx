@@ -1,0 +1,208 @@
+---
+title: 'Guide for Data Owners'
+description: 'Learn how to monetize and manage your AI data assets'
+---
+
+## Overview
+
+As a data owner on Sera, you can monetize various types of AI assets including datasets, models, vector databases, and more. Our platform provides tools for easy management and secure trading of your valuable data.
+
+## Supported Asset Types
+
+<CardGroup cols={3}>
+  <Card title="Datasets" icon="database">
+    Raw or processed data collections
+  </Card>
+  <Card title="Models" icon="brain">
+    Trained AI/ML models
+  </Card>
+  <Card title="Vector DBs" icon="layer-group">
+    Optimized vector databases
+  </Card>
+  <Card title="Pipelines" icon="diagram-project">
+    Processing workflows
+  </Card>
+  <Card title="Environments" icon="microchip">
+    Runtime configurations
+  </Card>
+  <Card title="Weights" icon="scale-balanced">
+    Model checkpoints
+  </Card>
+</CardGroup>
+
+## Getting Started
+
+<Steps>
+  1. **Create Account**
+     Sign up as a data owner on Sera platform
+
+  2. **Verify Identity**
+     Complete KYC process for enterprise accounts
+
+  3. **Upload Assets**
+     Use our tools to upload and organize your data
+
+  4. **List for Sale**
+     Set pricing and terms for your assets
+</Steps>
+
+## Data Management
+
+### Uploading Data
+
+```python
+from sera.upload import DataUploader
+
+# Initialize uploader
+uploader = DataUploader(
+    asset_type="dataset",
+    privacy_level="private"
+)
+
+# Upload with metadata
+asset_id = uploader.upload(
+    path="./my_dataset",
+    metadata={
+        "description": "Training dataset for NLP",
+        "format": "parquet",
+        "size": "10GB",
+        "schema": schema_definition
+    }
+)
+```
+
+### Organization Tools
+
+<CardGroup cols={2}>
+  <Card title="Asset Management" icon="folders">
+    - Categorize assets
+    - Add metadata
+    - Version control
+    - Access management
+  </Card>
+  <Card title="Quality Control" icon="check-double">
+    - Automated validation
+    - Format verification
+    - Integrity checks
+    - Quality scoring
+  </Card>
+</CardGroup>
+
+## Monetization Options
+
+### Pricing Models
+
+<AccordionGroup>
+  <Accordion title="Fixed Price">
+    - Set specific prices
+    - Bundle pricing
+    - Volume discounts
+    - Subscription options
+  </Accordion>
+  
+  <Accordion title="Dynamic Pricing">
+    - Auction-based
+    - Demand-driven
+    - Time-limited offers
+    - Custom negotiations
+  </Accordion>
+</AccordionGroup>
+
+### Revenue Streams
+
+<CardGroup cols={2}>
+  <Card title="Direct Sales" icon="money-bill">
+    One-time purchases of data assets
+  </Card>
+  <Card title="Licensing" icon="file-contract">
+    Recurring revenue from usage rights
+  </Card>
+  <Card title="API Access" icon="code">
+    Pay-per-query model
+  </Card>
+  <Card title="Custom Solutions" icon="puzzle-piece">
+    Tailored data packages
+  </Card>
+</CardGroup>
+
+## Security & Compliance
+
+### Data Protection
+
+<Steps>
+  1. **Encryption**
+     Enterprise-grade encryption for all assets
+
+  2. **Access Control**
+     Granular permissions management
+
+  3. **Audit Trails**
+     Complete transaction logging
+
+  4. **Compliance**
+     GDPR, CCPA, and industry standards
+</Steps>
+
+### Rights Management
+
+<CardGroup cols={2}>
+  <Card title="Usage Rights" icon="key">
+    - Define usage terms
+    - Set restrictions
+    - Monitor compliance
+  </Card>
+  <Card title="Licensing" icon="file-contract">
+    - Custom agreements
+    - Standard licenses
+    - Usage tracking
+  </Card>
+</CardGroup>
+
+## Analytics & Reporting
+
+### Dashboard Features
+
+<Frame>
+  <img src="/images/owner-dashboard.png" alt="Owner Dashboard" />
+</Frame>
+
+- Sales analytics
+- Usage metrics
+- Revenue tracking
+- Market insights
+
+### Performance Metrics
+
+<CardGroup cols={2}>
+  <Card title="Sales Metrics" icon="chart-line">
+    - Revenue trends
+    - Asset performance
+    - Buyer demographics
+  </Card>
+  <Card title="Quality Metrics" icon="star">
+    - User ratings
+    - Usage statistics
+    - Quality scores
+  </Card>
+</CardGroup>
+
+## Support & Resources
+
+<CardGroup cols={2}>
+  <Card title="Documentation" icon="book">
+    Access detailed guides and API docs
+  </Card>
+  <Card title="Enterprise Support" icon="headset">
+    Dedicated support for business users
+  </Card>
+  <Card title="Community" icon="users">
+    Connect with other data owners
+  </Card>
+  <Card title="Updates" icon="bell">
+    Stay informed about platform changes
+  </Card>
+</CardGroup>
+
+<Note>
+For enterprise support and custom solutions, contact our team at enterprise@sera.xyz
+</Note> 

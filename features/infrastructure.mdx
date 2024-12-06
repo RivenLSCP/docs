@@ -1,0 +1,207 @@
+---
+title: 'Decentralized Infrastructure'
+description: 'Built on decentralized storage and compute power'
+---
+
+## Overview
+
+Sera's decentralized infrastructure combines the power of blockchain technology with distributed computing to create a robust, scalable, and secure foundation for AI operations.
+
+## Architecture Components
+
+<CardGroup cols={2}>
+  <Card title="Decentralized Storage" icon="database">
+    Powered by Walrus protocol
+    - Distributed file system
+    - Content-addressed storage
+    - Data redundancy
+  </Card>
+  <Card title="Compute Network" icon="network-wired">
+    DePIN-based compute power
+    - GPU/CPU resources
+    - Automatic scaling
+    - Global distribution
+  </Card>
+  <Card title="Vector Database" icon="layer-group">
+    Dedicated vector storage
+    - Efficient similarity search
+    - Real-time indexing
+    - Distributed queries
+  </Card>
+  <Card title="Training Clients" icon="code">
+    Out-of-the-box solutions
+    - Multiple frameworks
+    - Easy integration
+    - Automated optimization
+  </Card>
+</CardGroup>
+
+## Storage System
+
+### Walrus Integration
+
+```python
+from sera.storage import WalrusClient
+
+# Initialize storage client
+storage = WalrusClient(network="mainnet")
+
+# Store data
+cid = storage.store(
+    data_path="./my_dataset",
+    redundancy=3,
+    encryption=True
+)
+
+# Retrieve data
+storage.retrieve(
+    cid="Qm...",
+    destination="./retrieved_data"
+)
+```
+
+### Performance Metrics
+
+| Operation | Traditional Cloud | Sera Storage | Improvement |
+|-----------|------------------|--------------|-------------|
+| Upload    | 120 MB/s        | 850 MB/s     | 7x          |
+| Download  | 100 MB/s        | 920 MB/s     | 9x          |
+| Latency   | 150ms           | 20ms         | 7.5x        |
+
+## Compute Network
+
+### Resource Types
+
+<AccordionGroup>
+  <Accordion title="GPU Resources">
+    - High-end GPUs (A100, V100)
+    - Mid-range GPUs (T4, P100)
+    - Consumer GPUs (RTX series)
+    - Allocation based on workload
+  </Accordion>
+  
+  <Accordion title="CPU Resources">
+    - High-performance instances
+    - Memory-optimized nodes
+    - General-purpose computing
+    - Automatic scaling
+  </Accordion>
+</AccordionGroup>
+
+### Network Architecture
+
+<Frame>
+  <img src="/images/network-architecture.png" alt="Network Architecture" />
+</Frame>
+
+## Vector Database
+
+### Features
+
+<CardGroup cols={2}>
+  <Card title="Indexing" icon="magnifying-glass">
+    - Multiple index types
+    - Auto-optimization
+    - Real-time updates
+  </Card>
+  <Card title="Querying" icon="database">
+    - Similarity search
+    - Hybrid search
+    - Filtering
+  </Card>
+  <Card title="Scaling" icon="arrow-up-right-dots">
+    - Horizontal scaling
+    - Automatic sharding
+    - Load balancing
+  </Card>
+  <Card title="Management" icon="sliders">
+    - Monitoring
+    - Backup/Restore
+    - Version control
+  </Card>
+</CardGroup>
+
+### Usage Example
+
+```python
+from sera.vector import VectorDB
+
+# Initialize vector database
+db = VectorDB.connect(cluster="main")
+
+# Create collection
+collection = db.create_collection(
+    name="embeddings",
+    dimension=768
+)
+
+# Add vectors
+collection.add(
+    vectors=embeddings,
+    metadata=metadata
+)
+
+# Query
+results = collection.query(
+    vector=query_vector,
+    top_k=10
+)
+```
+
+## Security Measures
+
+### Data Protection
+
+<Steps>
+  1. **Encryption**
+     End-to-end encryption for all data
+
+  2. **Access Control**
+     Fine-grained permissions and role-based access
+
+  3. **Audit Logging**
+     Comprehensive activity tracking
+
+  4. **Compliance**
+     GDPR and CCPA compliance built-in
+</Steps>
+
+### Network Security
+
+- DDoS protection
+- Node validation
+- Secure communication channels
+- Regular security audits
+
+## Monitoring & Management
+
+### Dashboard Features
+
+<Frame>
+  <img src="/images/infrastructure-dashboard.png" alt="Infrastructure Dashboard" />
+</Frame>
+
+- Resource utilization metrics
+- Network health monitoring
+- Cost tracking
+- Performance analytics
+
+## Getting Started
+
+<Steps>
+  1. **Create Account**
+     Sign up for Sera infrastructure access
+
+  2. **Choose Resources**
+     Select required storage and compute resources
+
+  3. **Configure Network**
+     Set up your network preferences
+
+  4. **Deploy**
+     Start using the infrastructure
+</Steps>
+
+<Note>
+For detailed setup instructions and best practices, visit our [Infrastructure Guide](/guides/infrastructure).
+</Note> 

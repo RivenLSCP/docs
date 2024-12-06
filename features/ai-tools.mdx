@@ -1,0 +1,186 @@
+---
+title: 'AI Tools Suite'
+description: 'Comprehensive tools for AI development, training, and model hosting'
+---
+
+## Overview
+
+Sera's AI Tools Suite provides a comprehensive set of services for AI developers and users, enabling seamless development, training, and deployment of AI models.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Model Training" icon="dumbbell">
+    Advanced training infrastructure with:
+    - Distributed training support
+    - Automatic hyperparameter tuning
+    - Real-time monitoring
+  </Card>
+  <Card title="Model Hosting" icon="cloud">
+    Production-ready hosting with:
+    - Auto-scaling capabilities
+    - Load balancing
+    - Version control
+  </Card>
+  <Card title="Data Processing" icon="gears">
+    Efficient data pipeline tools:
+    - Automated preprocessing
+    - Data validation
+    - Format conversion
+  </Card>
+  <Card title="Monitoring" icon="chart-line">
+    Comprehensive analytics:
+    - Performance metrics
+    - Resource utilization
+    - Cost tracking
+  </Card>
+</CardGroup>
+
+## Development Tools
+
+### Training Client
+
+```python
+from sera.training import TrainingClient
+
+# Initialize training client
+client = TrainingClient(
+    model_type="transformer",
+    dataset_id="sera://datasets/my-dataset"
+)
+
+# Configure training parameters
+client.configure(
+    batch_size=32,
+    learning_rate=3e-4,
+    epochs=10,
+    optimizer="adam"
+)
+
+# Start training
+client.train(
+    distributed=True,
+    nodes=4,
+    checkpoint_interval=1000
+)
+```
+
+### Model Deployment
+
+```python
+from sera.deployment import ModelDeployment
+
+# Deploy model
+deployment = ModelDeployment(
+    model_id="sera://models/my-model",
+    version="1.0.0"
+)
+
+# Configure scaling
+deployment.configure(
+    min_instances=2,
+    max_instances=10,
+    scaling_metric="cpu_utilization",
+    scaling_threshold=0.8
+)
+
+# Start deployment
+deployment.start()
+```
+
+## Security Features
+
+<AccordionGroup>
+  <Accordion title="Secure Training Environment">
+    - Isolated compute resources
+    - Encrypted data transmission
+    - Access control policies
+    - Audit logging
+  </Accordion>
+  
+  <Accordion title="Model Protection">
+    - Model encryption at rest
+    - Secure model serving
+    - Version control
+    - Access management
+  </Accordion>
+</AccordionGroup>
+
+## Integration Options
+
+### Supported Frameworks
+- PyTorch
+- TensorFlow
+- JAX
+- Hugging Face Transformers
+- Custom frameworks via API
+
+### API Endpoints
+
+<ResponseField name="Training API" type="POST">
+  Start a new training job
+  ```bash
+  POST /api/v1/training/start
+  ```
+</ResponseField>
+
+<ResponseField name="Deployment API" type="POST">
+  Deploy a trained model
+  ```bash
+  POST /api/v1/deployment/create
+  ```
+</ResponseField>
+
+## Resource Management
+
+### Compute Resources
+<CardGroup cols={2}>
+  <Card title="GPU Options" icon="microchip">
+    - NVIDIA A100
+    - NVIDIA V100
+    - NVIDIA T4
+  </Card>
+  <Card title="CPU Options" icon="server">
+    - High-memory instances
+    - Compute-optimized instances
+    - General purpose instances
+  </Card>
+</CardGroup>
+
+### Storage Options
+- High-performance SSD
+- Object storage
+- Archive storage
+
+## Monitoring & Analytics
+
+<Frame>
+  <img src="/images/monitoring-dashboard.png" alt="Monitoring Dashboard" />
+</Frame>
+
+- Real-time performance metrics
+- Resource utilization tracking
+- Cost optimization suggestions
+- Training progress visualization
+
+## Getting Started
+
+<Steps>
+  1. **Create Account**
+     Sign up for Sera and verify your developer account
+
+  2. **Install SDK**
+     ```bash
+     pip install sera-ai
+     ```
+
+  3. **Configure Credentials**
+     Set up your API keys and access tokens
+
+  4. **Start Building**
+     Use our documentation and examples to begin development
+</Steps>
+
+<Note>
+Need help? Check out our [Developer Guide](/guides/developers) or join our [Discord community](https://discord.gg/datasphere).
+</Note> 

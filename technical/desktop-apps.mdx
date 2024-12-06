@@ -1,0 +1,346 @@
+---
+title: 'Desktop Applications'
+description: 'Native desktop applications for Windows, macOS, and Linux'
+---
+
+## Overview
+
+Sera provides native desktop applications that offer a powerful interface for managing AI data assets, running models, and interacting with the platform's features. Available for Windows, macOS (both ARM64 and x64), and Linux.
+
+## Available Versions
+
+<CardGroup cols={3}>
+  <Card title="Windows" icon="windows">
+    - Size: 128 MB
+    - Windows 10/11
+    - 64-bit only
+  </Card>
+  <Card title="macOS ARM64" icon="apple">
+    - Size: 114 MB
+    - Apple Silicon
+    - macOS 11+
+  </Card>
+  <Card title="macOS x64" icon="apple">
+    - Size: 120 MB
+    - Intel processors
+    - macOS 10.15+
+  </Card>
+  <Card title="Linux" icon="linux">
+    - Size: 126 MB
+    - AppImage format
+    - Major distributions
+  </Card>
+</CardGroup>
+
+## System Requirements
+
+### Minimum Requirements
+
+<AccordionGroup>
+  <Accordion title="Windows">
+    - Windows 10 or later (64-bit)
+    - 8GB RAM
+    - 4-core CPU
+    - 500MB free storage
+    - DirectX 11 compatible GPU
+  </Accordion>
+  
+  <Accordion title="macOS">
+    - macOS 10.15+ (Intel) or 11+ (ARM)
+    - 8GB RAM
+    - 4-core CPU
+    - 500MB free storage
+    - Metal-capable GPU
+  </Accordion>
+
+  <Accordion title="Linux">
+    - Modern Linux distribution
+    - 8GB RAM
+    - 4-core CPU
+    - 500MB free storage
+    - OpenGL 3.3+ GPU
+    - FUSE for AppImage support
+  </Accordion>
+</AccordionGroup>
+
+## Installation
+
+### Download & Setup
+
+<Steps>
+  1. **Download**
+     Get the appropriate version for your OS from [downloads.sera.xyz](https://downloads.sera.xyz)
+
+  2. **Verify**
+     Check the SHA-256 hash of the downloaded file
+
+  3. **Install**
+     Follow OS-specific installation steps
+
+  4. **First Run**
+     Complete initial setup and authentication
+</Steps>
+
+### Platform-Specific Notes
+
+<CardGroup cols={2}>
+  <Card title="Windows Installation" icon="windows">
+    ```bash
+    # Verify hash (PowerShell)
+    Get-FileHash sera-windows.exe -Algorithm SHA256
+    
+    # Install silently
+    sera-windows.exe /S
+    ```
+  </Card>
+  <Card title="macOS Installation" icon="apple">
+    ```bash
+    # Verify hash
+    shasum -a 256 Sera.dmg
+    
+    # Install via CLI
+    sudo hdiutil attach Sera.dmg
+    cp -R "/Volumes/Sera/Sera.app" /Applications/
+    ```
+  </Card>
+</CardGroup>
+
+## Features
+
+### Data Management
+
+<CardGroup cols={2}>
+  <Card title="Dataset Tools" icon="database">
+    - Visual data exploration
+    - Metadata management
+    - Quality analysis
+    - Format conversion
+  </Card>
+  <Card title="Model Management" icon="brain">
+    - Model deployment
+    - Version control
+    - Performance monitoring
+    - Resource optimization
+  </Card>
+</CardGroup>
+
+### Vector Database Interface
+
+```python
+# Desktop app provides GUI for these operations
+from sera.desktop import VectorDBManager
+
+# Connect to database
+manager = VectorDBManager()
+manager.connect_to_collection("my_collection")
+
+# Visual query builder
+query = manager.build_query(
+    dimensions=768,
+    filters={"category": "tech"}
+)
+```
+
+### Monitoring Dashboard
+
+<Frame>
+  <img src="/images/desktop-dashboard.png" alt="Desktop Dashboard" />
+</Frame>
+
+## Configuration
+
+### Settings Management
+
+<AccordionGroup>
+  <Accordion title="General Settings">
+    ```yaml
+    app:
+      theme: "dark"
+      language: "en"
+      updates: "automatic"
+      telemetry: false
+    ```
+  </Accordion>
+  
+  <Accordion title="Performance Settings">
+    ```yaml
+    performance:
+      cache_size: "2GB"
+      max_memory: "8GB"
+      threads: 4
+      gpu_enabled: true
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Resource Management
+
+<CardGroup cols={2}>
+  <Card title="Memory Settings" icon="memory">
+    - Cache configuration
+    - Memory limits
+    - Garbage collection
+    - Swap settings
+  </Card>
+  <Card title="GPU Settings" icon="microchip">
+    - Device selection
+    - Memory allocation
+    - Compute settings
+    - Power management
+  </Card>
+</CardGroup>
+
+## Integration
+
+### API Access
+
+```python
+from sera.desktop import DesktopClient
+
+# Connect to desktop app
+client = DesktopClient()
+
+# Manage datasets
+dataset = client.import_dataset(
+    path="./local_dataset",
+    name="my_dataset",
+    description="Local dataset import"
+)
+
+# Deploy model
+deployment = client.deploy_model(
+    model_path="./local_model",
+    resources={
+        "gpu": 1,
+        "memory": "4GB"
+    }
+)
+```
+
+### Automation
+
+```python
+from sera.desktop.automation import Workflow
+
+# Create automated workflow
+workflow = Workflow("data_processing")
+workflow.add_step("import_data", source="./data")
+workflow.add_step("preprocess", config={"format": "parquet"})
+workflow.add_step("upload", destination="sera://datasets")
+
+# Schedule workflow
+workflow.schedule(
+    cron="0 0 * * *",  # Daily at midnight
+    notify=True
+)
+```
+
+## Security
+
+### Authentication
+
+<Steps>
+  1. **Initial Setup**
+     Configure authentication methods
+
+  2. **Key Management**
+     Secure storage of API keys
+
+  3. **Session Control**
+     Manage active sessions
+
+  4. **Audit Logging**
+     Track security events
+</Steps>
+
+### Data Protection
+
+<CardGroup cols={2}>
+  <Card title="Local Storage" icon="hard-drive">
+    - Encrypted storage
+    - Secure cache
+    - Data cleanup
+  </Card>
+  <Card title="Network Security" icon="shield">
+    - TLS encryption
+    - Certificate validation
+    - Proxy support
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+### Common Issues
+
+<AccordionGroup>
+  <Accordion title="Installation Issues">
+    - Verify system requirements
+    - Check disk space
+    - Run as administrator
+    - Clear temporary files
+  </Accordion>
+  
+  <Accordion title="Performance Issues">
+    - Monitor resource usage
+    - Clear cache
+    - Update graphics drivers
+    - Check network connection
+  </Accordion>
+</AccordionGroup>
+
+### Logs & Diagnostics
+
+```bash
+# Windows
+%APPDATA%\Sera\logs\
+
+# macOS
+~/Library/Logs/Sera/
+
+# Linux
+~/.config/Sera/logs/
+```
+
+## Updates & Maintenance
+
+### Auto Updates
+
+<CardGroup cols={2}>
+  <Card title="Update Settings" icon="arrows-rotate">
+    ```yaml
+    updates:
+      channel: "stable"
+      automatic: true
+      schedule: "daily"
+    ```
+  </Card>
+  <Card title="Version Management" icon="code-branch">
+    ```yaml
+    versions:
+      rollback: true
+      keep_versions: 3
+      beta_access: false
+    ```
+  </Card>
+</CardGroup>
+
+## Support & Resources
+
+<CardGroup cols={2}>
+  <Card title="Documentation" icon="book">
+    [User Guide](/desktop-guide)
+  </Card>
+  <Card title="Community" icon="users">
+    [Forum](https://forum.sera.xyz)
+  </Card>
+  <Card title="Issues" icon="bug">
+    [Bug Reports](https://github.com/sera-xyz/desktop/issues)
+  </Card>
+  <Card title="Support" icon="headset">
+    [Help Desk](mailto:desktop-support@sera.xyz)
+  </Card>
+</CardGroup>
+
+<Note>
+For enterprise support and custom desktop configurations, contact our enterprise team at enterprise@sera.xyz
+</Note> 

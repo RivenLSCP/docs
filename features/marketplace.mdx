@@ -1,0 +1,121 @@
+---
+title: 'AI Data Marketplace'
+description: 'Trade AI data assets on our decentralized marketplace'
+---
+
+## Overview
+
+The Sera Marketplace is a decentralized platform for trading AI data assets, including datasets, models, vector databases, and more. Built on the SUI Blockchain, it offers unprecedented speed and security for AI data transactions.
+
+## Supported Assets
+
+<CardGroup cols={3}>
+  <Card title="Datasets" icon="database">
+    Structured and unstructured data collections
+  </Card>
+  <Card title="Models" icon="brain">
+    Pre-trained and fine-tuned AI models
+  </Card>
+  <Card title="Vector DBs" icon="vector-square">
+    Optimized vector databases for AI
+  </Card>
+  <Card title="Pipelines" icon="diagram-project">
+    Complete AI processing pipelines
+  </Card>
+  <Card title="Environments" icon="microchip">
+    Configured running environments
+  </Card>
+  <Card title="Weights" icon="scale-balanced">
+    Intermediate model weights
+  </Card>
+</CardGroup>
+
+## Performance Metrics
+
+### Processing Speed Comparison
+
+<Frame>
+  <img src="/images/speed-comparison.png" alt="Speed Comparison" />
+</Frame>
+
+| Data Size | Traditional | Sera    | Improvement |
+|-----------|-------------|---------|-------------|
+| 10GB      | 900s       | 5-10s   | ~180x       |
+| 30GB      | 2700s      | 5-10s   | ~450x       |
+| 100GB     | 9000s      | 5-10s   | ~1800x      |
+
+## Security Features
+
+<CardGroup cols={2}>
+  <Card title="Trusted Execution" icon="shield-check">
+    Secure data processing in TEE environments
+  </Card>
+  <Card title="Homomorphic Encryption" icon="lock">
+    Process encrypted data without decryption
+  </Card>
+  <Card title="Federated Learning" icon="network-wired">
+    Distributed training while preserving privacy
+  </Card>
+  <Card title="Zero-Knowledge Proofs" icon="user-secret">
+    Verify transactions without revealing data
+  </Card>
+</CardGroup>
+
+## Getting Started
+
+### For Sellers
+
+<Steps>
+  1. **Prepare Your Data**
+     Package your AI assets according to marketplace standards
+
+  2. **Set Pricing**
+     Choose between fixed price or auction formats
+
+  3. **List Asset**
+     Complete the listing process with metadata and documentation
+
+  4. **Monitor Sales**
+     Track transactions and manage your listings
+</Steps>
+
+### For Buyers
+
+<Steps>
+  1. **Browse Assets**
+     Search and filter available AI data assets
+
+  2. **Verify Quality**
+     Review metadata, documentation, and seller ratings
+
+  3. **Purchase**
+     Complete transaction using supported cryptocurrencies
+
+  4. **Download & Integrate**
+     Access your purchased assets through our secure infrastructure
+</Steps>
+
+## Integration Options
+
+```python
+from sera import Marketplace
+
+# Initialize marketplace client
+market = Marketplace.connect(wallet="your_wallet_address")
+
+# List an asset
+market.list_asset(
+    asset_path="./my_model",
+    asset_type="model",
+    price=1000,
+    metadata={
+        "framework": "pytorch",
+        "accuracy": 0.95,
+        "training_data": "description"
+    }
+)
+```
+
+<Note>
+Visit our [Developer Guide](/guides/developers) for detailed API documentation and integration examples.
+</Note> 
