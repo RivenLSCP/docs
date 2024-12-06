@@ -1,6 +1,6 @@
 ---
 title: 'Guide for Data Contributors'
-description: 'Learn how to earn rewards by contributing your ChatGPT conversations'
+description: 'Learn how to earn $SERA tokens by contributing AI interactions'
 ---
 
 ## Getting Started
@@ -10,8 +10,8 @@ description: 'Learn how to earn rewards by contributing your ChatGPT conversatio
   <Card title="Chrome Browser" icon="chrome">
     Latest version of Chrome browser required
   </Card>
-  <Card title="Crypto Wallet" icon="wallet">
-    MetaMask, WalletConnect, or Sui Wallet
+  <Card title="SUI Wallet" icon="wallet">
+    Sui Wallet, OKX Wallet, or other SUI-compatible wallets
   </Card>
 </CardGroup>
 
@@ -25,58 +25,65 @@ description: 'Learn how to earn rewards by contributing your ChatGPT conversatio
      Click the Sera icon and connect your preferred crypto wallet
 
   3. **Configure Settings**
-     Set your preferred privacy and data sharing options
+     Set your privacy preferences and data sharing controls
 
   4. **Start Contributing**
-     Begin using ChatGPT as normal - the extension will handle the rest
+     Begin interacting with supported AI models - your contributions are automatically recorded
 </Steps>
 
 ## Maximizing Rewards
 
 ### Reward Formula Explained
-```math
-Total Reward = T * S^q
+$$
+R = α · Q(c) · V(s) · e^{-λt} · (1 + ΣβᵢMᵢ)
+$$
 
 Where:
-T = Data Volume Coefficient
-S = Session Volume
-q = Quality Multiplier
-```
+- $α$ = Base rate
+- $Q(c)$ = Quality score
+- $V(s)$ = Value score
+- $λt$ = Time decay
+- $βᵢMᵢ$ = Model-specific multipliers
 
 <Note>
-Early contributors receive higher rewards due to the decreasing Data Volume Coefficient.
+Quality and uniqueness are key factors in determining rewards. Higher-quality contributions receive significantly better rewards.
 </Note>
 
 ### Quality Guidelines
 
 <CardGroup cols={2}>
-  <Card title="Do's" icon="check">
-    - Engage in meaningful conversations
-    - Ask detailed questions
-    - Maintain natural flow
-    - Cover diverse topics
+  <Card title="Best Practices" icon="check">
+    - Natural conversations
+    - Diverse topics
+    - Meaningful depth
+    - Cross-model interactions
   </Card>
-  <Card title="Don'ts" icon="xmark">
-    - Submit duplicate content
-    - Use automated messages
-    - Share sensitive information
-    - Break conversations artificially
+  <Card title="Not Allowed" icon="xmark">
+    - Personal information
+    - Harmful content
+    - Duplicate submissions
+    - Automated messages
+    - Manipulative behavior
   </Card>
 </CardGroup>
 
 ## Earning Opportunities
 
-### Basic Contributions
+### Model Tiers
 <AccordionGroup>
-  <Accordion title="GPT-3.5 Conversations">
-    - Standard point rewards
-    - Volume-based bonuses
-    - Quality multipliers
+  <Accordion title="Standard Models (β₁ = 1.0x)">
+    - GPT-3.5 & GPT-3.5-turbo
+    - Claude 3 Haiku
+    - Gemini 1.5 Flash
+    - Standard reward rates
+    - Quality-focused incentives
   </Accordion>
-  <Accordion title="GPT-4 Conversations">
-    - Premium point rewards
-    - Higher conversion rates
-    - Special leaderboard eligibility
+  <Accordion title="Premium Models (β₂ = 1.5-2.0x)">
+    - GPT-4
+    - Claude 3 Opus & 3.5 Sonnet
+    - Gemini 1.5 Pro
+    - Premium reward rates
+    - Enhanced quality multipliers
   </Accordion>
 </AccordionGroup>
 
@@ -85,79 +92,78 @@ Early contributors receive higher rewards due to the decreasing Data Volume Coef
 <CardGroup cols={2}>
   <Card title="Referral Program" icon="user-plus">
     - 10% perpetual commission
-    - Referee bonus of 10%
     - Unlimited referrals
+    - Real-time tracking
+    - Special achievements
   </Card>
   <Card title="Quest System" icon="trophy">
-    - Daily challenges
-    - Weekly missions
-    - Special event bonuses
+    - Daily quests
+    - Weekly challenges
+    - Achievement quests
+    - Special events
   </Card>
 </CardGroup>
 
-## Tracking Progress
+## Competitions & Leaderboards
 
-### Dashboard Features
+### Ranking System
 
-<Frame>
-  <img src="/images/contributor-dashboard.png" alt="Contributor Dashboard" />
-</Frame>
-
-- Real-time earnings tracker
-- Quality score monitor
-- Referral statistics
-- Quest progress
-
-### Leaderboard System
-
-<AccordionGroup>
-  <Accordion title="Weekly Rankings">
-    - Top contributors
-    - Quality scores
-    - Special achievements
-  </Accordion>
-  <Accordion title="Monthly Competitions">
-    - Grand prizes
-    - Category winners
-    - Mystery rewards
-  </Accordion>
-</AccordionGroup>
+<CardGroup cols={2}>
+  <Card title="Global Rankings" icon="trophy">
+    - Overall contribution score
+    - Quality percentile
+    - Innovation index
+    - Community impact
+  </Card>
+  <Card title="Model-Specific" icon="ranking-star">
+    - Per-model leaderboards
+    - Specialized achievements
+    - Model expertise levels
+    - Performance metrics
+  </Card>
+</CardGroup>
 
 ## Privacy & Security
 
 ### Data Protection
-- End-to-end encryption
-- Anonymous contributions
-- Opt-out options
-- Data control settings
+<Check>End-to-end encryption</Check>
+<Check>Anonymous contributions</Check>
+<Check>Selective sharing controls</Check>
+<Check>Data sovereignty</Check>
 
-### Content Guidelines
-<Check>Technical discussions</Check>
-<Check>General knowledge queries</Check>
-<Check>Creative writing</Check>
-<Check>Problem-solving conversations</Check>
-<Cross>Personal information</Cross>
-<Cross>Financial data</Cross>
-<Cross>Medical records</Cross>
-<Cross>Confidential business information</Cross>
+### User Controls
+<CardGroup cols={2}>
+  <Card title="Privacy Settings" icon="shield">
+    - Contribution visibility
+    - Data usage preferences
+    - Identity protection
+    - Export controls
+  </Card>
+  <Card title="Security Features" icon="lock">
+    - 2FA protection
+    - Session management
+    - Activity monitoring
+    - Access controls
+  </Card>
+</CardGroup>
 
 ## Support & Resources
 
 <CardGroup cols={2}>
   <Card title="Help Center" icon="circle-question">
-    Access FAQs and troubleshooting guides
+    Access FAQs and guides
   </Card>
   <Card title="Community" icon="discord">
-    Join our Discord for peer support
+    Join our Discord community
   </Card>
   <Card title="Updates" icon="bell">
     Stay informed about new features
   </Card>
   <Card title="Tutorials" icon="graduation-cap">
-    Learn best practices and tips
+    Learn optimization strategies
   </Card>
 </CardGroup>
 
 <Note>
 Need help? Contact our support team at support@sera.xyz or join our [Discord community](https://discord.gg/datasphere).
-</Note> 
+</Note>

@@ -11,7 +11,7 @@ The Sera Marketplace is a decentralized platform for trading AI data assets, inc
 
 <CardGroup cols={3}>
   <Card title="Datasets" icon="database">
-    Structured and unstructured data collections
+    On-chain verified data collections with proof of quality
   </Card>
   <Card title="Models" icon="brain">
     Pre-trained and fine-tuned AI models
@@ -73,10 +73,10 @@ The Sera Marketplace is a decentralized platform for trading AI data assets, inc
      Choose between fixed price or auction formats
 
   3. **List Asset**
-     Complete the listing process with metadata and documentation
+     Deploy listing contract and set royalty parameters
 
   4. **Monitor Sales**
-     Track transactions and manage your listings
+     Track on-chain transactions and manage listings
 </Steps>
 
 ### For Buyers
@@ -86,7 +86,7 @@ The Sera Marketplace is a decentralized platform for trading AI data assets, inc
      Search and filter available AI data assets
 
   2. **Verify Quality**
-     Review metadata, documentation, and seller ratings
+     Check attestations, ratings, and on-chain history
 
   3. **Purchase**
      Complete transaction using supported cryptocurrencies
@@ -99,19 +99,23 @@ The Sera Marketplace is a decentralized platform for trading AI data assets, inc
 
 ```python
 from sera import Marketplace
+from sera.wallet import SuiWallet
 
 # Initialize marketplace client
-market = Marketplace.connect(wallet="your_wallet_address")
+wallet = SuiWallet.connect()
+market = Marketplace.connect(wallet)
 
 # List an asset
 market.list_asset(
     asset_path="./my_model",
     asset_type="model",
-    price=1000,
+    price=1000,  # In $SERA tokens
+    royalty_percentage=2.5,
     metadata={
         "framework": "pytorch",
         "accuracy": 0.95,
-        "training_data": "description"
+        "training_data": "description",
+        "verification_proof": "0x..."  # ZK proof hash
     }
 )
 ```

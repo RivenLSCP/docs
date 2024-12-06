@@ -1,38 +1,38 @@
 ---
 title: "System Architecture"
-description: "Technical overview of Sera's infrastructure and components"
+description: "Technical overview of Sera's decentralized AI infrastructure"
 ---
 
 ## Overview
 
-Sera's architecture is built on a foundation of decentralized technologies, combining blockchain security with distributed computing power to create a robust and scalable AI infrastructure.
+Sera's architecture is built on four key pillars, combining SUI blockchain security with distributed computing power to create a robust and scalable AI infrastructure.
 
 ## System Components
 
 <CardGroup cols={2}>
   <Card title="Core Layer" icon="layer-group">
-    - Blockchain infrastructure
-    - Smart contracts
+    - SUI Blockchain infrastructure
+    - Smart contracts & token economics
     - Protocol governance
-    - Token economics
+    - Points-to-token conversion system
   </Card>
   <Card title="Storage Layer" icon="database">
-    - Walrus protocol
-    - Content addressing
-    - Data redundancy
-    - Access control
+    - Walrus protocol integration
+    - Decentralized content addressing
+    - HuggingFace integration
+    - ChromaDB vector database
   </Card>
   <Card title="Compute Layer" icon="microchip">
-    - DePIN network
+    - Cloud Computing
+    - DePIN network integration
     - Resource allocation
-    - Workload distribution
-    - Performance optimization
+    - Training client distribution
   </Card>
   <Card title="Application Layer" icon="window">
-    - APIs and SDKs
-    - User interfaces
-    - Integration tools
-    - Development frameworks
+    - Chrome Extension
+    - Desktop Applications
+    - Developer APIs/SDKs
+    - Integration frameworks
   </Card>
 </CardGroup>
 
@@ -48,28 +48,36 @@ Sera's architecture is built on a foundation of decentralized technologies, comb
 
 ```mermaid
 graph TD
-    A[Smart Contracts] --> B[Token Management]
+    A[Smart Contracts] --> B[Token & Points System]
     A --> C[Access Control]
     A --> D[Payment Systems]
     B --> E[Reward Distribution]
     C --> F[Permission Management]
-    D --> G[Transaction Processing]
+    D --> G[Marketplace Transactions]
 ```
 
 ### Storage System
 
 <Steps>
   1. **Data Ingestion**
-     Content-addressed storage using Walrus protocol
+     - Content-addressed storage via Walrus
+     - HuggingFace model/dataset imports
+     - Resume from breakpoint support
 
   2. **Distribution**
-     Redundant storage across decentralized network
+     - ChromaDB vector database
+     - Persistent client support
+     - Database replication
 
   3. **Retrieval**
-     Efficient content delivery with caching
+     - Batch processing capabilities
+     - Query optimization
+     - Metadata management
 
   4. **Verification**
-     Cryptographic proof of storage and retrieval
+     - Data validation systems
+     - Duplicate detection
+     - Quality scoring
 </Steps>
 
 ### Compute Network
