@@ -1,79 +1,79 @@
 ---
 title: "AI-To-Earn"
-description: "Monetize your AI interactions while contributing to the advancement of artificial intelligence"
+description: "Monetize your AI interactions in a trustless environment on SUI"
 ---
 
-**AI-To-Earn** revolutionizes data collection by enabling users to monetize their AI interactions while contributing to the advancement of artificial intelligence. Built natively on the SUI blockchain, our protocol transforms AI interactions into valuable digital assets, creating a decentralized ecosystem where contributors earn $SERA tokens for quality AI conversations and data contributions.
+**AI-To-Earn** revolutionizes data contribution by letting you monetize your interactions with AI models while helping advance artificial intelligence research. Natively built on the SUI blockchain, the protocol transforms your AI interactions into verifiable contributions recorded on-chain. You earn $SERA tokens, a SUI-native token, for high-quality conversations and valuable data, creating a decentralized ecosystem that rewards meaningful engagement.
 
 
 ## How It Works
 
 <Steps>
   1. **Connect Wallet**  
-     Link your SUI wallet to start earning. Supported wallets include:
-     - Sui Wallet
-     - OKX Wallet
-     - Other SUI-compatible wallets
+     Connect your SUI-compatible wallet (e.g., Sui Wallet, OKX Wallet). This wallet manages your $SERA tokens and signs your interactions.
 
   2. **Start Contributing**  
-     Engage with supported AI models. Your interactions are securely recorded on-chain as verifiable contributions.
+     Interact with supported off-chain AI models. Every contribution (conversation, input, feedback) is hashed and anchored on SUI, ensuring authenticity and verifiability.
 
   3. **Earn SERA**  
-     Receive $SERA tokens based on your contribution quality, automatically distributed through smart contracts.
+     Your contributions are scored off-chain for quality and uniqueness. Smart contracts on SUI calculate your rewards and distribute $SERA tokens accordingly.
 
   4. **Boost Earnings**  
-     Stake $SERA tokens to increase your earning multiplier and unlock premium features.
+     Stake $SERA tokens to increase your reward multiplier. On-chain staking contracts grant governance rights and unlock premium model access.
 </Steps>
 
 ## Token Utility
 <CardGroup cols={2}>
   <Card title="Staking Benefits" icon="coins">
-    - Enhanced earning multipliers
-    - Governance voting rights
-    - Access to premium models
-    - Protocol revenue sharing
+    - • Enhanced earning multipliers via on-chain staking
+    - • Governance voting rights on protocol parameters
+    - • Access to premium AI models referenced on-chain
+    - • Participation in protocol revenue sharing
   </Card>
   <Card title="Marketplace Access" icon="store">
-    - Trade AI data assets
-    - Purchase model access
-    - Participate in data DAOs
-    - Access exclusive features
+    - • Trade AI data assets on the on-chain marketplace
+    - • Purchase premium model access using $SERA
+    - • Join data DAOs
+    - • Unlock exclusive features and model tiers
   </Card>
 </CardGroup>
 
 ## Supported Models
 
+All model references are stored on-chain, while the actual model weights and versions remain off-chain in Walrus. The SUI blockchain ensures you know exactly what you’re interacting with:
+
 <CardGroup cols={3}>
   <Card title="ChatGPT" icon="message-bot">
-    - GPT-4
-    - GPT-3.5
-    - GPT-3.5-turbo
+    - • GPT-4
+    - • GPT-3.5
+    - • GPT-3.5-turbo
   </Card>
   <Card title="Claude" icon="robot">
-    - Claude 3 Opus
-    - Claude 3.5 Sonnet
-    - Claude 3 Haiku
+    - • Claude 3 Opus
+    - • Claude 3.5 Sonnet
+    - • Claude 3 Haiku
   </Card>
   <Card title="Gemini" icon="sparkles">
-    - Gemini 1.5 Pro
-    - Gemini 1.5 Flash
+    - • Gemini 1.5 Pro
+    - • Gemini 1.5 Flash
   </Card>
 </CardGroup>
 
 
 ## Reward Formula
 
-
+Contributions are evaluated off-chain, and results are recorded on-chain to ensure fairness and immutability:
   $$
   R = \alpha \cdot Q(c) \cdot V(s) \cdot e^{-\lambda t} \cdot \left(1 + \sum_{i=1}^{n} \beta_i M_i\right)
   $$
 
-  Where:
-  - $α$: Base rate
-  - $Q(c)$: Quality Score (engagement & consistency)
-  - $V(s)$: Value Score (uniqueness & significance)
-  - $λt$: Time decay factor
-  - $βᵢMᵢ$: Model-specific multipliers
+Where:
+
+- $α$: On-chain base rate
+- $Q(c)$: Quality Score (based on engagement and consistency, computed off-chain, anchored on-chain)
+- $V(s)$: Value Score (uniqueness & significance, computed off-chain, validated on-chain)
+- $λt$: Time decay factor defined on-chain to encourage continual contributions
+- $βᵢMᵢ$: Model-specific multipliers recorded on-chain, incentivizing interactions with certain models
 
 
 #### Quality Score $Q(c)$
@@ -82,7 +82,7 @@ $$
 Q(c) = \frac{1}{1 + e^{-k(q - q_0)}} \cdot \sqrt{\frac{\sigma^2}{\sigma^2 + \sigma_0^2}}
 $$
 
-- **Description**: Evaluates conversation quality using engagement metrics and consistency measures.
+- This measures conversation quality. Engagement metrics and consistency checks are done off-chain, with summaries hashed and referenced on-chain.
 
 #### Value Score $V(s)$
 
@@ -90,55 +90,48 @@ $$
 V(s) = \log(1 + \frac{s}{s_0}) \cdot (1 + \gamma \cdot \text{unique}(s))
 $$
 
-- **Description**: Calculates content value based on uniqueness and significance factors.
-
+- Value is determined by uniqueness and significance, ensuring that more original and impactful contributions are rewarded more. All computations happen off-chain, with final scores committed on-chain for auditability.
 
 ## Model-Specific Multipliers
 
+The SUI blockchain stores multipliers for different model tiers, guiding the incentive structure:
+
 <CardGroup cols={2}>
   <Card title="Standard Models" icon="chart-simple">
-    <div className="text-lg font-semibold text-gray-800 mb-4">
-      Base Multiplier: β₁ = 1.0
+    <p><strong>Base Multiplier:</strong> β₁ = 1.0</p>
+    <div>
+      <p><strong>Supported Models</strong></p>
+      <ul>
+        <li>• GPT-3.5 & GPT-3.5-turbo</li>
+        <li>• Claude 3 Haiku</li>
+        <li>• Gemini 1.5 Flash</li>
+      </ul>
     </div>
-
-    <div className="bg-gray-50 rounded-lg p-4 mb-4">
-      <div className="font-medium text-gray-800 mb-2">Supported Models</div>
-      <div className="space-y-1">
-        <div>GPT-3.5 & GPT-3.5-turbo</div>
-        <div>Claude 3 Haiku</div>
-        <div>Gemini 1.5 Flash</div>
-      </div>
-    </div>
-
-    <div className="bg-gray-50 rounded-lg p-4">
-      <div className="font-medium text-gray-800 mb-2">Benefits</div>
-      <div className="space-y-1">
-        <div>Standard reward rate</div>
-        <div>Quality-focused incentives</div>
-      </div>
+    <div>
+      <p><strong>Benefits</strong></p>
+      <ul>
+        <li>• Standard reward rate</li>
+        <li>•Quality-focused incentives</li>
+      </ul>
     </div>
   </Card>
 
   <Card title="Premium Models" icon="chart-line">
-    <div className="text-lg font-semibold text-gray-800 mb-4">
-      Base Multiplier: β₂ = 1.5-2.0
+    <p><strong>Base Multiplier:</strong> β₂ = 1.5-2.0</p>
+    <div>
+      <p><strong>Supported Models</strong></p>
+      <ul>
+        <li>• GPT-4</li>
+        <li>• Claude 3 Opus & Claude 3.5 Sonnet</li>
+        <li>• Gemini 1.5 Pro</li>
+      </ul>
     </div>
-
-    <div className="bg-gray-50 rounded-lg p-4 mb-4">
-      <div className="font-medium text-gray-800 mb-2">Supported Models</div>
-      <div className="space-y-1">
-        <div>GPT-4</div>
-        <div>Claude 3 Opus & Claude 3.5 Sonnet</div>
-        <div>Gemini 1.5 Pro</div>
-      </div>
-    </div>
-
-    <div className="bg-gray-50 rounded-lg p-4">
-      <div className="font-medium text-gray-800 mb-2">Benefits</div>
-      <div className="space-y-1">
-        <div>Premium reward rates</div>
-        <div>Enhanced quality multipliers</div>
-      </div>
+    <div>
+      <p><strong>Benefits</strong></p>
+      <ul>
+        <li>• Premium reward rates</li>
+        <li>• Enhanced quality multipliers</li>
+      </ul>
     </div>
   </Card>
 </CardGroup>
@@ -149,41 +142,43 @@ $$
 
 <CardGroup cols={2}>
   <Card title="Referrer Benefits" icon="user-plus">
-    - 10% perpetual commission on referee earnings
-    - Unlimited referrals
-    - Real-time tracking dashboard
-    - Special referrer achievements
+    - • 10% perpetual commission on referee earnings
+    - • Unlimited referrals
+    - • Real-time on-chain tracking of referral links
+    - • Achievements and badges for top referrers
   </Card>
   <Card title="Referee Benefits" icon="gift">
-    - 10% bonus on all earnings
-    - Instant activation
-    - Welcome bonus
-    - Special starter quests
+    - • 10% bonus on all earnings
+    - • Instant activation upon referral
+    - • Welcome bonus recorded on-chain for transparency
+    - • Starter quests for new participants
   </Card>
 </CardGroup>
 
 ### Quest System
 
+Off-chain quest logic periodically writes completion proofs on-chain, ensuring fairness in distributing quest rewards.
+
 <AccordionGroup>
   <Accordion title="Daily Quests">
     - Conversation milestones
-    - Topic diversity challenges
-    - Multi-model interaction goals
+    - Topic diversity goals
+    - Multi-model interaction tasks
     - Quality score targets
   </Accordion>
   
   <Accordion title="Weekly Challenges">
-    - Specialized topic exploration
-    - Cross-model comparison tasks
+    - Topic exploration assigned by governance votes on SUI
+    - Cross-model comparisons
     - Community-voted themes
-    - Collaborative challenges
+    - Collaborative, multi-user challenges
   </Accordion>
   
   <Accordion title="Achievement Quests">
     - Cumulative contribution milestones
     - Quality consistency awards
-    - Model mastery badges
-    - Innovation recognition
+    - Model mastery badges and proofs stored on-chain
+    - Innovation recognition tracked by smart contracts
   </Accordion>
 </AccordionGroup>
 
@@ -193,16 +188,16 @@ $$
 
 <CardGroup cols={2}>
   <Card title="Global Rankings" icon="trophy">
-    - Overall contribution score
-    - Quality percentile
-    - Innovation index
-    - Community impact
+    - • Overall contribution score
+    - • Quality percentile calculations
+    - • Innovation index verified on-chain
+    - • Community impact and voting rights
   </Card>
   <Card title="Model-Specific Rankings" icon="ranking-star">
-    - Per-model leaderboards
-    - Specialized achievements
-    - Model expertise levels
-    - Performance metrics
+    - • Per-model leaderboards to highlight domain expertise
+    - • Specialized achievements recorded on-chain
+    - • Model mastery levels
+    - • Performance metrics hashed and stored for trustless validation
   </Card>
 </CardGroup>
 
@@ -210,16 +205,16 @@ $$
 
 <AccordionGroup>
   <Accordion title="Weekly Tournaments">
-    - Themed challenges
-    - Model-specific contests
-    - Quality competitions
-    - Innovation challenges
+    - Themed challenges curated by on-chain governance
+    - Model-specific contests for niche expertise
+    - Quality and innovation competitions
+    - Winners receive on-chain accolades
   </Accordion>
   <Accordion title="Monthly Championships">
-    - Grand prizes
-    - Multiple categories
-    - Special rewards
-    - Community recognition
+    - Grand prizes denominated in $SERA
+    - Multiple categories voted on by the community
+    - Special rewards for top performers
+    - On-chain records of all standings and achievements
   </Accordion>
 </AccordionGroup>
 
@@ -229,34 +224,34 @@ $$
 
 <Steps>
   1. **Natural Conversations**
-     Maintain authentic, purposeful dialogue
+     Keep dialogues authentic and purposeful.
 
   2. **Diverse Topics**
-     Explore various subjects and use cases
+     Cover various subjects and use cases.
 
   3. **Meaningful Depth**
-     Engage in detailed, thoughtful discussions
+     Provide detailed, thoughtful reasoning.
 
   4. **Cross-Model Interaction**
-     Compare responses across different AI models
+     Compare and contrast responses from different AI models for richer insights.
 </Steps>
 
 ### Content Standards
 
 <CardGroup cols={2}>
   <Card title="Recommended" icon="check">
-    - Technical discussions
-    - Problem-solving scenarios
-    - Creative explorations
-    - Educational content
-    - Research queries
+    - • Technical discussions
+    - • Problem-solving scenarios
+    - • Creative explorations
+    - • Educational content
+    - • Research-oriented queries
   </Card>
   <Card title="Not Allowed" icon="xmark">
-    - Personal information
-    - Harmful content
-    - Duplicate submissions
-    - Automated messages
-    - Manipulative behavior
+    - • Personal/sensitive information
+    - • Harmful or hateful content
+    - • Duplicate or spammy submissions
+    - • Automated messages without disclosure
+    - • Manipulative or deceptive behavior
   </Card>
 </CardGroup>
 
@@ -264,25 +259,25 @@ $$
 
 ### Data Protection
 
-<Check>End-to-end encryption</Check>
-<Check>Anonymous contributions</Check>
-<Check>Selective sharing controls</Check>
-<Check>Data sovereignty</Check>
+<Check>End-to-end encryption of sensitive metadata</Check>
+<Check>Anonymous, pseudonymous contributions via SUI addresses</Check>
+<Check>Selective data sharing controls</Check>
+<Check>Data sovereignty with user-defined storage preferences</Check>
 
 ### User Controls
 
 <CardGroup cols={2}>
   <Card title="Privacy Settings" icon="shield">
-    - Contribution visibility
-    - Data usage preferences
-    - Identity protection
-    - Export controls
+    - • Contribution visibility toggles
+    - • Data usage preferences (on-chain vs. off-chain)
+    - • Identity protection measures
+    - • Export controls for your contribution history
   </Card>
   <Card title="Security Features" icon="lock">
-    - 2FA protection
-    - Session management
-    - Activity monitoring
-    - Access controls
+    - • 2FA and multi-sig wallet support
+    - • Session management tools
+    - • Activity monitoring with on-chain logs
+    - • Fine-grained access controls defined by smart contracts
   </Card>
 </CardGroup>
 

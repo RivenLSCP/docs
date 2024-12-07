@@ -1,44 +1,50 @@
 ---
 title: 'Vector Database'
-description: 'High-performance vector database for AI applications'
+description: 'High-performance vector database integrated with SUI and Walrus for AI applications'
 ---
 
 ## Overview
+Our vector database layer integrates a ChromaDB-based system off-chain with the SUI blockchain and Walrus decentralized storage. This architecture provides trust and verifiability on-chain while ensuring high-performance similarity search and vector indexing off-chain. By separating concerns, you gain the scalability and speed of a dedicated vector database, the immutability and governance of SUI, and the decentralized reliability of Walrus.
 
-Sera's Vector Database is built on ChromaDB technology, providing a high-performance, distributed solution for storing and querying vector embeddings. It's designed specifically for AI applications with features like real-time indexing, efficient similarity search, and automatic synchronization.
+**Key Highlights:**
+
+- **Off-chain Vector Indexing:** Leverage ChromaDB or similar solutions for efficient vector similarity search.
+- **On-chain References:** Store collection metadata, replication factors, and index settings on SUI.
+- **Decentralized Storage (Walrus):** Store embeddings and related metadata off-chain, referenced by CIDs on SUI.
+- **Performance & Scalability:** Achieve sub-second queries and efficient indexing with off-chain infrastructure, while maintaining a verifiable record of configuration on-chain.
 
 ## Key Features
 
 <CardGroup cols={2}>
   <Card title="Performance" icon="bolt">
-    - Sub-second query times
-    - Efficient indexing
-    - Distributed architecture
-    - Automatic optimization
+    - • Sub-second query times (off-chain)
+    - • Efficient indexing with ChromaDB
+    - • Automatic optimization strategies
+    - • Off-chain caches and pre-built indexes
   </Card>
   <Card title="Scalability" icon="arrow-up-right-dots">
-    - Horizontal scaling
-    - Automatic sharding
-    - Load balancing
-    - Dynamic resource allocation
+    - • Horizontal scaling by adding more off-chain nodes
+    - • Automatic sharding and load balancing off-chain
+    - • Dynamic resource allocation controlled off-chain
+    - • On-chain references ensure consistent indexing info
   </Card>
   <Card title="Reliability" icon="shield-check">
-    - Data replication
-    - Automatic failover
-    - Consistency guarantees
-    - Backup/restore
+    - • Data replication policies recorded on SUI
+    - • Automatic failover via off-chain cluster management
+    - • Consistency checks anchored on-chain
+    - • Backup/restore references managed in SUI and Walru
   </Card>
   <Card title="Integration" icon="puzzle-piece">
-    - Multiple client SDKs
-    - REST API
-    - Streaming support
-    - Batch operations
+    - • Multiple client SDKs for off-chain queries
+    - • REST API for direct off-chain access
+    - • Streaming support & batch operations off-chain
+    - • On-chain updates to configuration and permissions
   </Card>
 </CardGroup>
 
 ## Getting Started
-
 ### Installation
+Install the off-chain SDK that integrates with SUI and Walrus references. You will interact with SUI smart contracts for registration and configuration, and off-chain services for actual embedding operations:
 
 <CodeGroup>
 ```bash npm
@@ -54,31 +60,32 @@ go get github.com/sera-xyz/vector-db
 ```
 </CodeGroup>
 
-### Basic Usage
+### Basic Usage (Off-Chain Client)
 
 ```python
 from sera.vector import VectorDB
 
-# Initialize client
+# Connect to the off-chain VectorDB cluster using references from SUI
 db = VectorDB.connect(
-    cluster="production",
-    api_key="your_api_key"
+    sui_package_id="0x...package_id",
+    walrus_gateway="https://walrus-gateway.example.com",
+    cluster="production"
 )
 
-# Create collection
+# Create collection (metadata recorded on SUI, embeddings off-chain)
 collection = db.create_collection(
     name="embeddings",
     dimension=768
 )
 
-# Add vectors
+# Add vectors (vectors stored in Walrus, references updated on SUI)
 collection.add(
     vectors=embeddings,
     metadata=metadata,
     ids=unique_ids
 )
 
-# Query
+# Query (off-chain operation, results verified against on-chain settings)
 results = collection.query(
     vector=query_vector,
     top_k=10
@@ -88,7 +95,7 @@ results = collection.query(
 ## Advanced Features
 
 ### Collection Management
-
+Use SUI transactions to store collection configuration (like dimension, metric, replication) and Walrus to store actual embedding data. Off-chain code ensures the indexes and configurations are applied consistently:
 <AccordionGroup>
   <Accordion title="Creation Options">
     ```python
@@ -100,6 +107,7 @@ results = collection.query(
         shards=5
     )
     ```
+    This writes metadata to SUI and sets up the off-chain indexing accordingly.
   </Accordion>
   
   <Accordion title="Index Configuration">
@@ -113,10 +121,12 @@ results = collection.query(
         }
     )
     ```
+    These configurations are stored on-chain as references so you can audit and verify them. The off-chain service respects these parameters.
   </Accordion>
 </AccordionGroup>
 
 ### Query Operations
+All queries run off-chain for performance, while the chain stores pointers and configuration that define how queries should be handled:
 
 ```python
 # Complex query with filters
@@ -148,16 +158,16 @@ async for result in collection.stream_query(query_vector):
 
 <Steps>
   1. **Choose Index Type**
-     Select appropriate index for your use case
+     On-chain records which index type (e.g., HNSW) is used, while off-chain services build and maintain the index.
 
   2. **Configure Parameters**
-     Tune index parameters for performance
+     Tune index parameters off-chain but record them on-chain for auditing.
 
   3. **Monitor Performance**
-     Track query times and resource usage
+     Gather query latency and resource usage off-chain. Store summary metrics on-chain for integrity.
 
   4. **Optimize**
-     Adjust based on monitoring data
+     Adjust parameters based on off-chain monitoring and update SUI records accordingly.
 </Steps>
 
 ### Caching
@@ -170,6 +180,7 @@ async for result in collection.stream_query(query_vector):
         ttl=3600
     )
     ```
+    Off-chain caching improves response times. Cache settings can be recorded on-chain for transparency.
   </Card>
   <Card title="Result Cache" icon="bolt">
     ```python
@@ -178,21 +189,23 @@ async for result in collection.stream_query(query_vector):
         expire_after=300
     )
     ```
+    Off-chain caching of frequent queries. On-chain references let you audit cache policies.
   </Card>
 </CardGroup>
 
 ## Data Management
 
 ### Backup & Recovery
+Backups occur off-chain (e.g., to cloud storage or Walrus snapshots). The backup ID and associated metadata can be recorded on SUI for verifiability:
 
 ```python
-# Create backup
+# Create backup off-chain and store reference on-chain
 backup_id = db.create_backup(
     collections=["embeddings"],
-    destination="s3://backup-bucket"
+    destination="walrus://backup-cid"
 )
 
-# Restore from backup
+# Restore from backup (off-chain), referencing SUI records to ensure correct state
 db.restore_backup(
     backup_id=backup_id,
     target_cluster="new-cluster"
@@ -209,12 +222,14 @@ db.restore_backup(
         consistency="strong"
     )
     ```
+    SUI tracks replication policies. Off-chain nodes replicate accordingly.
   </Card>
   <Card title="Monitor Status" icon="gauge">
     ```python
     status = collection.get_replication_status()
     print(f"Sync status: {status.state}")
     ```
+    Results reflect off-chain cluster state, anchored by on-chain policy references.
   </Card>
 </CardGroup>
 
@@ -225,13 +240,13 @@ db.restore_backup(
 ```python
 from sera.vector.monitoring import Metrics
 
-# Get collection metrics
+# Retrieve off-chain metrics and store summaries on-chain
 metrics = Metrics.get_collection_metrics(
     collection_name="embeddings",
     time_range="1h"
 )
 
-# Set up alerts
+# Setup alerts (off-chain) and record alert configurations on-chain
 Metrics.create_alert(
     metric="query_latency",
     threshold=100,  # ms
@@ -244,20 +259,23 @@ Metrics.create_alert(
 <Frame>
   <img src="/images/vector-db-dashboard.png" alt="Vector DB Dashboard" />
 </Frame>
+Dashboards and health checks occur off-chain. Periodic integrity hashes of logs and metrics can be anchored to SUI.
 
 ## Security
 
 ### Access Control
 
+Control who can read and write vector data via on-chain access controls. Off-chain nodes enforce these rules and only serve data to authorized parties:
+
 ```python
-# Configure access
+# Configure access on-chain, enforced off-chain
 collection.configure_access(
     read=["role1", "role2"],
     write=["role1"],
     admin=["admin"]
 )
 
-# Audit logs
+# Audit logs can be hashed and recorded on SUI
 logs = collection.get_audit_logs(
     start_time="2024-01-01",
     end_time="2024-01-31"
@@ -268,14 +286,14 @@ logs = collection.get_audit_logs(
 
 <CardGroup cols={2}>
   <Card title="At Rest" icon="lock">
-    - AES-256 encryption
-    - Key rotation
-    - Secure key storage
+    - • AES-256 encryption for Walrus-stored embeddings
+    - • Key rotation and secure off-chain key management
+    - • On-chain references to key policies
   </Card>
   <Card title="In Transit" icon="shield">
-    - TLS 1.3
-    - Certificate management
-    - Secure channels
+    - • TLS 1.3 for connections between clients and off-chain database nodes
+    - • Certificate management off-chain, references on-chain for verification
+    - • Secure channels ensured by off-chain gateway nodes
   </Card>
 </CardGroup>
 
@@ -283,27 +301,27 @@ logs = collection.get_audit_logs(
 
 ### Performance Tips
 
-<Check>Use appropriate batch sizes</Check>
-<Check>Configure proper index settings</Check>
-<Check>Enable caching for frequent queries</Check>
+<Check>Use appropriate batch sizes for off-chain operations</Check>
+<Check>Configure proper index settings and record them on SUI</Check>
+<Check>Enable caching for frequent queries off-chain</Check>
 <Check>Monitor and optimize regularly</Check>
-<Cross>Oversized collections</Cross>
-<Cross>Unoptimized queries</Cross>
+<Cross>Oversized unpartitioned collections without proper indexing</Cross>
+<Cross>Unoptimized queries that ignore recorded best practices</Cross>
 
 ### Reliability Guidelines
 
 <Steps>
   1. **Regular Backups**
-     Schedule automated backups
+     Schedule automated off-chain backups, store backup references on SUI.
 
   2. **Monitoring**
-     Set up comprehensive monitoring
+     Use off-chain monitoring tools and store integrity hashes on SUI.
 
   3. **Capacity Planning**
-     Plan for growth and scaling
+     Plan scaling and resource allocation off-chain, record policies on-chain.
 
   4. **Disaster Recovery**
-     Maintain recovery procedures
+     Maintain documented recovery procedures off-chain, with on-chain references for authenticity.
 </Steps>
 
 ## Support & Resources

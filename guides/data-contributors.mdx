@@ -1,6 +1,6 @@
 ---
 title: 'Guide for Data Contributors'
-description: 'Learn how to earn $SERA tokens by contributing AI interactions'
+description: 'Learn how to earn $SERA tokens by contributing AI interactions on the SUI blockchain'
 ---
 
 ## Getting Started
@@ -8,10 +8,10 @@ description: 'Learn how to earn $SERA tokens by contributing AI interactions'
 ### Prerequisites
 <CardGroup cols={2}>
   <Card title="Chrome Browser" icon="chrome">
-    Latest version of Chrome browser required
+    Latest version of Chrome required for our browser extension
   </Card>
   <Card title="SUI Wallet" icon="wallet">
-    Sui Wallet, OKX Wallet, or other SUI-compatible wallets
+    A SUI-compatible wallet (e.g., Sui Wallet or OKX Wallet) to manage $SERA tokens and sign on-chain transactions
   </Card>
 </CardGroup>
 
@@ -19,51 +19,53 @@ description: 'Learn how to earn $SERA tokens by contributing AI interactions'
 
 <Steps>
   1. **Install Chrome Extension**
-     Visit the [Chrome Web Store](https://chrome.google.com/webstore) and install the Sera extension
+     Visit the [Chrome Web Store](https://chrome.google.com/webstore) and install our SUI-based AI Extension. This extension will help you interact with and record AI contributions while referencing SUI on-chain data and Walrus storage.
 
   2. **Connect Wallet**
-     Click the Sera icon and connect your preferred crypto wallet
+     After installation, click the extension icon and connect your chosen SUI-compatible wallet. This allows you to sign transactions and claim earned $SERA tokens on the SUI network.
 
   3. **Configure Settings**
-     Set your privacy preferences and data sharing controls
+     Set your privacy preferences and data sharing controls. You have full control over what metadata gets recorded on-chain versus stored off-chain in Walrus.
 
   4. **Start Contributing**
-     Begin interacting with supported AI models - your contributions are automatically recorded
+     Begin interacting with supported off-chain AI models. Your interactions, validated for quality and uniqueness, are automatically recorded and referenced on SUI. Periodically, you will receive $SERA token rewards according to your contribution quality and other factors.
 </Steps>
 
 ## Maximizing Rewards
 
 ### Reward Formula Explained
+Your rewards are calculated using a formula stored and verifiable on-chain:
+
 $$
 R = α · Q(c) · V(s) · e^{-λt} · (1 + ΣβᵢMᵢ)
 $$
 
 Where:
-- $α$ = Base rate
-- $Q(c)$ = Quality score
-- $V(s)$ = Value score
-- $λt$ = Time decay
-- $βᵢMᵢ$ = Model-specific multipliers
+- $α$ (alpha): Base rate defined by on-chain parameters
+- $Q(c)$: Quality score of your contribution, computed off-chain but anchored on-chain for transparency
+- $V(s)$: Value score indicating how valuable your contribution is to the ecosystem
+- $λt$: Time decay factor, encouraging timely and continuous contributions
+- $βᵢMᵢ$: Model-specific multipliers tracked on-chain to incentivize interaction with certain models
 
 <Note>
-Quality and uniqueness are key factors in determining rewards. Higher-quality contributions receive significantly better rewards.
+High-quality, unique interactions with AI models, as measured by off-chain audits and recorded on-chain, lead to significantly better $SERA rewards.
 </Note>
 
 ### Quality Guidelines
 
 <CardGroup cols={2}>
   <Card title="Best Practices" icon="check">
-    - Natural conversations
-    - Diverse topics
-    - Meaningful depth
-    - Cross-model interactions
+    - • Natural, contextually rich conversations with the AI
+    - • Cover diverse topics and challenge the AI in meaningful ways
+    - • Provide depth and originality
+    - • Interact with multiple models for broader ecosystem support
   </Card>
   <Card title="Not Allowed" icon="xmark">
-    - Personal information
-    - Harmful content
-    - Duplicate submissions
-    - Automated messages
-    - Manipulative behavior
+    - • Submitting personal or sensitive information
+    - • Harmful, hateful, or disallowed content
+    - • Duplicate or spam submissions
+    - • Automated/bot-generated interactions without disclosure
+    - • Attempts to game or manipulate reward systems
   </Card>
 </CardGroup>
 
@@ -72,18 +74,14 @@ Quality and uniqueness are key factors in determining rewards. Higher-quality co
 ### Model Tiers
 <AccordionGroup>
   <Accordion title="Standard Models (β₁ = 1.0x)">
-    - GPT-3.5 & GPT-3.5-turbo
-    - Claude 3 Haiku
-    - Gemini 1.5 Flash
+    - Baseline models (e.g., GPT-3.5 variants, Claude 3 Haiku, Gemini 1.5 Flash)
     - Standard reward rates
-    - Quality-focused incentives
+    - Emphasis on maintaining quality to maximize returns
   </Accordion>
   <Accordion title="Premium Models (β₂ = 1.5-2.0x)">
-    - GPT-4
-    - Claude 3 Opus & 3.5 Sonnet
-    - Gemini 1.5 Pro
-    - Premium reward rates
-    - Enhanced quality multipliers
+    - Premium tiers (e.g., GPT-4, Claude 3 Opus, Gemini 1.5 Pro)
+    - Higher multipliers for interacting with cutting-edge models
+    - Even stronger incentives for quality and innovation
   </Accordion>
 </AccordionGroup>
 
@@ -91,16 +89,16 @@ Quality and uniqueness are key factors in determining rewards. Higher-quality co
 
 <CardGroup cols={2}>
   <Card title="Referral Program" icon="user-plus">
-    - 10% perpetual commission
-    - Unlimited referrals
-    - Real-time tracking
-    - Special achievements
+    - • Earn a 10% commission on referred user contributions, anchored on-chain
+    - • Unlimited referrals
+    - • Track referral stats off-chain and verify totals on-chain
+    - • Unlock special achievements with higher referral counts
   </Card>
   <Card title="Quest System" icon="trophy">
-    - Daily quests
-    - Weekly challenges
-    - Achievement quests
-    - Special events
+    - • Daily, weekly, and special-event quests
+    - • Complete tasks to earn bonus $SERA
+    - • Challenges ranging from interacting with new models to achieving certain quality thresholds
+    - • On-chain records ensure transparency in quest completions
   </Card>
 </CardGroup>
 
@@ -110,40 +108,40 @@ Quality and uniqueness are key factors in determining rewards. Higher-quality co
 
 <CardGroup cols={2}>
   <Card title="Global Rankings" icon="trophy">
-    - Overall contribution score
-    - Quality percentile
-    - Innovation index
-    - Community impact
+    - • Overall contribution score (on-chain reference)
+    - • Quality percentile vs. the entire contributor community
+    - • Innovation index for creative prompts
+    - • Community impact scores
   </Card>
   <Card title="Model-Specific" icon="ranking-star">
-    - Per-model leaderboards
-    - Specialized achievements
-    - Model expertise levels
-    - Performance metrics
+    - • Per-model leaderboards to showcase expertise
+    - • Specialized achievements for focused contributions
+    - • Levels indicating your skill or experience with a given model
+    - • Performance metrics are recorded on-chain, allowing for trustless verification
   </Card>
 </CardGroup>
 
 ## Privacy & Security
 
 ### Data Protection
-<Check>End-to-end encryption</Check>
-<Check>Anonymous contributions</Check>
-<Check>Selective sharing controls</Check>
-<Check>Data sovereignty</Check>
+<Check>End-to-end encryption of sensitive metadata off-chain</Check>
+<Check>Anonymous contributions on-chain (wallet addresses pseudonymous)</Check>
+<Check>Selective sharing controls for how much data to reveal</Check>
+<Check>Data sovereignty, since you choose what to anchor on-chain and what to keep in Walrus</Check>
 
 ### User Controls
 <CardGroup cols={2}>
   <Card title="Privacy Settings" icon="shield">
-    - Contribution visibility
-    - Data usage preferences
-    - Identity protection
-    - Export controls
+    - • Choose visibility levels for your contributions
+    - • Manage how metadata is stored in Walrus vs. what is summarized on-chain
+    - • Identity protection strategies
+    - • Export controls to retrieve your contribution data
   </Card>
   <Card title="Security Features" icon="lock">
-    - 2FA protection
-    - Session management
-    - Activity monitoring
-    - Access controls
+    - • 2FA and multi-signature wallet support for on-chain actions
+    - • Session management: easily revoke access tokens
+    - • Activity monitoring tools to track when and how contributions occur
+    - • Access controls so you decide who sees what
   </Card>
 </CardGroup>
 

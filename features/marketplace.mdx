@@ -5,32 +5,40 @@ description: 'Trade AI data assets on our decentralized marketplace'
 
 ## Overview
 
-The Sera Marketplace is a decentralized platform for trading AI data assets, including datasets, models, vector databases, and more. Built on the SUI Blockchain, it offers unprecedented speed and security for AI data transactions.
+Our AI Data Marketplace is a decentralized platform for trading AI data assets, such as datasets, models, vector databases, and pipelines. The marketplace leverages the SUI blockchain for immutable, on-chain records of ownership, pricing, and royalties. All large data is stored off-chain in Walrus, providing high throughput and cost-effective storage, while SUI handles the trust and governance layer. Buyers and sellers interact with the marketplace through smart contracts, ensuring a trustless and permissionless environment.
 
 ## Supported Assets
 
 <CardGroup cols={3}>
   <Card title="Datasets" icon="database">
-    On-chain verified data collections with proof of quality
+    - • On-chain verified references to datasets stored in Walrus
+    - • Includes proof-of-quality and metadata anchored on SUI
   </Card>
   <Card title="Models" icon="brain">
-    Pre-trained and fine-tuned AI models
+    - • Pre-trained and fine-tuned AI models
+    - • Model weights securely stored in Walrus, with versions logged on SUI
   </Card>
   <Card title="Vector DBs" icon="vector-square">
-    Optimized vector databases for AI
+    - • References to off-chain vector databases
+    - • SUI records indexing configurations and versioning
   </Card>
   <Card title="Pipelines" icon="diagram-project">
-    Complete AI processing pipelines
+    - • Complete AI pipelines, from ingestion to inference
+    - • On-chain attestation of pipeline authenticity
   </Card>
   <Card title="Environments" icon="microchip">
-    Configured running environments
+    - • Configured runtime environments (Docker images, etc.)
+    - • CIDs stored on SUI, binary artifacts in Walrus
   </Card>
   <Card title="Weights" icon="scale-balanced">
-    Intermediate model weights
+    - • Intermediate or specialized model weights
+    - • Traceable lineage on SUI for provenance and trust
   </Card>
 </CardGroup>
 
 ## Performance Metrics
+
+Because of the off-chain Walrus storage and decentralized infrastructure, data retrieval and processing are extremely fast compared to traditional cloud-based approaches.
 
 ### Processing Speed Comparison
 
@@ -44,20 +52,28 @@ The Sera Marketplace is a decentralized platform for trading AI data assets, inc
 | 30GB      | 2700s      | 5-10s   | ~450x       |
 | 100GB     | 9000s      | 5-10s   | ~1800x      |
 
+Improvements come from Walrus’s distributed storage, efficient caching, and transparent on-chain references ensuring trust without heavy overhead.
+
 ## Security Features
+
+The marketplace integrates advanced cryptographic techniques and decentralized protocols to maintain data integrity, privacy, and trust.
 
 <CardGroup cols={2}>
   <Card title="Trusted Execution" icon="shield-check">
-    Secure data processing in TEE environments
+    - • Secure enclaves off-chain
+    - • On-chain proofs of secure processing
   </Card>
   <Card title="Homomorphic Encryption" icon="lock">
-    Process encrypted data without decryption
+    - • Process encrypted data without revealing contents
+    - • Store keys and proofs on-chain for auditability
   </Card>
   <Card title="Federated Learning" icon="network-wired">
-    Distributed training while preserving privacy
+    - • Distributed training without centralized data pooling
+    - • On-chain coordination and reward distribution
   </Card>
   <Card title="Zero-Knowledge Proofs" icon="user-secret">
-    Verify transactions without revealing data
+    - • Verify authenticity and quality without revealing data
+    - • ZK proofs logged on SUI for trustless verification
   </Card>
 </CardGroup>
 
@@ -67,35 +83,37 @@ The Sera Marketplace is a decentralized platform for trading AI data assets, inc
 
 <Steps>
   1. **Prepare Your Data**
-     Package your AI assets according to marketplace standards
+     Package your AI assets according to marketplace standards. Upload to Walrus for secure, decentralized storage. Anchor a CID on SUI.
 
   2. **Set Pricing**
-     Choose between fixed price or auction formats
+     Choose between fixed price or auction formats. Both pricing models are controlled via on-chain smart contracts.
 
   3. **List Asset**
-     Deploy listing contract and set royalty parameters
+     Deploy a listing contract on SUI. Set royalty parameters, attach proofs of quality or accuracy, and ensure all metadata (like model framework, dataset schema) is stored as immutable references on-chain.
 
   4. **Monitor Sales**
-     Track on-chain transactions and manage listings
+     Track on-chain transactions and manage listings through smart contract interactions. Adjust pricing or availability as needed.
 </Steps>
 
 ### For Buyers
 
 <Steps>
   1. **Browse Assets**
-     Search and filter available AI data assets
+     Use on-chain indexes and filters to search for desired datasets, models, or pipelines. Metadata and versioning info are stored on SUI.
 
   2. **Verify Quality**
-     Check attestations, ratings, and on-chain history
+     Check attestations, ratings, and on-chain history. ZK proofs or off-chain signatures verified on-chain ensure authenticity and performance claims.
 
   3. **Purchase**
-     Complete transaction using supported cryptocurrencies
+     Complete the transaction with $SERA tokens or other supported SUI-based tokens. On-chain settlement ensures transparent and instantaneous ownership transfer.
 
   4. **Download & Integrate**
-     Access your purchased assets through our secure infrastructure
+     Retrieve your purchased assets from Walrus using the on-chain referenced CID. Integrate them into your workflow confidently, knowing the lineage and authenticity are guaranteed on-chain.
 </Steps>
 
 ## Integration Options
+
+Below is an example showing how to list an asset programmatically. The on-chain marketplace and wallet interactions ensure trust and a frictionless user experience. Off-chain data handling via Walrus is referenced through CIDs:
 
 ```python
 from sera import Marketplace

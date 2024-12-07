@@ -1,44 +1,42 @@
 ---
 title: 'AI Tools Suite'
-description: 'Comprehensive tools for AI development, training, and model hosting'
+description: 'Comprehensive tools for AI development, training, and model hosting in a SUI-based decentralized environment'
 ---
 
 ## Overview
 
-Sera's AI Tools Suite provides a comprehensive set of services for AI developers and users, enabling seamless development, training, and deployment of AI models.
+Our AI Tools Suite offers a holistic environment for AI developers to build, train, and deploy models. On-chain references (via SUI) ensure transparency, immutability, and governance, while Walrus delivers decentralized storage of datasets and model artifacts. Off-chain compute nodes handle training and inference workloads, and the entire system is orchestrated to provide a seamless developer experience.
 
 ## Key Features
 
 <CardGroup cols={2}>
   <Card title="Model Training" icon="dumbbell">
-    Advanced training infrastructure with:
-    - Distributed training support
-    - Automatic hyperparameter tuning
-    - Real-time monitoring
+    - • Distributed training with off-chain compute resources
+    - • Automatic hyperparameter tuning (off-chain) with on-chain result anchoring
+    - • Real-time monitoring of training progress, hashed and recorded on-chain for verifiability
   </Card>
   <Card title="Model Hosting" icon="cloud">
-    Production-ready hosting with:
-    - Auto-scaling capabilities
-    - Load balancing
-    - Version control
+    - • Auto-scaling infrastructure off-chain, with policy references on-chain
+    - • Load balancing rules stored on-chain, enforced off-chain
+    - • Version control: each model version’s CID and metadata recorded on SUI
   </Card>
   <Card title="Data Processing" icon="gears">
-    Efficient data pipeline tools:
-    - Automated preprocessing
-    - Data validation
-    - Format conversion
+    - • Automated preprocessing tasks off-chain, referencing input data from Walrus
+    - • Data validation with cryptographic proofs anchored on SUI
+    - • Format conversion performed off-chain, metadata updated on-chain
   </Card>
   <Card title="Monitoring" icon="chart-line">
-    Comprehensive analytics:
-    - Performance metrics
-    - Resource utilization
-    - Cost tracking
+    - • Performance metrics aggregated off-chain, integrity hashes stored on SUI
+    - • Resource utilization (GPU, CPU, Memory) tracked and periodically anchored on-chain
+    - • Cost tracking and optimization suggestions, final summaries logged on SUI 
   </Card>
 </CardGroup>
 
 ## Development Tools
 
 ### Training Client
+
+The training process occurs off-chain, but training parameters, dataset references (CID from Walrus), and final model checkpoints are recorded on SUI for transparency and reproducibility:
 
 ```python
 from sera.training import TrainingClient
@@ -67,16 +65,19 @@ client.train(
 
 ### Model Deployment
 
+Model deployment occurs off-chain, but references, scaling rules, and version history are recorded and enforced via SUI smart contracts. The model weights and artifacts are stored in Walrus:
+
 ```python
 from sera.deployment import ModelDeployment
 
-# Deploy model
+# Deploy model (model references and version CIDs stored on-chain)
 deployment = ModelDeployment(
-    model_id="sera://models/my-model",
+    model_cid="walrus://cid_of_model_artifacts",
+    sui_package_id="0x...package_id",
     version="1.0.0"
 )
 
-# Configure scaling
+# Configure auto-scaling (policy defined on-chain)
 deployment.configure(
     min_instances=2,
     max_instances=10,
@@ -84,7 +85,7 @@ deployment.configure(
     scaling_threshold=0.8
 )
 
-# Start deployment
+# Start deployment off-chain, with results and statuses hashed and anchored to SUI
 deployment.start()
 ```
 
@@ -92,65 +93,63 @@ deployment.start()
 
 <AccordionGroup>
   <Accordion title="Secure Training Environment">
-    - Isolated compute resources
-    - Encrypted data transmission
-    - Access control policies
-    - Audit logging
+    - Isolated off-chain compute resources with on-chain policy enforcement
+    - Encrypted data transmission between Walrus and compute nodes
+    - Access control policies stored and validated on-chain
+    - Detailed audit logs hashed and anchored to SUI for transparency
   </Accordion>
   
   <Accordion title="Model Protection">
-    - Model encryption at rest
-    - Secure model serving
-    - Version control
-    - Access management
+    - Model artifacts encrypted at rest in Walrus
+    - Secure model serving with keys managed off-chain, references on-chain
+    - Version control ensures each model version is traceable on SUI
+    - Fine-grained access management (on-chain roles and permissions)
   </Accordion>
 </AccordionGroup>
 
-## Integration Options
+## Integration Support
 
-### Supported Frameworks
-- PyTorch
-- TensorFlow
-- JAX
-- Hugging Face Transformers
-- Custom frameworks via API
+### Initially Supported Frameworks
+- PyTorch (off-chain integration, parameters recorded on-chain)
+- Hugging Face Transformers (metadata and versioning recorded on SUI, weights on Walrus)
 
-### API Endpoints
+### API Endpoints (Off-Chain)
+
+For triggering operations, you’ll interact with off-chain APIs that internally reference SUI state and Walrus CIDs:
 
 <ResponseField name="Training API" type="POST">
-  Start a new training job
+  Start a new training job (off-chain)
   ```bash
   POST /api/v1/training/start
   ```
 </ResponseField>
 
 <ResponseField name="Deployment API" type="POST">
-  Deploy a trained model
+  Deploy a trained model(off-chain)
   ```bash
   POST /api/v1/deployment/create
   ```
 </ResponseField>
 
-## Resource Management
+These endpoints rely on SUI for parameter referencing and Walrus for data storage, ensuring trustless verification of what’s being trained or deployed.
 
-### Compute Resources
+## Available Resources
+
+### Computing Options
 <CardGroup cols={2}>
-  <Card title="GPU Options" icon="microchip">
-    - NVIDIA A100
-    - NVIDIA V100
-    - NVIDIA T4
+  <Card title="GPU Resources" icon="microchip">
+    - • Consumer-grade GPUs (RTX) and mid-range (T4) available off-chain
+    - • SUI records GPU resource usage and policies
   </Card>
   <Card title="CPU Options" icon="server">
-    - High-memory instances
-    - Compute-optimized instances
-    - General purpose instances
+    - • General-purpose and basic compute nodes off-chain
+    - • Scalability rules stored on-chain, orchestrated off-chain
   </Card>
 </CardGroup>
 
-### Storage Options
-- High-performance SSD
-- Object storage
-- Archive storage
+### Storage
+- Standard SSD storage off-chain for ephemeral data
+- Walrus object storage for long-term dataset and model artifact persistence (CIDs recorded on SUI)
 
 ## Monitoring & Analytics
 
@@ -158,29 +157,29 @@ deployment.start()
   <img src="/images/monitoring-dashboard.png" alt="Monitoring Dashboard" />
 </Frame>
 
-- Real-time performance metrics
-- Resource utilization tracking
-- Cost optimization suggestions
-- Training progress visualization
+- Real-time performance metrics collected off-chain, aggregated, and periodically committed on-chain
+- Resource utilization (CPU/GPU) displayed in a dashboard, with final monthly usage logs hashed and recorded on SUI
+- Training progress visualization with key checkpoints and metrics anchored on-chain
 
 ## Getting Started
 
 <Steps>
   1. **Create Account**
-     Sign up for Sera and verify your developer account
+     Register your SUI address and get initial permissions. Acquire testnet or mainnet $SUI for transactions.
 
   2. **Install SDK**
      ```bash
      pip install sera-ai
      ```
+     The SDK provides commands to interact with Walrus and off-chain endpoints, referencing SUI state.
 
-  3. **Configure Credentials**
-     Set up your API keys and access tokens
+  3. **Configure Access**
+     Set up your API keys for off-chain services, store them securely. Associate your SUI wallet or keys for signing on-chain references.
 
-  4. **Start Building**
-     Use our documentation and examples to begin development
+  4. **Deploy Your First Model**
+     Follow the quickstart guide to upload data to Walrus, train a model off-chain, and record final references on SUI for a trustless and verifiable deployment.
 </Steps>
 
 <Note>
-Need help? Check out our [Developer Guide](/guides/developers) or join our [Discord community](https://discord.gg/datasphere).
-</Note> 
+We're currently in beta, and features are being actively developed. Join our [Discord community](https://discord.gg/sera_gg) to provide feedback and stay updated on our progress.
+</Note>

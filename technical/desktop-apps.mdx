@@ -1,34 +1,38 @@
 ---
 title: 'Desktop Applications'
-description: 'Native desktop applications for Windows, macOS, and Linux'
+description: 'Native desktop applications for Windows, macOS, and Linux integrated with SUI and Walrus'
 ---
 
 ## Overview
 
-Sera provides native desktop applications that offer a powerful interface for managing AI data assets, running models, and interacting with the platform's features. Available for Windows, macOS (both ARM64 and x64), and Linux.
+We provide cross-platform desktop applications that serve as a powerful GUI client for managing AI data assets referenced on the SUI blockchain and stored off-chain in Walrus. These native applications allow you to:
+
+- Browse and manage datasets and models recorded on SUI
+- Seamlessly fetch or push data to/from Walrus
+- Trigger off-chain workflows, model deployments, and inference tasks
+- Monitor performance, logs, and resource usage
+- Configure on-chain and off-chain settings from a unified interface
 
 ## Available Versions
 
 <CardGroup cols={3}>
   <Card title="Windows" icon="windows">
-    - Size: 128 MB
-    - Windows 10/11
-    - 64-bit only
+    - • Size: ~128 MB
+    - • Windows 10/11 (64-bit)
   </Card>
   <Card title="macOS ARM64" icon="apple">
-    - Size: 114 MB
-    - Apple Silicon
-    - macOS 11+
+    - • Size: ~114 MB
+    - • For Apple Silicon (M1, M2)
+    - • macOS 11+
   </Card>
   <Card title="macOS x64" icon="apple">
-    - Size: 120 MB
-    - Intel processors
-    - macOS 10.15+
+    - • Size: ~120 MB
+    - • Intel processors
+    - • macOS 10.15+
   </Card>
   <Card title="Linux" icon="linux">
-    - Size: 126 MB
-    - AppImage format
-    - Major distributions
+    - • Size: ~126 MB
+    - • Provided as AppImage
   </Card>
 </CardGroup>
 
@@ -43,6 +47,7 @@ Sera provides native desktop applications that offer a powerful interface for ma
     - 4-core CPU
     - 500MB free storage
     - DirectX 11 compatible GPU
+    - SUI CLI or wallet for on-chain operations
   </Accordion>
   
   <Accordion title="macOS">
@@ -51,6 +56,7 @@ Sera provides native desktop applications that offer a powerful interface for ma
     - 4-core CPU
     - 500MB free storage
     - Metal-capable GPU
+    - SUI key management support (local keys or integrated wallet)
   </Accordion>
 
   <Accordion title="Linux">
@@ -60,6 +66,7 @@ Sera provides native desktop applications that offer a powerful interface for ma
     - 500MB free storage
     - OpenGL 3.3+ GPU
     - FUSE for AppImage support
+    - SUI CLI or a similar tool for interacting with on-chain references
   </Accordion>
 </AccordionGroup>
 
@@ -72,13 +79,13 @@ Sera provides native desktop applications that offer a powerful interface for ma
      Get the appropriate version for your OS from [downloads.sera.xyz](https://downloads.sera.xyz)
 
   2. **Verify**
-     Check the SHA-256 hash of the downloaded file
+     Check the SHA-256 hash of the downloaded file to ensure integrity.
 
   3. **Install**
-     Follow OS-specific installation steps
+     Follow OS-specific installation steps. Make sure your SUI CLI or wallet is installed and accessible.
 
   4. **First Run**
-     Complete initial setup and authentication
+     On first launch, the app may prompt you to connect your SUI wallet or provide private keys. Complete initial setup, off-chain Walrus gateway configuration, and authentication.
 </Steps>
 
 ### Platform-Specific Notes
@@ -111,34 +118,36 @@ Sera provides native desktop applications that offer a powerful interface for ma
 
 <CardGroup cols={2}>
   <Card title="Dataset Tools" icon="database">
-    - Visual data exploration
-    - Metadata management
-    - Quality analysis
-    - Format conversion
+    - • Visual exploration of datasets stored off-chain in Walrus 
+    - • On-chain metadata inspection (category, schema, versions)
+    - • Quality analysis aided by off-chain verification tools
+    - • Format conversion steps performed locally or triggered off-chain
   </Card>
   <Card title="Model Management" icon="brain">
-    - Model deployment
-    - Version control
-    - Performance monitoring
-    - Resource optimization
+    - • On-chain model reference browsing and selection
+    - • Local staging of model weights from Walrus
+    - • Deploy or trigger off-chain inference tasks
+    - • Version control and performance monitoring with on-chain audit records
   </Card>
 </CardGroup>
 
 ### Vector Database Interface
+The desktop app provides a GUI for interacting with off-chain vector databases (ChromaDB) referenced on-chain:
 
 ```python
 # Desktop app provides GUI for these operations
 from sera.desktop import VectorDBManager
 
-# Connect to database
 manager = VectorDBManager()
-manager.connect_to_collection("my_collection")
+# Connect using on-chain references
+manager.connect_to_collection("my_collection") 
 
-# Visual query builder
+# Build queries visually and run them off-chain
 query = manager.build_query(
     dimensions=768,
     filters={"category": "tech"}
 )
+results = manager.run_query(query)
 ```
 
 ### Monitoring Dashboard
@@ -146,10 +155,13 @@ query = manager.build_query(
 <Frame>
   <img src="/images/desktop-dashboard.png" alt="Desktop Dashboard" />
 </Frame>
+The dashboard displays off-chain metrics (like CPU, GPU usage) and on-chain references to performance baselines, all in one place.
 
 ## Configuration
 
 ### Settings Management
+
+Manage both on-chain and off-chain settings through the desktop application’s unified config interface. Off-chain settings (like memory and GPU usage) are stored locally; on-chain policies (like access rights, version locks) must be confirmed via your SUI wallet or CLI.
 
 <AccordionGroup>
   <Accordion title="General Settings">
@@ -177,16 +189,14 @@ query = manager.build_query(
 
 <CardGroup cols={2}>
   <Card title="Memory Settings" icon="memory">
-    - Cache configuration
-    - Memory limits
-    - Garbage collection
-    - Swap settings
+    - • Configure local caching for quick dataset/model access
+    - • Set memory limits to prevent system overload
+    - • Manage local swap or ephemeral storage
   </Card>
   <Card title="GPU Settings" icon="microchip">
-    - Device selection
-    - Memory allocation
-    - Compute settings
-    - Power management
+    - • Select which GPU to use if multiple are available
+    - • Tune memory allocation for model inference tasks off-chain
+    - • Manage power states and performance modes
   </Card>
 </CardGroup>
 
@@ -194,20 +204,21 @@ query = manager.build_query(
 
 ### API Access
 
+The desktop app can communicate with local or remote off-chain APIs. SUI interactions are done through local CLI or integrated wallets, while Walrus and vector DB operations use off-chain endpoints.
+
 ```python
 from sera.desktop import DesktopClient
 
-# Connect to desktop app
 client = DesktopClient()
 
-# Manage datasets
+# Manage datasets: import a local dataset, then reference it on-chain
 dataset = client.import_dataset(
     path="./local_dataset",
     name="my_dataset",
     description="Local dataset import"
 )
 
-# Deploy model
+# Deploy model off-chain, record references on-chain
 deployment = client.deploy_model(
     model_path="./local_model",
     resources={
@@ -218,6 +229,8 @@ deployment = client.deploy_model(
 ```
 
 ### Automation
+
+You can set up workflows that run periodically or on triggers. Off-chain pipelines can be defined in the desktop app, and completion events are recorded on SUI.
 
 ```python
 from sera.desktop.automation import Workflow
@@ -241,30 +254,30 @@ workflow.schedule(
 
 <Steps>
   1. **Initial Setup**
-     Configure authentication methods
+     Configure your SUI wallet or CLI for signing on-chain transactions. Store Walrus API keys securely in encrypted local storage.
 
   2. **Key Management**
-     Secure storage of API keys
+     Manage private keys off-chain. The desktop app never stores keys on-chain.
 
   3. **Session Control**
-     Manage active sessions
+     Track active sessions and requests, require re-authentication when needed.
 
   4. **Audit Logging**
-     Track security events
+     Off-chain logs can be hashed and references stored on SUI for auditability.
 </Steps>
 
 ### Data Protection
 
 <CardGroup cols={2}>
   <Card title="Local Storage" icon="hard-drive">
-    - Encrypted storage
-    - Secure cache
-    - Data cleanup
+    - • Encrypted local caches of model weights and datasets
+    - • Secure keyrings or OS-provided secure enclaves for API keys
+    - • Data cleanup tools to purge sensitive info
   </Card>
   <Card title="Network Security" icon="shield">
-    - TLS encryption
-    - Certificate validation
-    - Proxy support
+    - • TLS encryption for connections to Walrus gateways and remote APIs 
+    - • Certificate validation
+    - • Proxy and firewall integration for secure network paths
   </Card>
 </CardGroup>
 
@@ -274,17 +287,17 @@ workflow.schedule(
 
 <AccordionGroup>
   <Accordion title="Installation Issues">
-    - Verify system requirements
-    - Check disk space
-    - Run as administrator
-    - Clear temporary files
+    - Ensure SUI CLI/wallet is installed and accessible
+    - Check disk space and system dependencie
+    - Run installer with admin privileges if needed
+    - Clear temporary installer files
   </Accordion>
   
   <Accordion title="Performance Issues">
-    - Monitor resource usage
-    - Clear cache
-    - Update graphics drivers
-    - Check network connection
+    - Monitor resource usage via the dashboard
+    - Clear caches if experiencing slowdowns
+    - Update GPU drivers for better performance
+    - Check network stability for Walrus or off-chain compute access
   </Accordion>
 </AccordionGroup>
 
@@ -300,6 +313,7 @@ workflow.schedule(
 # Linux
 ~/.config/Sera/logs/
 ```
+Share logs with support for troubleshooting, and consider hashing logs and storing references on SUI for secure auditing.
 
 ## Updates & Maintenance
 
@@ -314,6 +328,7 @@ workflow.schedule(
       schedule: "daily"
     ```
   </Card>
+
   <Card title="Version Management" icon="code-branch">
     ```yaml
     versions:
@@ -323,6 +338,8 @@ workflow.schedule(
     ```
   </Card>
 </CardGroup>
+
+On-chain references can record which version of the desktop client was used to perform critical actions.
 
 ## Support & Resources
 

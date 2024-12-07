@@ -1,38 +1,38 @@
 ---
 title: 'Decentralized Infrastructure'
-description: 'Built on decentralized storage and compute power'
+description: 'Built on decentralized storage (Walrus) and off-chain compute power governed by SUI'
 ---
 
 ## Overview
 
-Sera's decentralized infrastructure combines the power of blockchain technology with distributed computing to create a robust, scalable, and secure foundation for AI operations.
+Our decentralized infrastructure leverages the SUI blockchain for trust and governance, Walrus protocol for secure, content-addressed storage, and a decentralized compute network for scalable, reliable compute resources. This combination creates a robust, high-performance foundation for AI operations where on-chain logic ensures transparency and verifiability, while off-chain resources deliver the raw power and speed.
 
 ## Architecture Components
 
 <CardGroup cols={2}>
   <Card title="Decentralized Storage" icon="database">
-    Powered by Walrus protocol
-    - Distributed file system
-    - Content-addressed storage
-    - Data redundancy
+    - • Powered by Walrus protocol
+    - • Distributed file system
+    - • Content-addressed storage (CIDs stored on SUI)
+    - • Data redundancy and erasure coding
   </Card>
   <Card title="Compute Network" icon="network-wired">
-    DePIN-based compute power
-    - GPU/CPU resources
-    - Automatic scaling
-    - Global distribution
+    - • Off-chain Decentralized Compute
+    - • GPU/CPU resources dynamically provisioned
+    - • Automatic scaling based on off-chain metrics
+    - • Global distribution of nodes for low-latency access
   </Card>
   <Card title="Vector Database" icon="layer-group">
-    Dedicated vector storage
-    - Efficient similarity search
-    - Real-time indexing
-    - Distributed queries
+    - • Off-chain vector indexing with on-chain references
+    - • Efficient similarity search
+    - • Real-time indexing and updates
+    - • Distributed queries with SUI anchoring configuration
   </Card>
   <Card title="Training Clients" icon="code">
-    Out-of-the-box solutions
-    - Multiple frameworks
-    - Easy integration
-    - Automated optimization
+    - • Framework-agnostic solutions off-chain
+    - • Multiple ML frameworks supported
+    - • Easy integration with on-chain references
+    - • Automated optimization and checkpointing anchored on SUI
   </Card>
 </CardGroup>
 
@@ -40,22 +40,27 @@ Sera's decentralized infrastructure combines the power of blockchain technology 
 
 ### Walrus Integration
 
+Walrus acts as the off-chain decentralized storage layer. SUI stores the metadata, references (CIDs), and policies. You use the Walrus client locally to store/retrieve data, while SUI ensures immutability and audit trails.
+
 ```python
 from sera.storage import WalrusClient
 
-# Initialize storage client
-storage = WalrusClient(network="mainnet")
+# Initialize Walrus storage client
+storage = WalrusClient(
+    gateway="https://walrus-gateway.example.com",
+    sui_package_id="0x...package_id"
+)
 
-# Store data
+# Store data (off-chain), record CID on SUI
 cid = storage.store(
     data_path="./my_dataset",
     redundancy=3,
     encryption=True
 )
 
-# Retrieve data
+# Retrieve data from Walrus
 storage.retrieve(
-    cid="Qm...",
+    cid=cid,
     destination="./retrieved_data"
 )
 ```
@@ -64,27 +69,31 @@ storage.retrieve(
 
 | Operation | Traditional Cloud | Sera Storage | Improvement |
 |-----------|------------------|--------------|-------------|
-| Upload    | 120 MB/s        | 850 MB/s     | 7x          |
-| Download  | 100 MB/s        | 920 MB/s     | 9x          |
-| Latency   | 150ms           | 20ms         | 7.5x        |
+| Upload    | ~120 MB/s        | ~850 MB/s     | ~7x faster    |
+| Download  | ~100 MB/s        | ~920 MB/s     | ~9x faster    |
+| Latency   | ~150ms           | ~20ms         | ~7.5x lower  |
+
+These improvements stem from Walrus’s decentralized architecture and distributed caching. On-chain references ensure authenticity of these metrics.
 
 ## Compute Network
 
 ### Resource Types
 
+Off-chain compute resources (GPU/CPU) are sourced from decentralized providers. SUI tracks resource agreements and proofs of workload completion.
+
 <AccordionGroup>
   <Accordion title="GPU Resources">
-    - High-end GPUs (A100, V100)
-    - Mid-range GPUs (T4, P100)
-    - Consumer GPUs (RTX series)
-    - Allocation based on workload
+    - • High-end GPUs (A100, V100) for large-scale training
+    - • Mid-range GPUs (T4, P100) for inference workloads
+    - • Commodity GPUs (RTX series) for cost-effective tasks
+    - • Allocation policies recorded on-chain, enforcement off-chain
   </Accordion>
   
   <Accordion title="CPU Resources">
-    - High-performance instances
-    - Memory-optimized nodes
-    - General-purpose computing
-    - Automatic scaling
+    - • High-performance CPU instances for complex preprocessing
+    - • Memory-optimized nodes for large in-memory datasets
+    - • General-purpose compute nodes for flexible tasks 
+    - • Automatic scaling rules anchored on-chain
   </Accordion>
 </AccordionGroup>
 
@@ -98,26 +107,28 @@ storage.retrieve(
 
 ### Features
 
+Off-chain vector databases (like ChromaDB) handle vector storage and queries. The SUI chain records collection configuration, index parameters, and versioning for verifiability.
+
 <CardGroup cols={2}>
   <Card title="Indexing" icon="magnifying-glass">
-    - Multiple index types
-    - Auto-optimization
-    - Real-time updates
+    - • Multiple index types (HNSW, IVF, etc.) defined off-chain
+    - • Auto-optimization guided by usage, with final configs logged on-chain
+    - • Real-time updates triggered off-chain, anchored on-chain
   </Card>
   <Card title="Querying" icon="database">
-    - Similarity search
-    - Hybrid search
-    - Filtering
+    - • Similarity search off-chain
+    - • Hybrid and filtered queries using on-chain metadata references
+    - • Verified indexing parameters stored on-chain
   </Card>
   <Card title="Scaling" icon="arrow-up-right-dots">
-    - Horizontal scaling
-    - Automatic sharding
-    - Load balancing
+    - • Horizontal scaling off-chain with references updated on-chain
+    - • Automatic sharding and load balancing managed by off-chain controllers
+    - • SUI stores immutable pointers to cluster states
   </Card>
   <Card title="Management" icon="sliders">
-    - Monitoring
-    - Backup/Restore
-    - Version control
+    - • Monitoring and metrics off-chain, integrity proofs on-chain
+    - • Backup/Restore with CIDs recorded on-chain
+    - • Version control ensures that any change in config or data is trackable on SUI
   </Card>
 </CardGroup>
 
@@ -154,24 +165,24 @@ results = collection.query(
 
 <Steps>
   1. **Encryption**
-     End-to-end encryption for all data
+     All data encrypted at rest off-chain, keys managed securely. On-chain records show key rotation events.
 
   2. **Access Control**
-     Fine-grained permissions and role-based access
+     Fine-grained permissions stored on-chain (role-based access), enforced off-chain by gateways.
 
   3. **Audit Logging**
-     Comprehensive activity tracking
+     Comprehensive activity logs off-chain, hashed and anchored on-chain for non-repudiation.
 
   4. **Compliance**
-     GDPR and CCPA compliance built-in
+     GDPR, CCPA considerations integrated with selective disclosure on-chain and privacy-preserving proofs off-chain.
 </Steps>
 
 ### Network Security
 
-- DDoS protection
-- Node validation
-- Secure communication channels
-- Regular security audits
+- DDoS protection through off-chain gateways, on-chain references to security policies.
+- Node validation ensures only trusted participants join the network.
+- Secure TLS channels for data transport.
+- Regular security audits published on-chain as cryptographic attestations.
 
 ## Monitoring & Management
 
@@ -181,25 +192,22 @@ results = collection.query(
   <img src="/images/infrastructure-dashboard.png" alt="Infrastructure Dashboard" />
 </Frame>
 
-- Resource utilization metrics
-- Network health monitoring
-- Cost tracking
-- Performance analytics
+- Off-chain resource utilization metrics (CPU, GPU, memory usage) aggregated and periodically hashed for on-chain reference.
+- Network health monitoring with on-chain stable references to threshold rules.
+- Cost tracking off-chain, final monthly summaries recorded on-chain.
+- Performance analytics with historical data hashed and anchored on SUI.
 
 ## Getting Started
 
 <Steps>
   1. **Create Account**
-     Sign up for Sera infrastructure access
-
+     Register your SUI address and acquire necessary permissions on-chain.
   2. **Choose Resources**
-     Select required storage and compute resources
-
+     Specify desired storage (Walrus) and compute resources off-chain, record your selections on-chain
   3. **Configure Network**
-     Set up your network preferences
-
+     On-chain references define your network preferences. Off-chain orchestrators then provision your setup.
   4. **Deploy**
-     Start using the infrastructure
+     Start using the infrastructure by uploading datasets, indexing embeddings, and running training jobs. All references and critical actions are recorded on SUI for trust and auditability.
 </Steps>
 
 <Note>

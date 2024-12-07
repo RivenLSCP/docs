@@ -1,16 +1,22 @@
 ---
 title: "Guide for Developers"
-description: "Build and integrate with Sera's AI infrastructure"
+description: "Build and integrate AI-referencing applications on SUI with Walrus storage"
 ---
 
 ## Overview
 
-Sera provides comprehensive APIs and SDKs for developers to integrate with our platform, access AI data assets, and build applications using our infrastructure.
+This guide helps developers integrate with our SUI-based AI reference platform. The platform leverages decentralized storage via Walrus for datasets, model artifacts, and inference results, while using off-chain compute services for heavy tasks. You can store dataset references, model metadata, and inference outputs on the SUI blockchain, ensuring transparency, integrity, and verifiability without overloading on-chain logic.
+
+Key Components:
+
+- **SUI Smart Contracts**: On-chain objects that store references, configuration, and data indices.
+- **Walrus Decentralized Storage**: For hosting large datasets, model weights, and result files.
+- **Off-Chain Compute Services**: For actual model training, inference, and vector operations. The chain only stores pointers, keys, and verifiable proofs of results.
 
 ## Quick Start
 
 ### Installation
-
+Install the SDK (off-chain client) to interact with SUI and Walrus references:
 <CodeGroup>
 ```bash npm
 npm install @sera/sdk
@@ -25,18 +31,19 @@ pip install sera-ai
 ```
 </CodeGroup>
 
-### Basic Setup
+### Basic Setup (Off-Chain Client)
 
 ```python
 from sera import SeraClient
 
-# Initialize client
+# Initialize client with your SUI network settings
 client = SeraClient(
-    api_key="your_api_key",
-    environment="production"
+    sui_network="testnet",        # or "mainnet"
+    walrus_gateway="https://walrus-gateway.example.com",
+    sui_package_id="0x...packageId"
 )
 
-# Test connection
+# Check connectivity (off-chain)
 status = client.health_check()
 print(f"Connection status: {status}")
 ```
@@ -44,239 +51,208 @@ print(f"Connection status: {status}")
 ## Core SDKs
 
 <CardGroup cols={2}>
-  <Card title="Data SDK" icon="database">
-    Access and manage AI datasets
+  <Card title="Data Management" icon="database">
+    Maintain references to datasets stored via Walrus, register dataset metadata on SUI.
     ```python
-    from sera.data import DataClient
+    from sera.data import DatasetManager
     ```
   </Card>
-  <Card title="Model SDK" icon="brain">
-    Deploy and manage AI models
+  <Card title="Model Registry" icon="brain">
+    Register and manage model metadata (weights, config) stored off-chain in Walrus.
     ```python
     from sera.model import ModelClient
     ```
   </Card>
-  <Card title="Vector SDK" icon="layer-group">
-    Work with vector databases
+  <Card title="Vector Indexing" icon="layer-group">
+   Store and reference vector embeddings' metadata on-chain. Actual vector indexing runs off-chain.
     ```python
-    from sera.vector import VectorClient
+    from sera.vector import VectorIndex
     ```
   </Card>
-  <Card title="Training SDK" icon="dumbbell">
-    Train and fine-tune models
+  <Card title="Off-chain Training & Inference" icon="dumbbell">
+    Trigger off-chain tasks. Upload final trained model references and inference results to Walrus, update SUI records.
     ```python
-    from sera.training import TrainingClient
+    from sera.jobs import ComputeTask
     ```
   </Card>
 </CardGroup>
 
 ## Authentication
 
-### API Keys
-
-<Steps>
+### Access Keys
+To interact with Walrus and submit transactions to SUI, you'll need appropriate keys:
+<Steps> 
   1. **Generate Key**
-     Visit the [Developer Dashboard](https://app.sera.xyz/developer) to generate API keys
-
-  2. **Set Environment**
+     Use `sera-cli` to generate your SUI keypair and fund it on testnet.
+      ```bash
+      sera-cli new-addr
+      sera-cli faucet
+      ```
+  2. **Set Credentials in Code**
      ```python
      import sera
      
-     sera.api_key = "your_api_key"
-     sera.environment = "production"  # or "development"
+     sera.sui_private_key = "your_sera_private_key"
+     sera.walrus_api_key = "your_walrus_api_key"
      ```
 
   3. **Verify Access**
      ```python
      client = sera.Client()
      permissions = client.get_permissions()
+     print(f"Permissions: {permissions}")
      ```
 </Steps>
 
 ## Working with Data
 
-### Accessing Datasets
-
+### Storing & Referencing Datasets
+Datasets are stored off-chain using Walrus. On-chain, you'll store a dataset reference (CID) and associated metadata:
 ```python
-from sera.data import DatasetClient
+from sera.data import DatasetManager
 
-# Initialize dataset client
-dataset_client = DatasetClient()
+manager = DatasetManager()
 
-# List available datasets
-datasets = dataset_client.list_datasets(
-    category="nlp",
-    limit=10
+# Upload dataset to Walrus
+cid = manager.upload_dataset(
+    data_path="./local_data",
+    redundancy=3,
+    encryption=True
 )
 
-# Get specific dataset
-dataset = dataset_client.get_dataset(
-    dataset_id="ds_123",
-    include_metadata=True
+# Register the dataset on SUI with metadata
+tx_digest = manager.register_dataset_on_sui(
+    cid=cid,
+    name="NLP Training Set",
+    category="nlp"
 )
 
-# Download dataset
-dataset_client.download(
-    dataset_id="ds_123",
-    destination="./local_path"
-)
+print(f"Dataset registered with transaction: {tx_digest}")
+
+# List datasets from on-chain references
+datasets = manager.list_datasets(category="nlp", limit=10)
 ```
 
 ### Vector Operations
-
+Vector operations (like similarity search) happen off-chain. Store embeddings and their metadata on Walrus, and keep a vector index reference on-chain:
 ```python
-from sera.vector import VectorDB
+from sera.vector import VectorIndex
 
-# Connect to vector database
-db = VectorDB.connect(cluster="main")
-
-# Create collection
-collection = db.create_collection(
-    name="my_embeddings",
+index = VectorIndex(
+    index_name="my_embeddings_index",
     dimension=768
 )
 
-# Add vectors
-collection.add(
-    vectors=embeddings,
+# Upload embeddings to Walrus and register on-chain
+embeddings_cid = index.upload_vectors(
+    vectors=embeddings, 
     metadata=metadata,
     batch_size=1000
 )
 
-# Query similar vectors
-results = collection.query(
-    vector=query_vector,
+index_ref_tx = index.register_index_on_sui(
+    cid=embeddings_cid,
+    description="Tech embeddings"
+)
+
+# Query off-chain and verify results on-chain
+results = index.query_off_chain(
+    query_vector=query_vector,
     top_k=10,
     filter={"category": "technology"}
 )
 ```
 
 ## Model Management
-
-### Deployment
-
+### Registering Models
+Instead of deploying GPU/CPU instances on-chain, model training and serving are done by trusted off-chain providers. Store model weights and configuration in Walrus, record references on SUI:
 ```python
-from sera.model import ModelDeployment
+from sera.model import ModelRegistry
 
-# Initialize deployment
-deployment = ModelDeployment(
-    model_id="model_123",
-    version="1.0.0"
+registry = ModelRegistry()
+
+# Upload model weights to Walrus
+model_cid = registry.upload_model_weights(
+    model_path="./model_weights",
+    encryption=True
 )
 
-# Configure resources
-deployment.configure(
-    instance_type="gpu.t4",
-    min_instances=2,
-    max_instances=5,
-    scaling_metric="requests_per_second"
+# Register model on SUI
+model_tx = registry.register_model(
+    cid=model_cid,
+    model_name="MyNLPModel",
+    version="1.0.0",
+    metadata={"description": "A transformer-based NLP model"}
 )
-
-# Deploy model
-deployment.deploy()
-
-# Get deployment status
-status = deployment.get_status()
 ```
 
-### Inference
-
+### Inference and Training Jobs
+For inference or training, create a job on an off-chain compute service. Once completed, results are uploaded to Walrus and the SUI state is updated:
 ```python
-from sera.model import ModelClient
+from sera.model import ComputeTask
 
-# Initialize model client
-model = ModelClient(model_id="model_123")
-
-# Make predictions
-predictions = model.predict(
-    inputs=["example input 1", "example input 2"],
-    batch_size=32
+task = ComputeTask(
+    model_name="MyNLPModel",
+    inputs=["example input 1", "example input 2"]
 )
 
-# Stream predictions
-async for prediction in model.stream_predict(input_stream):
-    process_prediction(prediction)
+# Trigger off-chain inference job
+job_id = task.submit_job()
+
+# Poll for completion (off-chain)
+status = task.check_status(job_id)
+if status == "completed":
+    # Download results from Walrus
+    predictions = task.retrieve_results(job_id)
+    print(predictions)
+    
+    # Optionally store summarized results back on SUI
+    task.record_inference_result_on_sui(job_id, summary="Inference on 2 inputs")
 ```
 
-## Infrastructure Access
-
-### Compute Resources
-
-<CardGroup cols={2}>
-  <Card title="GPU Instances" icon="microchip">
-    ```python
-    from sera.compute import GPUInstance
-    
-    instance = GPUInstance.create(
-        type="A100",
-        count=4
-    )
-    ```
-  </Card>
-  <Card title="CPU Instances" icon="server">
-    ```python
-    from sera.compute import CPUInstance
-    
-    instance = CPUInstance.create(
-        type="compute_optimized",
-        memory="64GB"
-    )
-    ```
-  </Card>
-</CardGroup>
-
-### Storage Management
+### Storage Management with Walrus
 
 ```python
-from sera.storage import StorageClient
+from sera.storage import WalrusClient
 
-# Initialize storage client
-storage = StorageClient()
+storage = WalrusClient(api_key="your_walrus_api_key")
 
-# Store data
+# Store arbitrary data (e.g. processed dataset)
 cid = storage.store(
-    data_path="./data",
+    data_path="./processed_data",
     redundancy=3,
     encryption=True
 )
 
-# Retrieve data
+# Retrieve data off-chain
 storage.retrieve(
     cid=cid,
     destination="./retrieved_data"
 )
 ```
-
+Record the CID and any related metadata on SUI to ensure transparency and immutability:
+```python
+from sera.data import DatasetManager
+manager.update_dataset_reference_on_sui(dataset_id="ds_123", cid=cid)
+```
 ## Monitoring & Analytics
-
-### Usage Tracking
+On-chain, you can track references to usage records or proofs of computation. Off-chain services can be used to measure performance, cost, and other analytics, then commit signed summaries to SUI.
 
 ```python
 from sera.analytics import Analytics
 
-# Initialize analytics
 analytics = Analytics()
 
-# Get usage metrics
-metrics = analytics.get_metrics(
+# Get usage metrics from off-chain and verify references on-chain
+metrics = analytics.get_off_chain_metrics(
     start_date="2024-01-01",
     end_date="2024-01-31",
     metrics=["requests", "compute_hours", "storage_usage"]
 )
 
-# Set up alerts
-analytics.create_alert(
-    metric="compute_cost",
-    threshold=1000,
-    period="daily"
-)
+# Commit a usage summary hash to SUI for audit
+commit_tx = analytics.commit_summary_to_sui(metrics)
 ```
-
-### Performance Monitoring
-
-<Frame>
-  <img src="/images/performance-dashboard.png" alt="Performance Dashboard" />
-</Frame>
 
 ## Error Handling
 
@@ -301,17 +277,17 @@ except SeraException as e:
 
 <AccordionGroup>
   <Accordion title="Rate Limiting">
-    - Implement exponential backoff
-    - Cache responses when possible
-    - Use batch operations
-    - Monitor usage limits
+    - Implement backoff when calling off-chain services
+    - Cache repetitive responses off-chain
+    - Use batch operations where possible
+    - Keep a record of call frequency on SUI for transparency
   </Accordion>
   
   <Accordion title="Security">
-    - Rotate API keys regularly
-    - Use environment variables
-    - Implement proper error handling
-    - Follow security guidelines
+    - Rotate off-chain API keys regularly
+    - Use environment variables for sensitive data
+    - Leverage SUI capabilities for immutable references
+    - Encrypt data at rest on Walrus
   </Accordion>
 </AccordionGroup>
 

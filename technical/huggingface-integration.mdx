@@ -5,34 +5,34 @@ description: 'Seamlessly integrate HuggingFace models and datasets with Sera'
 
 ## Overview
 
-Sera provides native integration with HuggingFace's ecosystem, allowing you to easily import, use, and manage HuggingFace models and datasets within our platform.
+Our SUI-based AI infrastructure is designed to integrate smoothly with the HuggingFace ecosystem. You can import models and datasets hosted on HuggingFace into your off-chain environment, store them on Walrus, and record metadata references on SUI smart contracts for auditability and trust. This combination provides a secure, transparent, and scalable approach to working with HuggingFace assets.
 
 ## Features
 
 <CardGroup cols={2}>
   <Card title="Model Import" icon="file-import">
-    - Direct model importing
-    - Version tracking
-    - Automatic conversion
-    - Metadata preservation
+    - • Off-chain direct model importing from HuggingFace
+    - • On-chain version tracking and references
+    - • Automatic off-chain model conversion steps
+    - • Metadata preservation recorded on SUI
   </Card>
   <Card title="Dataset Management" icon="database">
-    - Batch importing
-    - Progress monitoring
-    - Resume capability
-    - Format conversion
+    - • Batch off-chain dataset importing
+    - • Progress monitoring and checkpointing
+    - • Resume capabilities for large datasets
+    - • Format conversion and metadata tracking off-chain, with CID references on-chain
   </Card>
   <Card title="Access Control" icon="key">
-    - Private model support
-    - Token authentication
-    - Access management
-    - Usage tracking
+    - • Private model and dataset references stored on SUI
+    - • Token-based authentication (HuggingFace tokens off-chain)
+    - • On-chain access management policies
+    - • Usage tracking and audit logs anchored on SUI 
   </Card>
   <Card title="Optimization" icon="gauge-high">
-    - Performance tuning
-    - Resource optimization
-    - Caching strategies
-    - Batch processing
+    - • Performance tuning off-chain (e.g., quantization, batch size)
+    - • Resource optimization guided by off-chain compute nodes
+    - • Caching strategies using Walrus and local caches
+    - • Batch processing pipelines off-chain, with final references on-chain
   </Card>
 </CardGroup>
 
@@ -42,10 +42,10 @@ Sera provides native integration with HuggingFace's ecosystem, allowing you to e
 
 <Steps>
   1. **HuggingFace Account**
-     Create an account at [HuggingFace](https://huggingface.co)
+     Create an account at [HuggingFace](https://huggingface.co) and identify the models/datasets you want to use.
 
   2. **Access Token**
-     Generate an access token for private resources
+     Generate a HuggingFace access token for private repositories. This token will be used off-chain and never stored on SUI.
 
   3. **Sera SDK**
      Install the Sera SDK:
@@ -55,25 +55,26 @@ Sera provides native integration with HuggingFace's ecosystem, allowing you to e
 </Steps>
 
 ## Model Integration
-
 ### Importing Models
-
+All model weights and files remain off-chain (stored in Walrus), while SUI maintains references and metadata:
 ```python
 from sera.integrations.huggingface import ModelImporter
 
-# Initialize importer
+# Initialize importer with HuggingFace token (off-chain)
 importer = ModelImporter(
-    hf_token="your_huggingface_token"
+    hf_token="your_huggingface_token",
+    walrus_gateway="https://walrus-gateway.example.com",
+    sui_package_id="0x...package_id"
 )
 
-# Import model
+# Import a public model
 model_id = importer.import_model(
     repo_id="bert-base-uncased",
     framework="pytorch",
     task="text-classification"
 )
 
-# Import with custom configuration
+# Import a model with custom configuration
 model_id = importer.import_model(
     repo_id="gpt2",
     config={
@@ -83,11 +84,16 @@ model_id = importer.import_model(
     }
 )
 ```
+This process:
+- Fetches model files from HuggingFace off-chain.
+- Stores model artifacts in Walrus, returning a CID.
+- Records the CID, version, and metadata on SUI for reference and governance.
 
 ### Model Management
 
-<AccordionGroup>
-  <Accordion title="Version Control">
+<AccordionGroup> 
+  <Accordion title="Version Control"> 
+    You can maintain multiple versions of the same model by specifying the revision:
     ```python
     # Get model versions
     versions = importer.list_versions("bert-base-uncased")
@@ -101,6 +107,7 @@ model_id = importer.import_model(
   </Accordion>
   
   <Accordion title="Private Models">
+  For private models, ensure your HuggingFace token has the correct permissions. The token remains off-chain, only references are stored on SUI:
     ```python
     # Import private model
     model_id = importer.import_model(
@@ -113,23 +120,26 @@ model_id = importer.import_model(
 </AccordionGroup>
 
 ## Dataset Integration
-
 ### Importing Datasets
+Similarly, datasets are processed off-chain and stored in Walrus, with references recorded on SUI:
 
 ```python
 from sera.integrations.huggingface import DatasetImporter
 
-# Initialize dataset importer
-importer = DatasetImporter()
+# Initialize dataset importer (off-chain)
+importer = DatasetImporter(
+    walrus_gateway="https://walrus-gateway.example.com",
+    sui_package_id="0x...package_id"
+)
 
-# Import dataset
+# Import dataset (off-chain)
 dataset_id = importer.import_dataset(
     repo_id="squad",
     split="train",
     cache_dir="./cache"
 )
 
-# Import with transformations
+# Apply transformations off-chain before storing in Walrus
 dataset_id = importer.import_dataset(
     repo_id="squad",
     transforms=[
@@ -140,10 +150,11 @@ dataset_id = importer.import_dataset(
 )
 ```
 
-### Batch Processing
+### Batch Processing & Progress Tracking
 
 <CardGroup cols={2}>
   <Card title="Resume Support" icon="rotate-right">
+    If a large dataset import gets interrupted, you can resume from a checkpoint:
     ```python
     importer.import_dataset(
         repo_id="large-dataset",
@@ -152,6 +163,7 @@ dataset_id = importer.import_dataset(
     ```
   </Card>
   <Card title="Progress Tracking" icon="bars-progress">
+    Provide a callback function to track progress off-chain:
     ```python
     importer.import_dataset(
         repo_id="large-dataset",
@@ -162,9 +174,8 @@ dataset_id = importer.import_dataset(
 </CardGroup>
 
 ## Advanced Features
-
-### Custom Processing
-
+### Custom Processing Pipelines
+You can define custom processing steps off-chain to tokenize, encode, and format data before storing in Walrus and referencing on SUI:
 ```python
 from sera.integrations.huggingface import Pipeline
 
@@ -185,6 +196,7 @@ dataset_id = importer.import_dataset(
 
 <CardGroup cols={2}>
   <Card title="Memory Management" icon="memory">
+    Manage off-chain memory usage and caching strategies:
     ```python
     importer.configure(
         max_memory="16GB",
@@ -193,6 +205,7 @@ dataset_id = importer.import_dataset(
     ```
   </Card>
   <Card title="Performance Tuning" icon="gauge">
+    Tune parameters for efficient processing off-chain:
     ```python
     importer.configure(
         batch_size=32,
@@ -217,49 +230,50 @@ except HuggingFaceError as e:
         # Handle authentication issues
         pass
 ```
+All errors are handled off-chain. Relevant error summaries or statuses can be recorded on-chain if necessary.
 
 ## Best Practices
-
 ### Performance Optimization
 
 <Steps>
   1. **Caching Strategy**
-     Configure appropriate cache locations and sizes
-
+     Use disk or memory caching off-chain and store final CIDs on SUI.
+     Ensure frequent assets are cached close to compute resources.
   2. **Batch Processing**
-     Use optimal batch sizes for your resources
-
+     Batch size tuning improves throughput off-chain.
+     Update references on-chain after processing completion.
   3. **Resource Management**
-     Monitor and manage memory usage
-
+     Monitor memory and compute usage off-chain.
+     Off-chain services can autoscale or reassign tasks; record final state on SUI.
   4. **Error Handling**
-     Implement proper error recovery
+     Off-chain retries and fallback logic.
+     On-chain store logs of critical errors for auditability.
 </Steps>
 
 ### Security Considerations
 
-<Check>Use environment variables for tokens</Check>
-<Check>Implement proper access controls</Check>
-<Check>Regular token rotation</Check>
-<Check>Audit access logs</Check>
-<Cross>Hardcode credentials</Cross>
-<Cross>Share tokens between environments</Cross>
+<Check>Store HuggingFace tokens in environment variables (off-chain).</Check>
+<Check>Implement strict on-chain access controls for model/dataset references.</Check>
+<Check>Rotate tokens regularly and update references on SUI.</Check>
+<Check>Audit logs and events anchored to SUI.</Check>
+<Cross>Do not hardcode credentials in code.</Cross>
+<Cross>Do not share tokens between insecure environments.</Cross>
 
 ## Troubleshooting
 
 <AccordionGroup>
   <Accordion title="Common Issues">
-    - Token authentication failures
-    - Resource limitations
-    - Network connectivity
-    - Version conflicts
+    - Token authentication failures (check your HuggingFace token)
+    - Resource limitations (adjust batch sizes, memory settings)
+    - Network connectivity problems (verify your off-chain environment)
+    - Version conflicts (ensure correct model/dataset revisions)
   </Accordion>
   
   <Accordion title="Solutions">
-    - Verify token permissions
-    - Check resource availability
-    - Test network connection
-    - Validate version compatibility
+    - Verify token permissions and refresh tokens if necessary.
+    - Check resource availability and scaling options off-chain.
+    - Test and debug network connectivity.
+    - Ensure version compatibility before importing references on-chain.
   </Accordion>
 </AccordionGroup>
 
