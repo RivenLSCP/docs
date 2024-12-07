@@ -1,143 +1,130 @@
 ---
 title: 'AI Data Marketplace'
-description: 'Trade AI data assets on our decentralized marketplace'
+description: 'Decentralized marketplace for AI data assets'
 ---
 
 ## Overview
 
-Our AI Data Marketplace is a decentralized platform for trading AI data assets, such as datasets, models, vector databases, and pipelines. The marketplace leverages the SUI blockchain for immutable, on-chain records of ownership, pricing, and royalties. All large data is stored off-chain in Walrus, providing high throughput and cost-effective storage, while SUI handles the trust and governance layer. Buyers and sellers interact with the marketplace through smart contracts, ensuring a trustless and permissionless environment.
+The Sera Data Marketplace enables peer-to-peer trading of AI data assets. Built on SUI blockchain for settlement and Walrus for storage, it provides a trustless environment for buying and selling AI conversation data and derived assets.
 
-## Supported Assets
+## How It Works
 
-<CardGroup cols={3}>
-  <Card title="Datasets" icon="database">
-    - • On-chain verified references to datasets stored in Walrus
-    - • Includes proof-of-quality and metadata anchored on SUI
-  </Card>
-  <Card title="Models" icon="brain">
-    - • Pre-trained and fine-tuned AI models
-    - • Model weights securely stored in Walrus, with versions logged on SUI
-  </Card>
-  <Card title="Vector DBs" icon="vector-square">
-    - • References to off-chain vector databases
-    - • SUI records indexing configurations and versioning
-  </Card>
-  <Card title="Pipelines" icon="diagram-project">
-    - • Complete AI pipelines, from ingestion to inference
-    - • On-chain attestation of pipeline authenticity
-  </Card>
-  <Card title="Environments" icon="microchip">
-    - • Configured runtime environments (Docker images, etc.)
-    - • CIDs stored on SUI, binary artifacts in Walrus
-  </Card>
-  <Card title="Weights" icon="scale-balanced">
-    - • Intermediate or specialized model weights
-    - • Traceable lineage on SUI for provenance and trust
-  </Card>
-</CardGroup>
+1. **Sellers** upload their data to Walrus and create listings with price, duration, and terms
+2. **Buyers** browse listings, purchase access rights, and retrieve data from Walrus
+3. **Smart Contracts** handle escrow, payments, and access rights
+4. **Automated Market Maker (AMM)** enables liquid trading of popular datasets
 
-## Performance Metrics
-
-Because of the off-chain Walrus storage and decentralized infrastructure, data retrieval and processing are extremely fast compared to traditional cloud-based approaches.
-
-### Processing Speed Comparison
-
-<Frame>
-  <img src="/images/speed-comparison.png" alt="Speed Comparison" />
-</Frame>
-
-| Data Size | Traditional | Sera    | Improvement |
-|-----------|-------------|---------|-------------|
-| 10GB      | 900s       | 5-10s   | ~180x       |
-| 30GB      | 2700s      | 5-10s   | ~450x       |
-| 100GB     | 9000s      | 5-10s   | ~1800x      |
-
-Improvements come from Walrus’s distributed storage, efficient caching, and transparent on-chain references ensuring trust without heavy overhead.
-
-## Security Features
-
-The marketplace integrates advanced cryptographic techniques and decentralized protocols to maintain data integrity, privacy, and trust.
+## Asset Types
 
 <CardGroup cols={2}>
-  <Card title="Trusted Execution" icon="shield-check">
-    - • Secure enclaves off-chain
-    - • On-chain proofs of secure processing
+  <Card title="Raw Conversations" icon="comments">
+    - • AI chat logs and interactions
+    - • Priced per conversation or in bulk
+    - • Quality scores and metadata on-chain
   </Card>
-  <Card title="Homomorphic Encryption" icon="lock">
-    - • Process encrypted data without revealing contents
-    - • Store keys and proofs on-chain for auditability
+  <Card title="Curated Datasets" icon="database">
+    - • Processed and labeled data collections
+    - • Clear licensing and usage rights
+    - • Preview samples available
   </Card>
-  <Card title="Federated Learning" icon="network-wired">
-    - • Distributed training without centralized data pooling
-    - • On-chain coordination and reward distribution
+  <Card title="Trading Pairs" icon="arrows-rotate">
+    - • Liquid pools for popular datasets
+    - • Automated price discovery
+    - • Instant swaps available
   </Card>
-  <Card title="Zero-Knowledge Proofs" icon="user-secret">
-    - • Verify authenticity and quality without revealing data
-    - • ZK proofs logged on SUI for trustless verification
+  <Card title="Data Bundles" icon="box-archive">
+    - • Themed collections
+    - • Bulk discount pricing
+    - • Cross-seller packages
   </Card>
 </CardGroup>
 
-## Getting Started
+## Market Types
 
-### For Sellers
-
-<Steps>
-  1. **Prepare Your Data**
-     Package your AI assets according to marketplace standards. Upload to Walrus for secure, decentralized storage. Anchor a CID on SUI.
-
-  2. **Set Pricing**
-     Choose between fixed price or auction formats. Both pricing models are controlled via on-chain smart contracts.
-
-  3. **List Asset**
-     Deploy a listing contract on SUI. Set royalty parameters, attach proofs of quality or accuracy, and ensure all metadata (like model framework, dataset schema) is stored as immutable references on-chain.
-
-  4. **Monitor Sales**
-     Track on-chain transactions and manage listings through smart contract interactions. Adjust pricing or availability as needed.
-</Steps>
-
-### For Buyers
-
-<Steps>
-  1. **Browse Assets**
-     Use on-chain indexes and filters to search for desired datasets, models, or pipelines. Metadata and versioning info are stored on SUI.
-
-  2. **Verify Quality**
-     Check attestations, ratings, and on-chain history. ZK proofs or off-chain signatures verified on-chain ensure authenticity and performance claims.
-
-  3. **Purchase**
-     Complete the transaction with $SERA tokens or other supported SUI-based tokens. On-chain settlement ensures transparent and instantaneous ownership transfer.
-
-  4. **Download & Integrate**
-     Retrieve your purchased assets from Walrus using the on-chain referenced CID. Integrate them into your workflow confidently, knowing the lineage and authenticity are guaranteed on-chain.
-</Steps>
-
-## Integration Options
-
-Below is an example showing how to list an asset programmatically. The on-chain marketplace and wallet interactions ensure trust and a frictionless user experience. Off-chain data handling via Walrus is referenced through CIDs:
-
-```python
-from sera import Marketplace
-from sera.wallet import SuiWallet
-
-# Initialize marketplace client
-wallet = SuiWallet.connect()
-market = Marketplace.connect(wallet)
-
-# List an asset
-market.list_asset(
-    asset_path="./my_model",
-    asset_type="model",
-    price=1000,  # In $SERA tokens
-    royalty_percentage=2.5,
-    metadata={
-        "framework": "pytorch",
-        "accuracy": 0.95,
-        "training_data": "description",
-        "verification_proof": "0x..."  # ZK proof hash
-    }
-)
+### Fixed Price Listings
+```typescript
+interface FixedPriceListing {
+    blob_id: string;          // Walrus storage identifier
+    price_mist: number;       // Price in SUI mist
+    seller: string;           // Seller's address
+    duration_epochs: number;  // Listing duration
+    royalty_rate: number;    // Future resale royalty
+}
 ```
 
+### AMM Pools
+```typescript
+interface DataPool {
+    token_address: string;    // Pool token address
+    data_size: number;       // Total data size in pool
+    liquidity: number;       // Pool liquidity in SUI
+    fee_rate: number;        // Trading fee percentage
+}
+```
+
+## Trading Interface
+
+```python
+from sera.market import MarketClient
+from sera.storage import WalrusClient
+
+# Initialize clients
+market = MarketClient(wallet)
+storage = WalrusClient()
+
+# Create fixed price listing
+async def create_listing(data_path: str, price_sui: float):
+    # Upload to Walrus
+    blob_id = await storage.store_blob(
+        path=data_path,
+        metadata={
+            "content_type": "ai_conversations",
+            "preview_sample": "first_10_rows",
+            "schema": {"version": "1.0"}
+        }
+    )
+    
+    # Create marketplace listing
+    listing = await market.create_fixed_price_listing(
+        blob_id=blob_id,
+        price_mist=int(price_sui * 1e9),
+        duration_epochs=90,
+        royalty_rate=250  # 2.5%
+    )
+    return listing.id
+
+# Buy from AMM pool
+async def swap_data(pool_id: str, sui_amount: float):
+    # Execute swap
+    swap_tx = await market.swap_sui_for_data(
+        pool_id=pool_id,
+        sui_amount=sui_amount,
+        min_data_out=1000,  # Minimum data size to receive
+        deadline=int(time.time()) + 1800  # 30 min deadline
+    )
+    
+    # Download data if swap successful
+    if swap_tx.status == "success":
+        data = await storage.read_blob(swap_tx.blob_id)
+        return data
+```
+
+## Fees & Rewards
+
+| Action | Fee/Reward |
+|--------|------------|
+| List Asset | 0.1% listing fee |
+| Purchase Asset | 1% marketplace fee |
+| Provide Liquidity | 0.3% of pool trades |
+| Early Access | 20% discount |
+
+## Price Discovery
+
+- AMM pools provide automated price discovery based on supply/demand
+- Fixed price listings can be automatically adjusted based on market activity
+- Historical price data available on-chain
+- Price feeds for popular datasets
+
 <Note>
-Visit our [Developer Guide](/guides/developers) for detailed API documentation and integration examples.
-</Note> 
+All trades are final and executed trustlessly through smart contracts. Always verify data quality through preview samples before large purchases.
+</Note>

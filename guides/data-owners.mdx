@@ -5,28 +5,33 @@ description: 'Learn how to securely manage and monetize your AI data assets on S
 
 ## Overview
 
-As a data owner in the SUI ecosystem, you can securely store, reference, and monetize your AI-related data assets—such as datasets, model weights, or vector embeddings—by using Walrus for decentralized storage and SUI smart contracts for immutable reference and pricing logic. Off-chain workflows handle heavy lifting (like large-file uploads and dynamic pricing calculations), while SUI ensures trust, transparency, and verifiable transactions.
+As a data owner in the SERA ecosystem, you can securely store and monetize AI-related data assets through a hybrid architecture:
+- Large files (datasets, models, embeddings) are stored on Walrus with content addressing
+- Metadata, access controls, and payment logic are managed via SUI smart contracts
+- The SERA protocol handles orchestration between storage and blockchain layers
 
 ## Supported Asset Types
 
 <CardGroup cols={3}>
+  <Card title="Conversations" icon="comments">
+    - • AI chat logs stored as compressed JSON
+    - • Metadata and access controls on-chain
+  </Card>
   <Card title="Datasets" icon="database">
-    - Off-chain data collections stored in Walrus, referenced on SUI
+    - • Training data stored in Walrus as parquet files
+    - • CIDs and permissions tracked on SUI
   </Card>
   <Card title="Models" icon="brain">
-    - Model weights and configurations stored off-chain, referenced on SUI
+    - • Model weights stored as binary files
+    - • Version history and lineage on-chain
   </Card>
   <Card title="Vector DBs" icon="layer-group">
-    - References to vector indexes stored off-chain
-  </Card>
-  <Card title="Pipelines" icon="diagram-project">
-    - Metadata for processing workflows, with code and data off-chain
+    - • FAISS/HNSW indexes stored on Walrus
+    - • Metadata and query access managed on SUI
   </Card>
   <Card title="Environments" icon="microchip">
-    - Runtime configurations (Docker images, etc.) referenced on-chain, hosted off-chain
-  </Card>
-  <Card title="Weights" icon="scale-balanced">
-    - Versioned model checkpoints stored in Walrus
+    - • Docker images stored on Walrus
+    - • Image digests verified on-chain
   </Card>
 </CardGroup>
 
@@ -34,16 +39,43 @@ As a data owner in the SUI ecosystem, you can securely store, reference, and mon
 
 <Steps>
   1. **Create Account**
-     Set up your SUI wallet (e.g., via `sera-cli`) 
-     - Obtain testnet or mainnet SUI tokens for transaction fees.
+     - Install the SUI wallet
+     - Obtain testnet/mainnet SUI tokens
+     - Connect wallet to SERA platform
 
-  2. **Upload Assets to Walrus**
-     - Store large files (datasets, models) directly in Walrus
-     - Retrieve a Content Identifier (CID) to reference on-chain
+  2. **Upload Assets**
+     ```python
+     from sera.upload import WalrusUploader
+     
+     # Initialize uploader with your SUI wallet
+     uploader = WalrusUploader(
+         wallet_address="0x...",
+         gateway_url="https://gateway.sera.xyz"
+     )
+     
+     # Upload dataset and register on SUI
+     cid = uploader.upload_dataset(
+         path="./conversations.parquet",
+         metadata={
+             "description": "AI Chat Logs Q4 2024",
+             "schema_version": "1.0",
+             "record_count": 10000
+         }
+     )
+     ```
 
-  3. **List Assets on SUI**
-     - Use SUI transactions to register asset metadata, pricing, and terms
-     - Buyers interact with your listings trustlessly on the blockchain
+  3. **List for Sale**
+     ```python
+     from sera.market import Market
+     
+     # List dataset with fixed price
+     market = Market(wallet_address="0x...")
+     listing_id = market.create_listing(
+         cid=cid,
+         price_sui=1000,  # Price in SUI
+         min_purchase=100  # Minimum records per purchase
+     )
+     ```
 </Steps>
 
 ## Data Management
@@ -79,134 +111,250 @@ tx_digest = uploader.register_on_sui(
 print(f"Dataset registered on SUI: {tx_digest}")
 ```
 
-### Organization Tools
-Use off-chain tools to manage versions, categories, and metadata. When ready, you anchor references to these versions or categories on SUI so that buyers and partners can verify authenticity:
+## Data Management
+
+### Uploading Data to Walrus
+
+Walrus provides content-addressed storage with built-in redundancy. Here's how to upload and manage your data:
+
+```python
+from sera.upload import WalrusUploader
+
+# Initialize uploader
+uploader = WalrusUploader(
+    wallet_address="0x...",
+    gateway_url="https://gateway.sera.xyz"
+)
+
+# Upload dataset and get CID
+cid = uploader.upload(
+    path="./my_dataset.parquet",
+    metadata={
+        "description": "Training dataset",
+        "format": "parquet",
+        "size_bytes": 1024 * 1024 * 100  # 100MB
+    }
+)
+
+# Register CID on SUI
+tx = uploader.register_on_sui(
+    cid=cid,
+    name="training_dataset_v1",
+    category="training"
+)
+print(f"Dataset registered with tx: {tx.digest}")
+```
+
+### Version Management
 
 <CardGroup cols={2}>
-  <Card title="Asset Management" icon="folders">
-    - • Maintain version histories off-chain
-    - • Record version hashes and references on-chain
-    - • Update categories and tags via SUI transactions
-    - • Access control: record permission references on-chain, enforce off-chain
+  <Card title="Asset Versioning" icon="code-branch">
+    - • Store version CIDs on SUI
+    - • Link versions using Move objects
+    - • Track lineage with on-chain references
   </Card>
-  <Card title="Quality Control" icon="check-double">
-    - • Run automated validation and formatting checks off-chain
-    - • Store integrity checksums (hashes) on SUI for verifiability
-    - • Quality scores computed off-chain, reference stored on-chain
+  <Card title="Quality Control" icon="check">
+    - • Validate data formats before upload
+    - • Store data checksums on-chain
+    - • Track version hashes for integrity
   </Card>
 </CardGroup>
 
-## Monetization Options
-### Pricing Models
-Set initial prices on SUI and store logic references for more complex pricing models. For dynamic or auction-based pricing, computations occur off-chain (e.g., a separate pricing service) and periodically update references on SUI.
+## Monetization
+
+### Basic Pricing Models
+
+Walrus and SUI support these core pricing models:
 
 <AccordionGroup>
   <Accordion title="Fixed Price">
-    - Set a stable price for your data asset
-    - Offer bundle pricing by grouping multiple CIDs on one SUI contract
-    - Volume discounts managed by off-chain logic, with updated references on-chain
-    - Subscription terms recorded on-chain, validated off-chain
+    ```move
+    module sera::fixed_price {
+        struct Listing has key {
+            id: UID,
+            owner: address,
+            cid: vector<u8>,
+            price_sui: u64,
+            min_records: u64,
+        }
+        
+        public fun create_listing(
+            cid: vector<u8>, 
+            price_sui: u64,
+            min_records: u64,
+            ctx: &mut TxContext
+        )
+    }
+    ```
   </Accordion>
   
-  <Accordion title="Dynamic Pricing">
-    - Auction processes run off-chain; final clearing price recorded on-chain
-    - Demand-driven or time-limited offers: off-chain calculation updates on-chain reference regularly
-    - Negotiations off-chain; once agreed, finalize price on SUI
+  <Accordion title="Subscription">
+    ```move
+    module sera::subscription {
+        struct Subscription has key {
+            id: UID,
+            subscriber: address,
+            access_until: u64,  // Timestamp
+            access_rights: vector<vector<u8>>, // CIDs
+        }
+    }
+    ```
   </Accordion>
 </AccordionGroup>
 
-### Revenue Streams
+### Payment Flows
 
 <CardGroup cols={2}>
   <Card title="Direct Sales" icon="money-bill">
-    - • One-time purchases, settled in SUI tokens
-    - • Delivery is off-chain via Walrus CID after payment verification
+    - • One-time purchases in SUI
+    - • Automatic CID delivery post-payment
   </Card>
-  <Card title="Licensing" icon="file-contract">
-    - • Issue usage licenses anchored on-chain
-    - • Recurring fees collected in stable SUI-based tokens
-  </Card>
-  <Card title="API Access" icon="code">
-    - • Buyers pay per query off-chain
-    - • On-chain references track usage entitlements
-  </Card>
-  <Card title="Custom Solutions" icon="puzzle-piece">
-    - • Tailored data packages negotiated off-chain
-    - • Final terms and proofs recorded on SUI
+  <Card title="Subscriptions" icon="calendar">
+    - • Time-based access to CIDs
+    - • Automatic renewal capabilities
   </Card>
 </CardGroup>
 
 ## Security & Compliance
+
 ### Data Protection
 
 <Steps>
-  1. **Encryption**
-     Encrypt all data before uploading to Walrus. Store encryption keys securely off-chain.
+  1. **Client-Side Encryption**
+     ```python
+     from sera.crypto import DataEncryptor
+     
+     # Initialize encryptor with your keys
+     encryptor = DataEncryptor()
+     
+     # Encrypt before upload
+     encrypted_data = encryptor.encrypt_file(
+         path="./sensitive_data.parquet",
+         metadata={
+             "schema_version": "1.0",
+             "encryption": "AES-256-GCM"
+         }
+     )
+     
+     # Upload encrypted data
+     cid = uploader.upload(
+         data=encrypted_data,
+         is_encrypted=True
+     )
+     ```
 
   2. **Access Control**
-     On-chain references define who can access what. Off-chain gateways enforce policies.
+     ```move
+     module sera::access_control {
+         struct AccessPolicy has key {
+             id: UID,
+             owner: address,
+             cid: vector<u8>,
+             allowed_readers: vector<address>,
+             expiry: u64
+         }
+         
+         public fun grant_access(
+             policy: &mut AccessPolicy,
+             reader: address,
+             ctx: &mut TxContext
+         ) {
+             // Verify caller is owner
+             assert!(tx_context::sender(ctx) == policy.owner, ERROR_NOT_OWNER);
+             vector::push_back(&mut policy.allowed_readers, reader);
+         }
+     }
+     ```
 
-  3. **Audit Trails**
-     Every transaction and update to asset references is recorded on SUI. Off-chain logs can be hashed and recorded on-chain.
-
-  4. **Compliance**
-     SUI-based attestation and verifiable credentials to show compliance with GDPR, CCPA, or other standards.
-     Proof of compliance stored as on-chain metadata.
+  3. **Audit Logging**
+     ```python
+     from sera.audit import AuditLogger
+     
+     # Log access events on-chain
+     logger = AuditLogger(wallet_address="0x...")
+     logger.log_access(
+         cid=cid,
+         accessor=user_address,
+         action="read",
+         timestamp=int(time.time())
+     )
+     ```
 </Steps>
 
-### Rights Management
+### Compliance Tools
 
 <CardGroup cols={2}>
-  <Card title="Usage Rights" icon="key">
-    - • Define usage terms off-chain, record a hash or summary on SUI
-    - • Monitor usage off-chain, periodically anchoring compliance logs on-chain
+  <Card title="Data Rights" icon="shield">
+    - • On-chain access policies
+    - • Automated expiry enforcement
+    - • Revocation capabilities
   </Card>
-  <Card title="Licensing" icon="file-contract">
-    - • Leverage custom license agreements stored off-chain
-    - • Record license fingerprints on SUI for authenticity
-    - • Track usage and renewals with periodic on-chain updates
+  <Card title="Audit Trail" icon="list-check">
+    - • Immutable access logs
+    - • Usage analytics
+    - • Compliance reporting
   </Card>
 </CardGroup>
 
 ## Analytics & Reporting
-### Dashboard Features (Off-Chain)
-An off-chain dashboard provides sales analytics, usage metrics, and other insights. Key aggregated metrics can be hashed and anchored to SUI for trust:
 
-- Off-chain: Sales analytics, usage metrics, revenue tracking, market insights
-- On-chain: Store hashed metrics for verification, finalizing monthly or quarterly reports with an immutable record on SUI
+### Usage Metrics
 
-### Performance Metrics
+```python
+from sera.analytics import MetricsCollector
+
+# Initialize metrics collector
+collector = MetricsCollector(
+    wallet_address="0x...",
+    start_time=yesterday,
+    end_time=today
+)
+
+# Get basic metrics
+metrics = collector.get_metrics(cid)
+print(f"""
+Dataset Usage:
+- Total Downloads: {metrics.download_count}
+- Unique Users: {metrics.unique_users}
+- Revenue: {metrics.revenue_sui} SUI
+""")
+
+# Get detailed access logs
+logs = collector.get_access_logs(cid)
+for log in logs:
+    print(f"Access by {log.user} at {log.timestamp}")
+```
+
+### Performance Dashboard
 
 <CardGroup cols={2}>
-  <Card title="Sales Metrics" icon="chart-line">
-    - • Revenue trends off-chain
-    - • Asset performance indicators
-    - • Buyer demographics and segmentation (off-chain)
+  <Card title="Real-time Metrics" icon="chart-line">
+    - • Download counts
+    - • Revenue tracking
+    - • User engagement
   </Card>
-  <Card title="Quality Metrics" icon="star">
-    - • User ratings collected off-chain
-    - • Usage statistics and quality scores updated periodically
-    - • Key indicators hashed and recorded on SUI for integrity
+  <Card title="Historical Data" icon="clock">
+    - • Trend analysis
+    - • Revenue reports
+    - • Usage patterns
   </Card>
 </CardGroup>
 
-## Support & Resources
+## Support Resources
 
 <CardGroup cols={2}>
   <Card title="Documentation" icon="book">
-    Access detailed API docs for Walrus and SUI integration
+    - • [API Reference](https://docs.sera.xyz/api)
+    - • [Smart Contract Docs](https://docs.sera.xyz/contracts)
+    - • [Integration Guides](https://docs.sera.xyz/guides)
   </Card>
-  <Card title="Enterprise Support" icon="headset">
-    Dedicated off-chain support for business clients, with on-chain SLAs recorded in SUI contracts
-  </Card>
-  <Card title="Community" icon="users">
-    Join SUI-based data owner communities for best practices
-  </Card>
-  <Card title="Updates" icon="bell">
-    Subscribe to updates and store a verifiable record of platform changes on SERA
+  <Card title="Developer Tools" icon="code">
+    - • SDK Downloads
+    - • Code Examples
+    - • Testing Tools
   </Card>
 </CardGroup>
 
 <Note>
 For enterprise support and custom solutions, contact our team at enterprise@sera.xyz
-</Note> 
+</Note>

@@ -1,9 +1,9 @@
 ---
 title: "AI-To-Earn"
-description: "Monetize your AI interactions in a trustless environment on SUI"
+description: "Monetize your AI interactions securely on SUI with Walrus storage"
 ---
 
-**AI-To-Earn** revolutionizes data contribution by letting you monetize your interactions with AI models while helping advance artificial intelligence research. Natively built on the SUI blockchain, the protocol transforms your AI interactions into verifiable contributions recorded on-chain. You earn $SERA tokens, a SUI-native token, for high-quality conversations and valuable data, creating a decentralized ecosystem that rewards meaningful engagement.
+**AI-To-Earn** enables users to monetize their AI model interactions while contributing to AI research advancement. Built natively on the SUI blockchain with Walrus storage integration, the protocol securely captures and stores your AI conversations while rewarding quality contributions with $SERA tokens.
 
 
 ## How It Works
@@ -12,35 +12,41 @@ description: "Monetize your AI interactions in a trustless environment on SUI"
   1. **Connect Wallet**  
      Connect your SUI-compatible wallet (e.g., Sui Wallet, OKX Wallet). This wallet manages your $SERA tokens and signs your interactions.
 
-  2. **Start Contributing**  
-     Interact with supported off-chain AI models. Every contribution (conversation, input, feedback) is hashed and anchored on SUI, ensuring authenticity and verifiability.
+  2. **Install Chrome Extension**  
+     Our browser extension captures your conversations with supported AI models, encrypts sensitive data, and generates content hashes.
 
-  3. **Earn SERA**  
-     Your contributions are scored off-chain for quality and uniqueness. Smart contracts on SUI calculate your rewards and distribute $SERA tokens accordingly.
+  3. **Secure Storage**  
+     Conversation data is split and encoded using Walrus's Red Stuff protocol, ensuring:
+     - Data redundancy across storage nodes
+     - Fast retrieval speeds
+     - Byzantine fault tolerance
+     - Privacy through encryption
 
-  4. **Boost Earnings**  
-     Stake $SERA tokens to increase your reward multiplier. On-chain staking contracts grant governance rights and unlock premium model access.
+  4. **Earn SERA**  
+     - Conversations are quality-checked through our off-chain oracle network
+     - Quality scores and metadata are published on-chain
+     - Smart contracts distribute $SERA rewards based on contribution value
 </Steps>
 
 ## Token Utility
 <CardGroup cols={2}>
   <Card title="Staking Benefits" icon="coins">
-    - • Enhanced earning multipliers via on-chain staking
-    - • Governance voting rights on protocol parameters
-    - • Access to premium AI models referenced on-chain
-    - • Participation in protocol revenue sharing
+    - • Earn yield from protocol fees
+    - • Participate in governance voting
+    - • Access premium AI model interfaces
+    - • Boost earning rates up to 2x
   </Card>
   <Card title="Marketplace Access" icon="store">
-    - • Trade AI data assets on the on-chain marketplace
-    - • Purchase premium model access using $SERA
-    - • Join data DAOs
-    - • Unlock exclusive features and model tiers
+    - • Trade verified AI conversation datasets
+    - • Purchase model access credits
+    - • Join curated data pools
+    - • Access premium features
   </Card>
 </CardGroup>
 
 ## Supported Models
 
-All model references are stored on-chain, while the actual model weights and versions remain off-chain in Walrus. The SUI blockchain ensures you know exactly what you’re interacting with:
+All model access is managed through our Chrome extension, with conversation data stored on Walrus and metadata/proofs anchored on SUI:
 
 <CardGroup cols={3}>
   <Card title="ChatGPT" icon="message-bot">
@@ -60,37 +66,19 @@ All model references are stored on-chain, while the actual model weights and ver
 </CardGroup>
 
 
-## Reward Formula
+## Reward System
 
-Contributions are evaluated off-chain, and results are recorded on-chain to ensure fairness and immutability:
+Contributions are evaluated through a combination of off-chain oracles and on-chain verification:
   $$
-  R = \alpha \cdot Q(c) \cdot V(s) \cdot e^{-\lambda t} \cdot \left(1 + \sum_{i=1}^{n} \beta_i M_i\right)
-  $$
+R = α · Q(c) · M(t) · V(i) · (1 + B)
+$$
 
 Where:
-
-- $α$: On-chain base rate
-- $Q(c)$: Quality Score (based on engagement and consistency, computed off-chain, anchored on-chain)
-- $V(s)$: Value Score (uniqueness & significance, computed off-chain, validated on-chain)
-- $λt$: Time decay factor defined on-chain to encourage continual contributions
-- $βᵢMᵢ$: Model-specific multipliers recorded on-chain, incentivizing interactions with certain models
-
-
-#### Quality Score $Q(c)$
-
-$$
-Q(c) = \frac{1}{1 + e^{-k(q - q_0)}} \cdot \sqrt{\frac{\sigma^2}{\sigma^2 + \sigma_0^2}}
-$$
-
-- This measures conversation quality. Engagement metrics and consistency checks are done off-chain, with summaries hashed and referenced on-chain.
-
-#### Value Score $V(s)$
-
-$$
-V(s) = \log(1 + \frac{s}{s_0}) \cdot (1 + \gamma \cdot \text{unique}(s))
-$$
-
-- Value is determined by uniqueness and significance, ensuring that more original and impactful contributions are rewarded more. All computations happen off-chain, with final scores committed on-chain for auditability.
+- $α$ (alpha): Base rate defined in smart contract
+- $Q(c)$: Quality score (0.1 to 1.0)
+- $M(t)$: Model tier multiplier (1.0x - 1.5x)
+- $V(i)$: Volume multiplier (1.0x - 1.5x)
+- $B$: Bonus multipliers (referrals, streaks)
 
 ## Model-Specific Multipliers
 
@@ -98,7 +86,7 @@ The SUI blockchain stores multipliers for different model tiers, guiding the inc
 
 <CardGroup cols={2}>
   <Card title="Standard Models" icon="chart-simple">
-    <p><strong>Base Multiplier:</strong> β₁ = 1.0</p>
+    <p><strong>Base Multiplier:</strong> B = 1.0</p>
     <div>
       <p><strong>Supported Models</strong></p>
       <ul>
@@ -111,13 +99,13 @@ The SUI blockchain stores multipliers for different model tiers, guiding the inc
       <p><strong>Benefits</strong></p>
       <ul>
         <li>• Standard reward rate</li>
-        <li>•Quality-focused incentives</li>
+        <li>• Quality-focused incentives</li>
       </ul>
     </div>
   </Card>
 
   <Card title="Premium Models" icon="chart-line">
-    <p><strong>Base Multiplier:</strong> β₂ = 1.5-2.0</p>
+    <p><strong>Base Multiplier:</strong> B = 1.5</p>
     <div>
       <p><strong>Supported Models</strong></p>
       <ul>
@@ -136,168 +124,85 @@ The SUI blockchain stores multipliers for different model tiers, guiding the inc
   </Card>
 </CardGroup>
 
-## Additional Incentives
+## Incentive Programs
 
-### Referral Program
+### Referral System
+- Referrers earn 5% of referred users' rewards for 30 days
+- Referral relationships stored on-chain
+- Maximum of 100 active referrals per address
+- Minimum stake required to participate
 
-<CardGroup cols={2}>
-  <Card title="Referrer Benefits" icon="user-plus">
-    - • 10% perpetual commission on referee earnings
-    - • Unlimited referrals
-    - • Real-time on-chain tracking of referral links
-    - • Achievements and badges for top referrers
-  </Card>
-  <Card title="Referee Benefits" icon="gift">
-    - • 10% bonus on all earnings
-    - • Instant activation upon referral
-    - • Welcome bonus recorded on-chain for transparency
-    - • Starter quests for new participants
-  </Card>
-</CardGroup>
-
-### Quest System
-
-Off-chain quest logic periodically writes completion proofs on-chain, ensuring fairness in distributing quest rewards.
+### Achievement System
+Achievements are processed off-chain and verified on-chain:
 
 <AccordionGroup>
-  <Accordion title="Daily Quests">
-    - Conversation milestones
-    - Topic diversity goals
-    - Multi-model interaction tasks
-    - Quality score targets
+  <Accordion title="Daily Goals">
+    - 5 quality conversations
+    - Minimum average quality score
+    - Multi-model usage bonus
   </Accordion>
   
   <Accordion title="Weekly Challenges">
-    - Topic exploration assigned by governance votes on SUI
-    - Cross-model comparisons
-    - Community-voted themes
-    - Collaborative, multi-user challenges
-  </Accordion>
-  
-  <Accordion title="Achievement Quests">
-    - Cumulative contribution milestones
-    - Quality consistency awards
-    - Model mastery badges and proofs stored on-chain
-    - Innovation recognition tracked by smart contracts
+    - Topical conversation targets
+    - Consistent quality maintenance
+    - Community-voted focus areas
   </Accordion>
 </AccordionGroup>
 
-## Leaderboard & Competition
+## Privacy & Security Architecture
 
-### Ranking System
-
-<CardGroup cols={2}>
-  <Card title="Global Rankings" icon="trophy">
-    - • Overall contribution score
-    - • Quality percentile calculations
-    - • Innovation index verified on-chain
-    - • Community impact and voting rights
-  </Card>
-  <Card title="Model-Specific Rankings" icon="ranking-star">
-    - • Per-model leaderboards to highlight domain expertise
-    - • Specialized achievements recorded on-chain
-    - • Model mastery levels
-    - • Performance metrics hashed and stored for trustless validation
-  </Card>
-</CardGroup>
-
-### Competitions
-
-<AccordionGroup>
-  <Accordion title="Weekly Tournaments">
-    - Themed challenges curated by on-chain governance
-    - Model-specific contests for niche expertise
-    - Quality and innovation competitions
-    - Winners receive on-chain accolades
-  </Accordion>
-  <Accordion title="Monthly Championships">
-    - Grand prizes denominated in $SERA
-    - Multiple categories voted on by the community
-    - Special rewards for top performers
-    - On-chain records of all standings and achievements
-  </Accordion>
-</AccordionGroup>
-
-## Quality Guidelines
-
-### Best Practices
+### Data Protection Flow
 
 <Steps>
-  1. **Natural Conversations**
-     Keep dialogues authentic and purposeful.
+  1. **Local Encryption**
+     - Personal data encrypted in Chrome extension
+     - Uses AES-256 encryption
+     - Keys never leave user device
 
-  2. **Diverse Topics**
-     Cover various subjects and use cases.
+  2. **Walrus Storage**
+     - Data split using Red Stuff encoding
+     - Encrypted slivers distributed across nodes
+     - Redundancy ensures 99.9% availability
 
-  3. **Meaningful Depth**
-     Provide detailed, thoughtful reasoning.
-
-  4. **Cross-Model Interaction**
-     Compare and contrast responses from different AI models for richer insights.
+  3. **On-Chain Records**
+     - Only hashes and metadata stored on SUI
+     - No personal data on-chain
+     - Pseudonymous wallet addresses
 </Steps>
 
-### Content Standards
+### Security Measures
 
 <CardGroup cols={2}>
-  <Card title="Recommended" icon="check">
-    - • Technical discussions
-    - • Problem-solving scenarios
-    - • Creative explorations
-    - • Educational content
-    - • Research-oriented queries
+  <Card title="Extension Security" icon="shield">
+    - • Regular security audits
+    - • Sandboxed operations
+    - • Local-only key storage
   </Card>
-  <Card title="Not Allowed" icon="xmark">
-    - • Personal/sensitive information
-    - • Harmful or hateful content
-    - • Duplicate or spammy submissions
-    - • Automated messages without disclosure
-    - • Manipulative or deceptive behavior
+  
+  <Card title="Storage Security" icon="database">
+    - • Walrus Byzantine fault tolerance
+    - • Distributed storage nodes
+    - • Encrypted data transmission
+    - • Periodic integrity checks
   </Card>
 </CardGroup>
 
-## Privacy & Security
-
-### Data Protection
-
-<Check>End-to-end encryption of sensitive metadata</Check>
-<Check>Anonymous, pseudonymous contributions via SUI addresses</Check>
-<Check>Selective data sharing controls</Check>
-<Check>Data sovereignty with user-defined storage preferences</Check>
-
-### User Controls
+## Contact & Resources
 
 <CardGroup cols={2}>
-  <Card title="Privacy Settings" icon="shield">
-    - • Contribution visibility toggles
-    - • Data usage preferences (on-chain vs. off-chain)
-    - • Identity protection measures
-    - • Export controls for your contribution history
+  <Card title="Developer Resources" icon="code">
+    - • [GitHub Repository](https://github.com/sera)
+    - • [API Documentation](https://docs.sera.xyz/api)
+    - • [Integration Guide](https://docs.sera.xyz/integration)
   </Card>
-  <Card title="Security Features" icon="lock">
-    - • 2FA and multi-sig wallet support
-    - • Session management tools
-    - • Activity monitoring with on-chain logs
-    - • Fine-grained access controls defined by smart contracts
-  </Card>
-</CardGroup>
 
-## Support & Resources
-
-<CardGroup cols={2}>
-  <Card title="Help Center" icon="circle-question">
-    Access FAQs and guides
-  </Card>
-  <Card title="Community" icon="discord">
-    Join our Discord community
-  </Card>
-  <Card title="Updates" icon="bell">
-    Stay informed about new features
-  </Card>
-  <Card title="Tutorials" icon="graduation-cap">
-    Learn optimization strategies
+  <Card title="Community" icon="users">
+    - • [Discord Server](https://discord.gg/sera)
+    - • [Forum](https://forum.sera.xyz)
+    - • [Blog](https://blog.sera.xyz)
   </Card>
 </CardGroup>
 
 <Note>
-Need help? Contact our support team at support@sera.xyz or join our [Discord community](https://discord.gg/datasphere).
-</Note> 
+For technical support or integration questions, please contact our developer team at dev@sera.xyz
+</Note>

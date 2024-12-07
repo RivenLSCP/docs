@@ -7,63 +7,93 @@ description: 'Get started with Sera in minutes'
 
 ### Browser Extension
 
-1. **Access the Chrome Web Store**: Navigate to the [Chrome Web Store](https://chrome.google.com/webstore).
-2. **Search for Our AI-To-Earn Extension**: Enter "Sera AI-To-Earn" in the search bar.
-3. **Add Extension**: Click on "Add to Chrome" to install the extension.
-4. **Setup**: Once installed, open the extension and follow the on-screen instructions to connect your SUI wallet and optional Walrus gateway. Your SUI wallet ensures trustless interaction with on-chain records and $SERA token rewards.
+1. **Install from Chrome Web Store**: Add the Sera AI Data Extension from the [Chrome Web Store](https://chrome.google.com/webstore)
+2. **Connect Wallet**: Link your SUI wallet to start earning from AI conversations
+3. **Configure Settings**: Set your data sharing preferences and notification options
+
+<Note>
+The extension only captures AI conversations after explicit user consent and confirmation.
+</Note>
 
 ## Getting Started
 
 <AccordionGroup>
   <Accordion icon="wallet" title="Connect Your Wallet">
-    To receive $SERA rewards and participate in the decentralized marketplace, connect your SUI-compatible crypto wallet. Supported wallets include:
-    - **Sui Wallet**
-    - **OKX Wallet**
-    - **Other SUI-compatible wallets (via WalletConnect)**
-
-    By connecting your wallet, you'll be able to store and manage $SERA tokens, sign transactions, and reference on-chain data assets.
+    Connect your SUI wallet to receive rewards and trade data:
+    
+    - **Sui Wallet** (Recommended)
+    - **Other SUI-compatible wallets**
+    
+    Your wallet address will be used to:
+    - Track your data contributions
+    - Receive $SERA tokens
+    - Access the marketplace
   </Accordion>
   
-   <Accordion icon="message" title="Start Contributing Data">
-    1. **Engage with Supported AI Models**: Open AI platforms integrated with our system. Begin meaningful, diverse, and high-quality conversations.
-    2. **Automatic On-Chain Tracking**: The extension monitors your eligible AI interactions off-chain, then securely records a proof of contribution on the SUI blockchain.
-    3. **Earn Points Before Conversion**: As you contribute, you accumulate quality and value scores off-chain. These are periodically committed on-chain to convert into $SERA tokens.
+   <Accordion icon="message" title="Contributing Data">
+    1. **Enable Collection**: Toggle data collection when chatting with supported AI models
+    2. **Quality Standards**:
+       - Conversations must be original
+       - Minimum length requirements apply
+       - Automated quality checks performed
+    3. **Processing Flow**:
+       - Data is stored in Walrus
+       - Metadata recorded on SUI blockchain
+       - Rewards distributed after validation
   </Accordion>
 
   <Accordion icon="coins" title="Earn Rewards">
-    Rewards are calculated using the formula:
+    Rewards are calculated using verifiable on-chain parameters:
 
     $$
-R = \alpha \cdot Q(c) \cdot V(s) \cdot e^{-\lambda t} \cdot \biggl(1 + \sum \beta_i M_i\biggr)
-$$
+    R = α · Q(c) · M(t) · V(i) · (1 + B)
+    $$
 
-Where:
-- $Q(c)$: **Quality Score** (assessed off-chain, anchored on-chain)
-- $V(s)$: **Value Score** (uniqueness & significance logged on-chain)
-- $M$: **Model-specific multipliers** (1.0–2.0x, stored on-chain for transparency)
-- $α, \lambda, \beta_i$: Parameters defined and governed by on-chain contracts
+    Where:
+    - $α$ (alpha): Base rate defined in smart contract
+    - $Q(c)$: Quality score (0.1 to 1.0)
+    - $M(t)$: Model tier multiplier (1.0x - 1.5x)
+    - $V(i)$: Volume multiplier (1.0x - 1.5x)
+    - $B$: Bonus multipliers (referrals, streaks)
 
-Additional bonuses are available through referral programs and quest systems, with all incentives and completions verifiable on the SUI blockchain.
-
+    Example Calculation:
+    ```typescript
+    interface RewardParams {
+        baseRate: number;          // α: Set in smart contract
+        qualityScore: number;      // Q(c): 0.1 to 1.0
+        modelTier: number;         // M(t): 1.0x to 1.5x
+        volumeMultiplier: number;  // V(i): 1.0x to 1.5x
+        bonusMultiplier: number;   // B: Based on referrals/streaks
+    }
+    ```
   </Accordion>
 </AccordionGroup>
+## Data Flow
 
+```mermaid
+graph LR
+    A[User Chat] --> B[Extension]
+    B --> C[Quality Check]
+    C --> D[Walrus Storage]
+    D --> E[SUI Blockchain]
+    E --> F[Reward Distribution]
+```
 ## Next Steps
 
 <CardGroup>
   <Card
-    title="Explore the Marketplace"
+    title="Trade Data"
     icon="store"
     href="/features/marketplace"
   >
-    Buy and sell AI data assets on our decentralized marketplace
+    Access the decentralized data marketplace
   </Card>
   
   <Card
-    title="Developer Tools"
+    title="Developer API"
     icon="code"
     href="/technical/architecture"
   >
-    Access our APIs and development tools
+    Integrate Sera into your applications
   </Card>
 </CardGroup>

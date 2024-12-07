@@ -5,30 +5,30 @@ description: 'Comprehensive tools for AI development, training, and model hostin
 
 ## Overview
 
-Our AI Tools Suite offers a holistic environment for AI developers to build, train, and deploy models. On-chain references (via SUI) ensure transparency, immutability, and governance, while Walrus delivers decentralized storage of datasets and model artifacts. Off-chain compute nodes handle training and inference workloads, and the entire system is orchestrated to provide a seamless developer experience.
+Our AI Tools Suite provides essential infrastructure for AI developers to build and deploy models in a decentralized environment. We leverage Sui blockchain for transparent governance and payment processing, while using Walrus for efficient, decentralized storage of datasets and model artifacts. The system combines on-chain and off-chain components to deliver a practical developer experience.
 
 ## Key Features
 
 <CardGroup cols={2}>
   <Card title="Model Training" icon="dumbbell">
-    - • Distributed training with off-chain compute resources
-    - • Automatic hyperparameter tuning (off-chain) with on-chain result anchoring
-    - • Real-time monitoring of training progress, hashed and recorded on-chain for verifiability
+    - • Distributed training infrastructure with verifiable compute resources
+    - • Training metadata and results stored on Sui for auditability
+    - • Model checkpoints stored in Walrus with CIDs recorded on-chain
   </Card>
   <Card title="Model Hosting" icon="cloud">
-    - • Auto-scaling infrastructure off-chain, with policy references on-chain
-    - • Load balancing rules stored on-chain, enforced off-chain
-    - • Version control: each model version’s CID and metadata recorded on SUI
+    - • Dedicated inference infrastructure with usage tracking
+    - • Model versions and metadata recorded on Sui
+    - • Model artifacts stored in Walrus with redundancy
   </Card>
   <Card title="Data Processing" icon="gears">
-    - • Automated preprocessing tasks off-chain, referencing input data from Walrus
-    - • Data validation with cryptographic proofs anchored on SUI
-    - • Format conversion performed off-chain, metadata updated on-chain
+    - • Dataset preprocessing with results stored in Walrus
+    - • Dataset CIDs and metadata recorded on Sui
+    - • Automated format validation and conversion
   </Card>
   <Card title="Monitoring" icon="chart-line">
-    - • Performance metrics aggregated off-chain, integrity hashes stored on SUI
-    - • Resource utilization (GPU, CPU, Memory) tracked and periodically anchored on-chain
-    - • Cost tracking and optimization suggestions, final summaries logged on SUI 
+    - • Usage metrics recorded on Sui for transparency
+    - • Resource utilization tracking for billing
+    - • Cost analytics and optimization recommendations
   </Card>
 </CardGroup>
 
@@ -36,7 +36,7 @@ Our AI Tools Suite offers a holistic environment for AI developers to build, tra
 
 ### Training Client
 
-The training process occurs off-chain, but training parameters, dataset references (CID from Walrus), and final model checkpoints are recorded on SUI for transparency and reproducibility:
+The training process leverages our compute infrastructure while maintaining transparency through Sui and Walrus:
 
 ```python
 from sera.training import TrainingClient
@@ -44,48 +44,46 @@ from sera.training import TrainingClient
 # Initialize training client
 client = TrainingClient(
     model_type="transformer",
-    dataset_id="sera://datasets/my-dataset"
+    dataset_cid="walrus://datasets/my-dataset"  # Reference to Walrus-stored dataset
 )
 
-# Configure training parameters
+# Configure training
 client.configure(
     batch_size=32,
     learning_rate=3e-4,
-    epochs=10,
-    optimizer="adam"
+    epochs=10
 )
 
-# Start training
-client.train(
-    distributed=True,
-    nodes=4,
+# Start training - checkpoints stored in Walrus, metadata on Sui
+training_job = client.train(
+    compute_tier="gpu-standard",  # Specifies compute resources
     checkpoint_interval=1000
 )
 ```
 
 ### Model Deployment
 
-Model deployment occurs off-chain, but references, scaling rules, and version history are recorded and enforced via SUI smart contracts. The model weights and artifacts are stored in Walrus:
+Model deployment occurs off-chain, but references and version history are recorded via SUI smart contracts. The model weights and artifacts are stored in Walrus:
 
 ```python
-from sera.deployment import ModelDeployment
+from sera.deployment import ModelDeployment 
 
-# Deploy model (model references and version CIDs stored on-chain)
+# Deploy model using Walrus CID and Sui package reference
 deployment = ModelDeployment(
-    model_cid="walrus://cid_of_model_artifacts",
+    model_cid="walrus://models/my-model",  
     sui_package_id="0x...package_id",
     version="1.0.0"
 )
 
-# Configure auto-scaling (policy defined on-chain)
+# Configure basic scaling rules
 deployment.configure(
-    min_instances=2,
-    max_instances=10,
-    scaling_metric="cpu_utilization",
-    scaling_threshold=0.8
+    min_instances=1,
+    max_instances=5,
+    scaling_metric="requests_per_second",
+    scaling_threshold=100
 )
 
-# Start deployment off-chain, with results and statuses hashed and anchored to SUI
+# Start deployment
 deployment.start()
 ```
 
@@ -93,63 +91,76 @@ deployment.start()
 
 <AccordionGroup>
   <Accordion title="Secure Training Environment">
-    - Isolated off-chain compute resources with on-chain policy enforcement
-    - Encrypted data transmission between Walrus and compute nodes
-    - Access control policies stored and validated on-chain
-    - Detailed audit logs hashed and anchored to SUI for transparency
+    - Isolated compute resources with access control
+    - Encrypted data transmission between storage and compute nodes
+    - Access policies validated through Sui smart contracts
+    - Training logs stored in Walrus with references on Sui
   </Accordion>
   
   <Accordion title="Model Protection">
-    - Model artifacts encrypted at rest in Walrus
-    - Secure model serving with keys managed off-chain, references on-chain
-    - Version control ensures each model version is traceable on SUI
-    - Fine-grained access management (on-chain roles and permissions)
+    - Model artifacts stored in Walrus with encryption
+    - Access control managed through Sui smart contracts
+    - Version history tracked on-chain
+    - Role-based permissions enforced by smart contracts
   </Accordion>
 </AccordionGroup>
 
 ## Integration Support
 
-### Initially Supported Frameworks
-- PyTorch (off-chain integration, parameters recorded on-chain)
-- Hugging Face Transformers (metadata and versioning recorded on SUI, weights on Walrus)
+### Supported Frameworks
+- PyTorch (model weights stored in Walrus)
+- Hugging Face Transformers (model files stored in Walrus)
+- ONNX format support for standardized model export
 
-### API Endpoints (Off-Chain)
+### API Endpoints
 
-For triggering operations, you’ll interact with off-chain APIs that internally reference SUI state and Walrus CIDs:
+Our REST APIs provide access to the platform's core functionality:
 
 <ResponseField name="Training API" type="POST">
-  Start a new training job (off-chain)
+  Start a new training job
   ```bash
   POST /api/v1/training/start
+  {
+    "model_type": "transformer",
+    "dataset_cid": "walrus://datasets/my-dataset",
+    "sui_address": "0x..."
+  }
   ```
 </ResponseField>
 
 <ResponseField name="Deployment API" type="POST">
-  Deploy a trained model(off-chain)
+  Deploy a trained model
   ```bash
   POST /api/v1/deployment/create
+  {
+    "model_cid": "walrus://models/my-model",
+    "sui_package_id": "0x...",
+    "version": "1.0.0"
+  }
   ```
 </ResponseField>
-
-These endpoints rely on SUI for parameter referencing and Walrus for data storage, ensuring trustless verification of what’s being trained or deployed.
 
 ## Available Resources
 
 ### Computing Options
 <CardGroup cols={2}>
   <Card title="GPU Resources" icon="microchip">
-    - • Consumer-grade GPUs (RTX) and mid-range (T4) available off-chain
-    - • SUI records GPU resource usage and policies
+    - • Managed GPU clusters (NVIDIA A100, A6000)
+    - • Usage tracking via Sui smart contracts
+    - • Pay-per-use billing with $SERA tokens
   </Card>
   <Card title="CPU Options" icon="server">
-    - • General-purpose and basic compute nodes off-chain
-    - • Scalability rules stored on-chain, orchestrated off-chain
+    - • General-purpose compute nodes for inference
+    - • Automated scaling based on demand
+    - • Resource allocation tracked on-chain
   </Card>
 </CardGroup>
 
-### Storage
-- Standard SSD storage off-chain for ephemeral data
-- Walrus object storage for long-term dataset and model artifact persistence (CIDs recorded on SUI)
+### Storage Architecture
+- Primary storage via Walrus for datasets and model artifacts
+- CIDs and metadata recorded on Sui blockchain
+- Automatic garbage collection for expired data
+- Content-addressed storage for deduplication
 
 ## Monitoring & Analytics
 
@@ -157,28 +168,72 @@ These endpoints rely on SUI for parameter referencing and Walrus for data storag
   <img src="/images/monitoring-dashboard.png" alt="Monitoring Dashboard" />
 </Frame>
 
-- Real-time performance metrics collected off-chain, aggregated, and periodically committed on-chain
-- Resource utilization (CPU/GPU) displayed in a dashboard, with final monthly usage logs hashed and recorded on SUI
-- Training progress visualization with key checkpoints and metrics anchored on-chain
+Our monitoring system provides:
+- Real-time compute resource utilization metrics
+- Training progress and model performance tracking
+- Cost analysis and resource optimization insights
+- Usage analytics for deployed models
+
+### Data Flow
+```mermaid
+graph LR
+    A[Client] --> B[API Gateway]
+    B --> C[Compute Cluster]
+    C --> D[Walrus Storage]
+    C --> E[Sui Blockchain]
+    D --> E
+```
 
 ## Getting Started
 
 <Steps>
   1. **Create Account**
-     Register your SUI address and get initial permissions. Acquire testnet or mainnet $SUI for transactions.
+     - Register your Sui wallet address
+     - Acquire $SERA tokens for service payments
+     - Set up API credentials
 
   2. **Install SDK**
      ```bash
      pip install sera-ai
      ```
-     The SDK provides commands to interact with Walrus and off-chain endpoints, referencing SUI state.
+     The SDK provides interfaces to:
+     - Interact with Walrus storage
+     - Manage training jobs
+     - Deploy models
+     - Track resource usage
 
   3. **Configure Access**
-     Set up your API keys for off-chain services, store them securely. Associate your SUI wallet or keys for signing on-chain references.
+     ```python
+     from sera import Client
+     
+     client = Client(
+         sui_address="0x...",
+         api_key="your_api_key",
+         environment="mainnet"
+     )
+     ```
 
-  4. **Deploy Your First Model**
-     Follow the quickstart guide to upload data to Walrus, train a model off-chain, and record final references on SUI for a trustless and verifiable deployment.
+  4. **Start Development**
+     - Upload datasets to Walrus
+     - Train models using our compute resources
+     - Deploy models for inference
+     - Monitor usage and costs
 </Steps>
+
+## Pricing
+
+Our platform uses a pay-as-you-go model with $SERA tokens:
+
+| Resource | Unit | Price ($SERA) |
+|----------|------|---------------|
+| GPU Training (A100) | Hour | TBD |
+| GPU Training (A6000) | Hour | TBD |
+| CPU Inference | Million requests | TBD |
+| Walrus Storage | GB/Month | Free |
+
+- All costs are paid in $SERA tokens
+- Storage costs are subsidized  
+- Volume discounts available for enterprise users
 
 <Note>
 We're currently in beta, and features are being actively developed. Join our [Discord community](https://discord.gg/sera_gg) to provide feedback and stay updated on our progress.

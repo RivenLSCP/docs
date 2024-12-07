@@ -1,38 +1,30 @@
 ---
 title: 'HuggingFace Integration'
-description: 'Seamlessly integrate HuggingFace models and datasets with Sera'
+description: 'Store HuggingFace models and datasets using Walrus storage'
 ---
 
 ## Overview
 
-Our SUI-based AI infrastructure is designed to integrate smoothly with the HuggingFace ecosystem. You can import models and datasets hosted on HuggingFace into your off-chain environment, store them on Walrus, and record metadata references on SUI smart contracts for auditability and trust. This combination provides a secure, transparent, and scalable approach to working with HuggingFace assets.
+This integration enables storing HuggingFace models and datasets in Walrus's decentralized storage network while managing metadata through SUI smart contracts. The system operates in three parts:
 
-## Features
+1. Off-chain HuggingFace data retrieval service
+2. Walrus blob storage with Red Stuff encoding
+3. SUI-based metadata management
+
+## Architecture
 
 <CardGroup cols={2}>
-  <Card title="Model Import" icon="file-import">
-    - • Off-chain direct model importing from HuggingFace
-    - • On-chain version tracking and references
-    - • Automatic off-chain model conversion steps
-    - • Metadata preservation recorded on SUI
+  <Card title="Storage Layer" icon="database">
+    - • Models/datasets stored as encoded blobs in Walrus
+    - • Red Stuff encoding for data redundancy
+    - • Minimum of 2f+1 storage nodes for Byzantine fault tolerance
+    - • Epoch-based availability guarantees
   </Card>
-  <Card title="Dataset Management" icon="database">
-    - • Batch off-chain dataset importing
-    - • Progress monitoring and checkpointing
-    - • Resume capabilities for large datasets
-    - • Format conversion and metadata tracking off-chain, with CID references on-chain
-  </Card>
-  <Card title="Access Control" icon="key">
-    - • Private model and dataset references stored on SUI
-    - • Token-based authentication (HuggingFace tokens off-chain)
-    - • On-chain access management policies
-    - • Usage tracking and audit logs anchored on SUI 
-  </Card>
-  <Card title="Optimization" icon="gauge-high">
-    - • Performance tuning off-chain (e.g., quantization, batch size)
-    - • Resource optimization guided by off-chain compute nodes
-    - • Caching strategies using Walrus and local caches
-    - • Batch processing pipelines off-chain, with final references on-chain
+  <Card title="Control Layer" icon="gear">
+    - • Metadata stored in SUI smart contracts
+    - • Blob registration and lifecycle management
+    - • Storage space allocation tracking
+    - • Access control management
   </Card>
 </CardGroup>
 
@@ -41,112 +33,144 @@ Our SUI-based AI infrastructure is designed to integrate smoothly with the Huggi
 ### Prerequisites
 
 <Steps>
-  1. **HuggingFace Account**
-     Create an account at [HuggingFace](https://huggingface.co) and identify the models/datasets you want to use.
+  1. **HuggingFace Setup**
+     Create an account and get your access token from [HuggingFace](https://huggingface.co)
 
-  2. **Access Token**
-     Generate a HuggingFace access token for private repositories. This token will be used off-chain and never stored on SUI.
-
-  3. **Sera SDK**
-     Install the Sera SDK:
+  2. **Walrus Configuration**
      ```bash
-     pip install sera-ai[huggingface]
+     # Install the SDK
+     pip install sera-sdk
+     
+     # Configure Walrus endpoint
+     export WALRUS_ENDPOINT="https://walrus-gateway.example.com"
+     ```
+
+  3. **SUI Setup**
+     ```bash
+     # Configure SUI connection
+     export SUI_RPC_URL="https://sui-rpc.example.com"
+     export SUI_PACKAGE_ID="0x..." # Your deployed package ID
      ```
 </Steps>
 
-## Model Integration
-### Importing Models
-All model weights and files remain off-chain (stored in Walrus), while SUI maintains references and metadata:
+### Basic Usage
+
 ```python
-from sera.integrations.huggingface import ModelImporter
+from sera.storage import WalrusClient
+from sera.huggingface import HFDownloader
+from sera.sui import MetadataManager
 
-# Initialize importer with HuggingFace token (off-chain)
-importer = ModelImporter(
-    hf_token="your_huggingface_token",
-    walrus_gateway="https://walrus-gateway.example.com",
-    sui_package_id="0x...package_id"
+# Initialize clients
+walrus = WalrusClient()
+hf_downloader = HFDownloader(token="your_hf_token")
+metadata = MetadataManager()
+
+# 1. Download model from HuggingFace (off-chain)
+model_path = hf_downloader.download("bert-base-uncased")
+
+# 2. Store in Walrus with Red Stuff encoding
+blob_id = walrus.store_blob(
+    file_path=model_path,
+    epochs=12,  # Store for 12 epochs
+    min_nodes=7  # 2f+1 where f=3
 )
 
-# Import a public model
-model_id = importer.import_model(
-    repo_id="bert-base-uncased",
-    framework="pytorch",
-    task="text-classification"
-)
-
-# Import a model with custom configuration
-model_id = importer.import_model(
-    repo_id="gpt2",
-    config={
-        "quantization": "int8",
-        "device_map": "auto",
-        "max_memory": {0: "10GB"}
-    }
+# 3. Register metadata on SUI
+await metadata.register_model(
+    blob_id=blob_id,
+    model_name="bert-base-uncased",
+    version="1.0",
+    size_bytes=model_path.stat().st_size
 )
 ```
-This process:
-- Fetches model files from HuggingFace off-chain.
-- Stores model artifacts in Walrus, returning a CID.
-- Records the CID, version, and metadata on SUI for reference and governance.
 
-### Model Management
+## Model Management
 
-<AccordionGroup> 
-  <Accordion title="Version Control"> 
-    You can maintain multiple versions of the same model by specifying the revision:
-    ```python
-    # Get model versions
-    versions = importer.list_versions("bert-base-uncased")
-    
-    # Import specific version
-    model_id = importer.import_model(
-        repo_id="bert-base-uncased",
-        revision="v2.0"
-    )
-    ```
-  </Accordion>
-  
-  <Accordion title="Private Models">
-  For private models, ensure your HuggingFace token has the correct permissions. The token remains off-chain, only references are stored on SUI:
-    ```python
-    # Import private model
-    model_id = importer.import_model(
-        repo_id="organization/private-model",
-        private=True,
-        hf_token="your_token"
-    )
-    ```
-  </Accordion>
-</AccordionGroup>
+### Storing Models
+
+Models are stored using Walrus's Red Stuff encoding protocol, which provides efficient storage with high availability:
+
+```python
+from sera.storage import WalrusClient, StorageConfig
+from sera.utils import BlobPreprocessor
+
+# Configure storage parameters
+storage_config = StorageConfig(
+    min_storage_nodes=7,    # 2f+1 where f=3 for Byzantine fault tolerance
+    epochs=12,              # Number of epochs to store
+    redundancy_level=2      # Uses Red Stuff encoding with 2D redundancy
+)
+
+# Preprocess model for efficient storage
+preprocessor = BlobPreprocessor()
+processed_model = preprocessor.prepare_model_files(
+    model_path="./downloaded_model",
+    chunk_size=64*1024*1024  # 64MB chunks for optimal Walrus storage
+)
+
+# Store model with Red Stuff encoding
+blob_id = walrus.store_blob(
+    data=processed_model,
+    config=storage_config
+)
+
+# Verify storage across nodes
+storage_proof = walrus.verify_storage(blob_id)
+```
+
+### Reading Models
+
+Reading models requires coordination with Walrus storage nodes and proper handling of Red Stuff encoded data:
+
+```python
+from sera.storage import WalrusReader
+from sera.utils import ModelReconstructor
+
+# Initialize reader with proper Byzantine fault tolerance settings
+reader = WalrusReader(
+    min_honest_nodes=4,  # f+1 nodes needed for reconstruction
+    timeout=30           # Seconds to wait for node responses
+)
+
+# Read encoded blob from Walrus
+encoded_data = reader.read_blob(blob_id)
+
+# Reconstruct model from encoded data
+reconstructor = ModelReconstructor()
+model_path = reconstructor.reconstruct_model(
+    encoded_data,
+    output_dir="./reconstructed_model"
+)
+```
 
 ## Dataset Integration
+
 ### Importing Datasets
-Similarly, datasets are processed off-chain and stored in Walrus, with references recorded on SUI:
+
+Datasets are processed off-chain and stored in Walrus with metadata on SUI:
 
 ```python
 from sera.integrations.huggingface import DatasetImporter
 
-# Initialize dataset importer (off-chain)
+# Initialize dataset importer
 importer = DatasetImporter(
-    walrus_gateway="https://walrus-gateway.example.com",
-    sui_package_id="0x...package_id"
+    walrus_client=walrus,
+    chunk_size=64*1024*1024  # 64MB chunks
 )
 
-# Import dataset (off-chain)
-dataset_id = importer.import_dataset(
+# Import dataset
+dataset_id = await importer.import_dataset(
     repo_id="squad",
     split="train",
-    cache_dir="./cache"
+    storage_config=storage_config
 )
 
-# Apply transformations off-chain before storing in Walrus
-dataset_id = importer.import_dataset(
-    repo_id="squad",
-    transforms=[
-        ("select_columns", {"columns": ["question", "answer"]}),
-        ("rename_column", {"old": "question", "new": "input"}),
-        ("filter", {"column": "input", "min_length": 10})
-    ]
+# Register dataset metadata on SUI
+await metadata.register_dataset(
+    blob_id=dataset_id,
+    dataset_name="squad",
+    split="train",
+    size_bytes=importer.get_size()
 )
 ```
 
@@ -154,62 +178,49 @@ dataset_id = importer.import_dataset(
 
 <CardGroup cols={2}>
   <Card title="Resume Support" icon="rotate-right">
-    If a large dataset import gets interrupted, you can resume from a checkpoint:
+    Support for resuming interrupted imports:
     ```python
-    importer.import_dataset(
+    dataset_id = await importer.import_dataset(
         repo_id="large-dataset",
-        resume_from_checkpoint=True
+        resume_from=checkpoint_id
     )
     ```
   </Card>
   <Card title="Progress Tracking" icon="bars-progress">
-    Provide a callback function to track progress off-chain:
+    Track progress with callbacks:
     ```python
-    importer.import_dataset(
+    def progress_callback(bytes_processed, total_bytes):
+        progress = (bytes_processed / total_bytes) * 100
+        print(f"Progress: {progress:.2f}%")
+        
+    await importer.import_dataset(
         repo_id="large-dataset",
-        progress_callback=my_callback
+        progress_callback=progress_callback
     )
     ```
   </Card>
 </CardGroup>
 
 ## Advanced Features
-### Custom Processing Pipelines
-You can define custom processing steps off-chain to tokenize, encode, and format data before storing in Walrus and referencing on SUI:
-```python
-from sera.integrations.huggingface import Pipeline
 
-# Define custom processing pipeline
-pipeline = Pipeline()
-    .add_step("tokenize", tokenizer="bert-base-uncased")
-    .add_step("encode", max_length=512)
-    .add_step("format", output_format="torch")
-
-# Import with pipeline
-dataset_id = importer.import_dataset(
-    repo_id="squad",
-    pipeline=pipeline
-)
-```
-
-### Optimization Settings
+### Storage Optimization
 
 <CardGroup cols={2}>
   <Card title="Memory Management" icon="memory">
-    Manage off-chain memory usage and caching strategies:
+    Configure memory usage for large datasets:
     ```python
     importer.configure(
         max_memory="16GB",
-        disk_cache=True
+        use_disk_buffer=True
     )
     ```
   </Card>
   <Card title="Performance Tuning" icon="gauge">
-    Tune parameters for efficient processing off-chain:
+    Optimize processing parameters:
     ```python
     importer.configure(
-        batch_size=32,
-        num_workers=4
+        chunk_size=32*1024*1024,  # 32MB chunks
+        concurrent_uploads=4
     )
     ```
   </Card>
@@ -218,82 +229,108 @@ dataset_id = importer.import_dataset(
 ## Error Handling
 
 ```python
-from sera.integrations.huggingface import HuggingFaceError
+from sera.exceptions import (
+    WalrusStorageError,
+    HuggingFaceError,
+    SuiTransactionError
+)
 
 try:
-    model_id = importer.import_model("invalid-model")
+    # Attempt to store model
+    blob_id = await walrus.store_blob(processed_model)
+except WalrusStorageError as e:
+    if e.code == "insufficient_storage_nodes":
+        # Not enough available storage nodes
+        logger.error("Network capacity issue: %s", e)
+    elif e.code == "encoding_failed":
+        # Red Stuff encoding failed
+        logger.error("Processing error: %s", e)
 except HuggingFaceError as e:
     if e.code == "model_not_found":
-        # Handle missing model
-        pass
-    elif e.code == "permission_denied":
-        # Handle authentication issues
-        pass
+        logger.error("Model does not exist: %s", e)
+    elif e.code == "rate_limit":
+        # Implement exponential backoff
+        await handle_rate_limit(e)
+except SuiTransactionError as e:
+    if e.code == "insufficient_gas":
+        logger.error("Increase gas budget: %s", e)
+    elif e.code == "metadata_registration_failed":
+        # Handle metadata registration failure
+        await handle_metadata_failure(e)
 ```
-All errors are handled off-chain. Relevant error summaries or statuses can be recorded on-chain if necessary.
 
 ## Best Practices
+
 ### Performance Optimization
 
 <Steps>
-  1. **Caching Strategy**
-     Use disk or memory caching off-chain and store final CIDs on SUI.
-     Ensure frequent assets are cached close to compute resources.
-  2. **Batch Processing**
-     Batch size tuning improves throughput off-chain.
-     Update references on-chain after processing completion.
+  1. **Chunking Strategy**
+     - Use 64MB chunks for optimal Red Stuff encoding
+     - Process large files in streaming mode
+     - Implement resumable uploads for reliability
+  
+  2. **Network Efficiency**
+     - Cache frequently accessed models locally
+     - Use compression for network transfers
+     - Implement connection pooling for multiple requests
+  
   3. **Resource Management**
-     Monitor memory and compute usage off-chain.
-     Off-chain services can autoscale or reassign tasks; record final state on SUI.
-  4. **Error Handling**
-     Off-chain retries and fallback logic.
-     On-chain store logs of critical errors for auditability.
+     - Monitor memory usage during encoding
+     - Implement graceful degradation under load
+     - Use disk buffering for large datasets
+  
+  4. **Error Recovery**
+     - Implement exponential backoff for retries
+     - Store intermediate states for long operations
+     - Log detailed error information for debugging
 </Steps>
 
 ### Security Considerations
 
-<Check>Store HuggingFace tokens in environment variables (off-chain).</Check>
-<Check>Implement strict on-chain access controls for model/dataset references.</Check>
-<Check>Rotate tokens regularly and update references on SUI.</Check>
-<Check>Audit logs and events anchored to SUI.</Check>
-<Cross>Do not hardcode credentials in code.</Cross>
-<Cross>Do not share tokens between insecure environments.</Cross>
+<Check>Store API tokens securely using environment variables or secret management systems</Check>
+<Check>Validate all input data before storage operations</Check>
+<Check>Implement proper access control for model/dataset access</Check>
+<Check>Monitor and log all storage operations for audit purposes</Check>
+<Cross>Do not store sensitive credentials in code or version control</Cross>
+<Cross>Do not share API tokens between environments</Cross>
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title="Common Issues">
-    - Token authentication failures (check your HuggingFace token)
-    - Resource limitations (adjust batch sizes, memory settings)
-    - Network connectivity problems (verify your off-chain environment)
-    - Version conflicts (ensure correct model/dataset revisions)
+  <Accordion title="Storage Issues">
+    - **Node Availability**: Ensure minimum required nodes (2f+1) are available
+    - **Encoding Failures**: Verify input data integrity and chunk sizes
+    - **Network Timeouts**: Check network connectivity and retry with backoff
+    - **Resource Exhaustion**: Monitor memory and storage usage
   </Accordion>
   
-  <Accordion title="Solutions">
-    - Verify token permissions and refresh tokens if necessary.
-    - Check resource availability and scaling options off-chain.
-    - Test and debug network connectivity.
-    - Ensure version compatibility before importing references on-chain.
+  <Accordion title="Common Solutions">
+    - Verify Walrus network status and node health
+    - Check SUI network gas prices and adjust accordingly
+    - Validate HuggingFace API rate limits and quotas
+    - Monitor system resources during large operations
   </Accordion>
 </AccordionGroup>
 
-## Support & Resources
+## Support Resources
 
 <CardGroup cols={2}>
   <Card title="Documentation" icon="book">
-    [HuggingFace Docs](https://huggingface.co/docs)
+    - • [Walrus Documentation](https://docs.walrus.xyz)
+    - • [SUI Developer Portal](https://docs.sui.io)
+    - • [HuggingFace API Docs](https://huggingface.co/docs/api-inference)
   </Card>
   <Card title="Community" icon="users">
-    [Join Discord](https://discord.gg/datasphere)
-  </Card>
-  <Card title="Examples" icon="code">
-    [Sample Code](https://github.com/sera-xyz/examples)
-  </Card>
-  <Card title="Support" icon="headset">
-    [Get Help](mailto:support@sera.xyz)
+    - • [Walrus Discord](https://discord.gg/walrus)
+    - • [SUI Forum](https://forums.sui.io)
+    - • [GitHub Issues](https://github.com/MystenLabs/walrus/issues)
   </Card>
 </CardGroup>
 
 <Note>
-For enterprise support and custom integration solutions, contact our team at enterprise@sera.xyz
-</Note> 
+For production deployments:
+- Monitor epoch transitions in Walrus
+- Implement proper error handling and recovery
+- Set up automated health checks
+- Keep dependencies updated
+</Note>

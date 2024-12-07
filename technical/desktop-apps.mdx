@@ -5,33 +5,33 @@ description: 'Native desktop applications for Windows, macOS, and Linux integrat
 
 ## Overview
 
-We provide cross-platform desktop applications that serve as a powerful GUI client for managing AI data assets referenced on the SUI blockchain and stored off-chain in Walrus. These native applications allow you to:
+We provide cross-platform desktop applications that serve as a client for managing data assets stored in Walrus and referenced on the SUI blockchain. These native applications allow you to:
 
-- Browse and manage datasets and models recorded on SUI
-- Seamlessly fetch or push data to/from Walrus
-- Trigger off-chain workflows, model deployments, and inference tasks
-- Monitor performance, logs, and resource usage
-- Configure on-chain and off-chain settings from a unified interface
+- Browse and manage blob references recorded on SUI
+- Upload and download data to/from Walrus storage nodes
+- Monitor storage node health and blob availability
+- Configure Walrus storage parameters and manage storage contracts
+- Track storage costs and manage storage payments
 
 ## Available Versions
 
 <CardGroup cols={3}>
   <Card title="Windows" icon="windows">
-    - • Size: ~128 MB
+    - • Size: ~80 MB
     - • Windows 10/11 (64-bit)
   </Card>
   <Card title="macOS ARM64" icon="apple">
-    - • Size: ~114 MB
+    - • Size: ~75 MB
     - • For Apple Silicon (M1, M2)
     - • macOS 11+
   </Card>
   <Card title="macOS x64" icon="apple">
-    - • Size: ~120 MB
+    - • Size: ~75 MB
     - • Intel processors
     - • macOS 10.15+
   </Card>
   <Card title="Linux" icon="linux">
-    - • Size: ~126 MB
+    - • Size: ~70 MB
     - • Provided as AppImage
   </Card>
 </CardGroup>
@@ -43,30 +43,27 @@ We provide cross-platform desktop applications that serve as a powerful GUI clie
 <AccordionGroup>
   <Accordion title="Windows">
     - Windows 10 or later (64-bit)
-    - 8GB RAM
-    - 4-core CPU
-    - 500MB free storage
-    - DirectX 11 compatible GPU
-    - SUI CLI or wallet for on-chain operations
+    - 4GB RAM
+    - 2-core CPU
+    - 200MB free storage
+    - SUI wallet for transaction signing
   </Accordion>
   
   <Accordion title="macOS">
     - macOS 10.15+ (Intel) or 11+ (ARM)
-    - 8GB RAM
-    - 4-core CPU
-    - 500MB free storage
-    - Metal-capable GPU
-    - SUI key management support (local keys or integrated wallet)
+    - 4GB RAM
+    - 2-core CPU
+    - 200MB free storage
+    - SUI wallet for transaction signing
   </Accordion>
 
   <Accordion title="Linux">
     - Modern Linux distribution
-    - 8GB RAM
-    - 4-core CPU
-    - 500MB free storage
-    - OpenGL 3.3+ GPU
+    - 4GB RAM
+    - 2-core CPU
+    - 200MB free storage
     - FUSE for AppImage support
-    - SUI CLI or a similar tool for interacting with on-chain references
+    - SUI wallet for transaction signing
   </Accordion>
 </AccordionGroup>
 
@@ -76,16 +73,16 @@ We provide cross-platform desktop applications that serve as a powerful GUI clie
 
 <Steps>
   1. **Download**
-     Get the appropriate version for your OS from [downloads.sera.xyz](https://downloads.sera.xyz)
+     Get the appropriate version for your OS from our official release page
 
   2. **Verify**
-     Check the SHA-256 hash of the downloaded file to ensure integrity.
+     Check the SHA-256 hash of the downloaded file against published values to ensure integrity
 
   3. **Install**
-     Follow OS-specific installation steps. Make sure your SUI CLI or wallet is installed and accessible.
+     Follow OS-specific installation steps below
 
   4. **First Run**
-     On first launch, the app may prompt you to connect your SUI wallet or provide private keys. Complete initial setup, off-chain Walrus gateway configuration, and authentication.
+     Connect your SUI wallet to sign storage transactions and configure your Walrus storage preferences
 </Steps>
 
 ### Platform-Specific Notes
@@ -94,74 +91,96 @@ We provide cross-platform desktop applications that serve as a powerful GUI clie
   <Card title="Windows Installation" icon="windows">
     ```bash
     # Verify hash (PowerShell)
-    Get-FileHash sera-windows.exe -Algorithm SHA256
+    Get-FileHash walrus-desktop.exe -Algorithm SHA256
     
     # Install silently
-    sera-windows.exe /S
+    walrus-desktop.exe /S
     ```
   </Card>
   <Card title="macOS Installation" icon="apple">
     ```bash
     # Verify hash
-    shasum -a 256 Sera.dmg
+    shasum -a 256 WalrusDesktop.dmg
     
     # Install via CLI
-    sudo hdiutil attach Sera.dmg
-    cp -R "/Volumes/Sera/Sera.app" /Applications/
+    sudo hdiutil attach WalrusDesktop.dmg
+    cp -R "/Volumes/WalrusDesktop/WalrusDesktop.app" /Applications/
     ```
   </Card>
 </CardGroup>
 
 ## Features
 
-### Data Management
+### Blob Management
 
 <CardGroup cols={2}>
-  <Card title="Dataset Tools" icon="database">
-    - • Visual exploration of datasets stored off-chain in Walrus 
-    - • On-chain metadata inspection (category, schema, versions)
-    - • Quality analysis aided by off-chain verification tools
-    - • Format conversion steps performed locally or triggered off-chain
+  <Card title="Upload Tools" icon="upload">
+    - • Drag-and-drop interface for blob uploads
+    - • Automatic blob splitting and encoding using Red Stuff
+    - • Progress tracking for large uploads
+    - • Verification of successful storage across nodes
   </Card>
-  <Card title="Model Management" icon="brain">
-    - • On-chain model reference browsing and selection
-    - • Local staging of model weights from Walrus
-    - • Deploy or trigger off-chain inference tasks
-    - • Version control and performance monitoring with on-chain audit records
+  <Card title="Storage Management" icon="database">
+    - • Track blob availability and storage node health
+    - • Monitor storage costs and contract duration
+    - • Manage storage node stake delegation
+    - • View storage proofs and challenge results
   </Card>
 </CardGroup>
 
-### Vector Database Interface
-The desktop app provides a GUI for interacting with off-chain vector databases (ChromaDB) referenced on-chain:
-
-```python
-# Desktop app provides GUI for these operations
-from sera.desktop import VectorDBManager
-
-manager = VectorDBManager()
-# Connect using on-chain references
-manager.connect_to_collection("my_collection") 
-
-# Build queries visually and run them off-chain
-query = manager.build_query(
-    dimensions=768,
-    filters={"category": "tech"}
-)
-results = manager.run_query(query)
-```
-
-### Monitoring Dashboard
+### Storage Dashboard
 
 <Frame>
-  <img src="/images/desktop-dashboard.png" alt="Desktop Dashboard" />
+  ![Storage Dashboard](/images/desktop-dashboard.png)
 </Frame>
-The dashboard displays off-chain metrics (like CPU, GPU usage) and on-chain references to performance baselines, all in one place.
+
+The dashboard provides real-time visibility into:
+- Blob storage status and availability
+- Storage node performance metrics
+- Storage costs and contract durations
+- Stake delegation status
+- Recent storage proofs and challenges
+
+### Wallet Integration
+
+The desktop app integrates with SUI wallets to:
+- Sign storage transactions
+- Manage storage payments
+- Delegate stake to storage nodes
+- Track storage costs and rewards
+
+```typescript
+// Example of how the desktop app interfaces with SUI wallet
+interface WalrusStorageManager {
+  // Upload blob and create storage contract
+  async uploadBlob(
+    blob: Blob,
+    duration: number,  // epochs
+    payment: number    // SUI amount
+  ): Promise<BlobId>;
+
+  // Delegate stake to storage nodes
+  async delegateStake(
+    nodeId: string,
+    amount: number     // SUI amount
+  ): Promise<boolean>;
+
+  // Monitor blob availability
+  async checkBlobStatus(
+    blobId: string
+  ): Promise<{
+    available: boolean,
+    proofTimestamp: number,
+    storageNodesCount: number
+  }>;
+}
+```
 
 ## Configuration
 
-### Settings Management
+### Storage Settings
 
-Manage both on-chain and off-chain settings through the desktop application’s unified config interface. Off-chain settings (like memory and GPU usage) are stored locally; on-chain policies (like access rights, version locks) must be confirmed via your SUI wallet or CLI.
+Manage your Walrus storage preferences and SUI blockchain interactions through the desktop application's configuration interface.
 
 <AccordionGroup>
   <Accordion title="General Settings">
@@ -171,16 +190,23 @@ Manage both on-chain and off-chain settings through the desktop application’s 
       language: "en"
       updates: "automatic"
       telemetry: false
+    storage:
+      default_duration: 30  # epochs
+      auto_renew: true
+      min_storage_nodes: 100
     ```
   </Accordion>
   
-  <Accordion title="Performance Settings">
+  <Accordion title="Network Settings">
     ```yaml
-    performance:
-      cache_size: "2GB"
-      max_memory: "8GB"
-      threads: 4
-      gpu_enabled: true
+    network:
+      max_concurrent_uploads: 5
+      chunk_size: "64MB"
+      retry_attempts: 3
+      timeout: 30000  # ms
+    sui:
+      network: "mainnet"
+      gas_budget: 20000
     ```
   </Accordion>
 </AccordionGroup>
@@ -188,15 +214,17 @@ Manage both on-chain and off-chain settings through the desktop application’s 
 ### Resource Management
 
 <CardGroup cols={2}>
-  <Card title="Memory Settings" icon="memory">
-    - • Configure local caching for quick dataset/model access
-    - • Set memory limits to prevent system overload
-    - • Manage local swap or ephemeral storage
+  <Card title="Storage Management" icon="hard-drive">
+    - • Configure default storage duration
+    - • Set auto-renewal preferences
+    - • Manage storage node selection criteria
+    - • Configure minimum replication factor
   </Card>
-  <Card title="GPU Settings" icon="microchip">
-    - • Select which GPU to use if multiple are available
-    - • Tune memory allocation for model inference tasks off-chain
-    - • Manage power states and performance modes
+  <Card title="Network Settings" icon="network-wired">
+    - • Adjust upload/download concurrency
+    - • Configure chunk sizes for Red Stuff encoding
+    - • Set network timeouts and retry policies
+    - • Manage SUI network gas settings
   </Card>
 </CardGroup>
 
@@ -253,31 +281,84 @@ workflow.schedule(
 ### Authentication
 
 <Steps>
-  1. **Initial Setup**
-     Configure your SUI wallet or CLI for signing on-chain transactions. Store Walrus API keys securely in encrypted local storage.
+  1. **Wallet Connection**
+     Connect your SUI wallet for signing storage transactions and stake delegation
 
   2. **Key Management**
-     Manage private keys off-chain. The desktop app never stores keys on-chain.
+     Secure storage of local configuration and temporary encryption keys
 
-  3. **Session Control**
-     Track active sessions and requests, require re-authentication when needed.
+  3. **Session Management**
+     Automatic session expiry and wallet reconnection requirements
 
-  4. **Audit Logging**
-     Off-chain logs can be hashed and references stored on SUI for auditability.
+  4. **Transaction Signing**
+     All storage operations require explicit wallet approval
 </Steps>
 
 ### Data Protection
 
 <CardGroup cols={2}>
-  <Card title="Local Storage" icon="hard-drive">
-    - • Encrypted local caches of model weights and datasets
-    - • Secure keyrings or OS-provided secure enclaves for API keys
-    - • Data cleanup tools to purge sensitive info
+  <Card title="Local Security" icon="shield-check">
+    - • Encrypted local cache for temporary blob chunks
+    - • Secure storage of configuration data
+    - • Automatic cleanup of temporary files
+    - • Session data protection
   </Card>
-  <Card title="Network Security" icon="shield">
-    - • TLS encryption for connections to Walrus gateways and remote APIs 
-    - • Certificate validation
-    - • Proxy and firewall integration for secure network paths
+  <Card title="Network Security" icon="lock">
+    - • TLS encryption for all node communications
+    - • Verification of storage node identities
+    - • Proof verification for blob retrievals
+    - • Challenge response validation
+  </Card>
+</CardGroup>
+
+## Monitoring
+
+### Storage Health
+
+Monitor the health and availability of your stored blobs:
+
+```typescript
+interface StorageMonitor {
+  // Check blob availability
+  async checkAvailability(blobId: string): Promise<{
+    available: boolean,
+    replicationFactor: number,
+    lastProofTime: number
+  }>;
+
+  // Monitor storage node performance
+  async getNodeMetrics(nodeId: string): Promise<{
+    uptime: number,
+    successfulChallenges: number,
+    totalStake: number,
+    delegatedStake: number
+  }>;
+
+  // Track storage costs
+  async getStorageMetrics(blobId: string): Promise<{
+    epochsRemaining: number,
+    costPerEpoch: number,
+    totalCost: number
+  }>;
+}
+```
+
+### Challenge Monitoring
+
+Track storage proofs and challenges:
+
+<CardGroup cols={2}>
+  <Card title="Proof Tracking" icon="check-circle">
+    - • View latest storage proofs
+    - • Monitor challenge responses
+    - • Track node performance
+    - • Verify data availability
+  </Card>
+  <Card title="Cost Tracking" icon="chart-line">
+    - • Monitor storage costs
+    - • Track stake rewards
+    - • View transaction history
+    - • Analyze storage efficiency
   </Card>
 </CardGroup>
 
@@ -286,34 +367,58 @@ workflow.schedule(
 ### Common Issues
 
 <AccordionGroup>
-  <Accordion title="Installation Issues">
-    - Ensure SUI CLI/wallet is installed and accessible
-    - Check disk space and system dependencie
-    - Run installer with admin privileges if needed
-    - Clear temporary installer files
+  <Accordion title="Upload Issues">
+    - Check network connection stability
+    - Verify sufficient SUI balance for storage fees
+    - Ensure blob size is within network limits
+    - Confirm wallet is properly connected
+    - Verify minimum storage nodes are available
   </Accordion>
   
-  <Accordion title="Performance Issues">
-    - Monitor resource usage via the dashboard
-    - Clear caches if experiencing slowdowns
-    - Update GPU drivers for better performance
-    - Check network stability for Walrus or off-chain compute access
+  <Accordion title="Storage Issues">
+    - Monitor blob availability status
+    - Check storage proof verification
+    - Verify storage duration hasn't expired
+    - Ensure sufficient storage nodes are active
+    - Check stake delegation status
+  </Accordion>
+
+  <Accordion title="Wallet Issues">
+    - Verify SUI wallet connection
+    - Check for sufficient gas balance
+    - Ensure wallet permissions are granted
+    - Verify network selection (mainnet/testnet)
   </Accordion>
 </AccordionGroup>
 
-### Logs & Diagnostics
+### Diagnostic Tools
 
 ```bash
+# Log Locations
 # Windows
-%APPDATA%\Sera\logs\
+%APPDATA%\WalrusDesktop\logs\
 
 # macOS
-~/Library/Logs/Sera/
+~/Library/Logs/WalrusDesktop/
 
 # Linux
-~/.config/Sera/logs/
+~/.config/WalrusDesktop/logs/
 ```
-Share logs with support for troubleshooting, and consider hashing logs and storing references on SUI for secure auditing.
+
+### Diagnostic Commands
+```bash
+# Check blob status
+walrus-cli blob status <blob_id>
+
+# Verify storage nodes
+walrus-cli nodes list --active
+
+# Check stake delegation
+walrus-cli stake status --address <your_address>
+
+# Verify storage proofs
+walrus-cli proof verify <blob_id>
+```
 
 ## Updates & Maintenance
 
@@ -325,36 +430,57 @@ Share logs with support for troubleshooting, and consider hashing logs and stori
     updates:
       channel: "stable"
       automatic: true
-      schedule: "daily"
+      check_interval: "daily"
+      download_in_background: true
     ```
   </Card>
 
   <Card title="Version Management" icon="code-branch">
     ```yaml
     versions:
-      rollback: true
-      keep_versions: 3
-      beta_access: false
+      backup_config: true
+      keep_versions: 2
+      auto_cleanup: true
     ```
   </Card>
 </CardGroup>
 
-On-chain references can record which version of the desktop client was used to perform critical actions.
+### Maintenance Tasks
+
+<Steps>
+  1. **Regular Checks**
+     - Monitor blob availability
+     - Review storage proofs
+     - Check stake delegation status
+     - Verify storage costs and duration
+
+  2. **Storage Management**
+     - Renew storage contracts before expiration
+     - Review and optimize storage costs
+     - Monitor stake rewards
+     - Update node delegation strategy
+
+  3. **Security Updates**
+     - Keep desktop app updated
+     - Review wallet permissions
+     - Update network security settings
+     - Verify node identities
+</Steps>
 
 ## Support & Resources
 
 <CardGroup cols={2}>
   <Card title="Documentation" icon="book">
-    [User Guide](/desktop-guide)
+    [Walrus Documentation](https://docs.walrus.storage)
   </Card>
   <Card title="Community" icon="users">
-    [Forum](https://forum.sera.xyz)
+    [Walrus Forum](https://forum.walrus.storage)
   </Card>
   <Card title="Issues" icon="bug">
-    [Bug Reports](https://github.com/sera-xyz/desktop/issues)
+    [GitHub Issues](https://github.com/walrus/desktop/issues)
   </Card>
   <Card title="Support" icon="headset">
-    [Help Desk](mailto:desktop-support@sera.xyz)
+    [Help Center](mailto:support@walrus.storage)
   </Card>
 </CardGroup>
 

@@ -1,22 +1,22 @@
 ---
 title: "Guide for Developers"
-description: "Build and integrate AI-referencing applications on SUI with Walrus storage"
+description: "Build and integrate AI data collection and management applications on SUI with Walrus storage"
 ---
 
 ## Overview
 
-This guide helps developers integrate with our SUI-based AI reference platform. The platform leverages decentralized storage via Walrus for datasets, model artifacts, and inference results, while using off-chain compute services for heavy tasks. You can store dataset references, model metadata, and inference outputs on the SUI blockchain, ensuring transparency, integrity, and verifiability without overloading on-chain logic.
+This guide helps developers integrate with our SUI-based AI data platform. The platform uses Walrus for decentralized storage of AI conversation data, model metadata, and related assets, while leveraging off-chain compute services for AI operations. Core platform data like ownership, access controls, and payment records are stored on the SUI blockchain.
 
 Key Components:
 
-- **SUI Smart Contracts**: On-chain objects that store references, configuration, and data indices.
-- **Walrus Decentralized Storage**: For hosting large datasets, model weights, and result files.
-- **Off-Chain Compute Services**: For actual model training, inference, and vector operations. The chain only stores pointers, keys, and verifiable proofs of results.
+- **SUI Smart Contracts**: Manage ownership, permissions, payments and marketplace logic
+- **Walrus Storage**: Store AI conversation data, model metadata, and other large assets
+- **Off-Chain Services**: Handle AI model training, inference, and data processing
 
 ## Quick Start
 
 ### Installation
-Install the SDK (off-chain client) to interact with SUI and Walrus references:
+Install the SDK to interact with the platform:
 <CodeGroup>
 ```bash npm
 npm install @sera/sdk
@@ -31,7 +31,7 @@ pip install sera-ai
 ```
 </CodeGroup>
 
-### Basic Setup (Off-Chain Client)
+### Basic Setup
 
 ```python
 from sera import SeraClient
@@ -39,11 +39,11 @@ from sera import SeraClient
 # Initialize client with your SUI network settings
 client = SeraClient(
     sui_network="testnet",        # or "mainnet"
-    walrus_gateway="https://walrus-gateway.example.com",
+    walrus_endpoint="https://walrus.sera.xyz",
     sui_package_id="0x...packageId"
 )
 
-# Check connectivity (off-chain)
+# Check connectivity
 status = client.health_check()
 print(f"Connection status: {status}")
 ```
@@ -51,28 +51,28 @@ print(f"Connection status: {status}")
 ## Core SDKs
 
 <CardGroup cols={2}>
-  <Card title="Data Management" icon="database">
-    Maintain references to datasets stored via Walrus, register dataset metadata on SUI.
+  <Card title="Conversation Data Management" icon="database">
+    Store and manage AI chat data on Walrus with metadata on SUI
     ```python
-    from sera.data import DatasetManager
+    from sera.data import ConversationManager
     ```
   </Card>
   <Card title="Model Registry" icon="brain">
-    Register and manage model metadata (weights, config) stored off-chain in Walrus.
+    Register model metadata and configuration
     ```python
-    from sera.model import ModelClient
+    from sera.model import ModelRegistry 
     ```
   </Card>
-  <Card title="Vector Indexing" icon="layer-group">
-   Store and reference vector embeddings' metadata on-chain. Actual vector indexing runs off-chain.
+  <Card title="Marketplace" icon="store">
+    Interact with the on-chain data marketplace
     ```python
-    from sera.vector import VectorIndex
+    from sera.market import MarketClient
     ```
   </Card>
-  <Card title="Off-chain Training & Inference" icon="dumbbell">
-    Trigger off-chain tasks. Upload final trained model references and inference results to Walrus, update SUI records.
+  <Card title="Rewards" icon="coins">
+    Manage user rewards and payments
     ```python
-    from sera.jobs import ComputeTask
+    from sera.rewards import RewardClient
     ```
   </Card>
 </CardGroup>
@@ -82,84 +82,143 @@ print(f"Connection status: {status}")
 ### Access Keys
 To interact with Walrus and submit transactions to SUI, you'll need appropriate keys:
 <Steps> 
-  1. **Generate Key**
-     Use `sera-cli` to generate your SUI keypair and fund it on testnet.
-      ```bash
-      sera-cli new-addr
-      sera-cli faucet
-      ```
-  2. **Set Credentials in Code**
+  1. **Generate SUI Address**
+     ```bash
+     # Generate a new SUI address using the SDK
+     sera-cli init
+     ```
+
+  2. **Set Credentials**
      ```python
      import sera
+     from sui.keypairs import SuiKeypair
      
-     sera.sui_private_key = "your_sera_private_key"
-     sera.walrus_api_key = "your_walrus_api_key"
+     # Load your SUI keypair
+     keypair = SuiKeypair.from_file("~/.sera/keypair.json")
+     
+     # Initialize the client with authentication
+     client = sera.Client(
+         keypair=keypair,
+         walrus_api_key="your_walrus_api_key"  # Optional: For premium storage
+     )
      ```
 
   3. **Verify Access**
      ```python
-     client = sera.Client()
-     permissions = client.get_permissions()
-     print(f"Permissions: {permissions}")
+     # Check if you have necessary permissions
+     status = client.verify_access()
+     print(f"Access Status: {status}")
      ```
 </Steps>
 
 ## Working with Data
 
-### Storing & Referencing Datasets
-Datasets are stored off-chain using Walrus. On-chain, you'll store a dataset reference (CID) and associated metadata:
+### Storing Conversation Data
+The platform primarily handles AI conversation data. Here's how to store and manage it:
+
 ```python
-from sera.data import DatasetManager
+from sera.data import ConversationManager
+from datetime import datetime
 
-manager = DatasetManager()
+manager = ConversationManager()
 
-# Upload dataset to Walrus
-cid = manager.upload_dataset(
-    data_path="./local_data",
-    redundancy=3,
+# Store a new conversation
+conversation_data = {
+    "model": "gpt-4",
+    "timestamp": datetime.now().isoformat(),
+    "messages": [
+        {"role": "user", "content": "What is machine learning?"},
+        {"role": "assistant", "content": "Machine learning is..."}
+    ],
+    "metadata": {
+        "browser": "chrome",
+        "extension_version": "1.0.0",
+        "user_settings": {"language": "en"}
+    }
+}
+
+# Upload to Walrus and register on SUI
+result = manager.store_conversation(
+    conversation=conversation_data,
+    encryption=True,  # Enable client-side encryption
+    tags=["education", "ml-basics"]
+)
+
+print(f"Conversation stored with ID: {result.conversation_id}")
+print(f"Storage CID: {result.storage_cid}")
+print(f"Transaction: {result.tx_digest}")
+
+# Retrieve a conversation
+conversation = manager.get_conversation(result.conversation_id)
+```
+
+### Batch Operations
+For efficient handling of multiple conversations:
+
+```python
+# Store multiple conversations
+results = manager.store_conversations(
+    conversations=[conv1, conv2, conv3],
     encryption=True
 )
 
-# Register the dataset on SUI with metadata
-tx_digest = manager.register_dataset_on_sui(
-    cid=cid,
-    name="NLP Training Set",
-    category="nlp"
+# Retrieve conversations by filter
+conversations = manager.list_conversations(
+    start_date="2024-01-01",
+    end_date="2024-01-31",
+    tags=["education"],
+    limit=100
 )
-
-print(f"Dataset registered with transaction: {tx_digest}")
-
-# List datasets from on-chain references
-datasets = manager.list_datasets(category="nlp", limit=10)
 ```
 
-### Vector Operations
-Vector operations (like similarity search) happen off-chain. Store embeddings and their metadata on Walrus, and keep a vector index reference on-chain:
+### Data Marketplace Integration
+Make conversations available on the marketplace:
+
 ```python
-from sera.vector import VectorIndex
+from sera.market import MarketClient
 
-index = VectorIndex(
-    index_name="my_embeddings_index",
-    dimension=768
+market = MarketClient()
+
+# List a conversation for sale
+listing = market.create_listing(
+    conversation_id="conv_123",
+    price=1000,  # Price in MIST (SUI's smallest unit)
+    license_type="academic",  # or "commercial"
+    description="Educational AI conversation about machine learning basics"
 )
 
-# Upload embeddings to Walrus and register on-chain
-embeddings_cid = index.upload_vectors(
-    vectors=embeddings, 
-    metadata=metadata,
-    batch_size=1000
+# Purchase a conversation
+purchase = market.purchase_conversation(
+    listing_id="listing_123",
+    payment_tx="0x..." # SUI payment transaction
 )
 
-index_ref_tx = index.register_index_on_sui(
-    cid=embeddings_cid,
-    description="Tech embeddings"
+# Access purchased conversation
+conversation = manager.get_conversation(
+    purchase.conversation_id,
+    access_proof=purchase.proof  # Proves right to access
+)
+```
+
+### Rewards Distribution
+Handle rewards for conversation contributors:
+
+```python
+from sera.rewards import RewardClient
+
+rewards = RewardClient()
+
+# Calculate rewards for a time period
+earnings = rewards.calculate_earnings(
+    user_address="0x...",
+    start_date="2024-01-01",
+    end_date="2024-01-31"
 )
 
-# Query off-chain and verify results on-chain
-results = index.query_off_chain(
-    query_vector=query_vector,
-    top_k=10,
-    filter={"category": "technology"}
+# Distribute rewards (executed by authorized admin)
+distribution = rewards.distribute_rewards(
+    earnings_period="2024-01",
+    proof_of_contribution=earnings.proof
 )
 ```
 
@@ -236,58 +295,103 @@ from sera.data import DatasetManager
 manager.update_dataset_reference_on_sui(dataset_id="ds_123", cid=cid)
 ```
 ## Monitoring & Analytics
-On-chain, you can track references to usage records or proofs of computation. Off-chain services can be used to measure performance, cost, and other analytics, then commit signed summaries to SUI.
 
 ```python
 from sera.analytics import Analytics
 
 analytics = Analytics()
 
-# Get usage metrics from off-chain and verify references on-chain
-metrics = analytics.get_off_chain_metrics(
+# Get basic usage metrics
+metrics = analytics.get_metrics(
+    user_address="0x...",
     start_date="2024-01-01",
     end_date="2024-01-31",
-    metrics=["requests", "compute_hours", "storage_usage"]
+    metrics=[
+        "conversations_stored",
+        "data_purchased",
+        "rewards_earned"
+    ]
 )
 
-# Commit a usage summary hash to SUI for audit
-commit_tx = analytics.commit_summary_to_sui(metrics)
+# Get storage usage
+storage_stats = analytics.get_storage_stats(
+    user_address="0x...",
+    include_deleted=False
+)
+
+# Monitor marketplace activity
+market_stats = analytics.get_market_stats(
+    timeframe="24h",  # or "7d", "30d"
+    categories=["education", "ml-basics"]
+)
 ```
 
 ## Error Handling
 
 ```python
-from sera.exceptions import SeraException
+from sera.exceptions import (
+    SeraException,
+    StorageException,
+    MarketplaceException,
+    AuthenticationException
+)
 
 try:
-    result = client.risky_operation()
-except SeraException as e:
-    if e.code == "rate_limit_exceeded":
-        # Handle rate limiting
-        pass
-    elif e.code == "insufficient_permissions":
-        # Handle permission issues
-        pass
+    result = client.store_conversation(conversation_data)
+except StorageException as e:
+    if e.code == "storage_limit_exceeded":
+        # Handle storage limit
+        print(f"Storage limit exceeded: {e.message}")
+    elif e.code == "invalid_data_format":
+        # Handle invalid data
+        print(f"Invalid data format: {e.message}")
     else:
-        # Handle other errors
+        # Handle other storage errors
+        raise
+
+try:
+    purchase = market.purchase_conversation(listing_id)
+except MarketplaceException as e:
+    if e.code == "insufficient_balance":
+        # Handle insufficient funds
+        print(f"Insufficient balance: {e.message}")
+    elif e.code == "listing_not_found":
+        # Handle invalid listing
+        print(f"Listing not found: {e.message}")
+    else:
+        # Handle other marketplace errors
         raise
 ```
 
 ## Best Practices
 
 <AccordionGroup>
-  <Accordion title="Rate Limiting">
-    - Implement backoff when calling off-chain services
-    - Cache repetitive responses off-chain
-    - Use batch operations where possible
-    - Keep a record of call frequency on SUI for transparency
+  <Accordion title="Data Storage">
+    - Store conversation data in chunks of 32MB or less for optimal Walrus performance
+    - Use client-side encryption for sensitive data
+    - Include relevant metadata and tags for better discoverability
+    - Implement retry logic for failed uploads
   </Accordion>
   
+  <Accordion title="Marketplace">
+    - Verify payment transactions before granting access
+    - Set reasonable prices based on data quality and volume
+    - Include clear licensing terms
+    - Implement access control checks
+  </Accordion>
+
   <Accordion title="Security">
-    - Rotate off-chain API keys regularly
-    - Use environment variables for sensitive data
-    - Leverage SUI capabilities for immutable references
-    - Encrypt data at rest on Walrus
+    - Never expose private keys or API tokens
+    - Use environment variables for configuration
+    - Implement rate limiting in your application
+    - Validate all input data before storage
+  </Accordion>
+
+  <Accordion title="Performance">
+    - Batch store operations when possible
+    - Cache frequently accessed metadata
+    - Use pagination for large datasets
+    - Monitor storage usage and costs
   </Accordion>
 </AccordionGroup>
 
@@ -301,7 +405,7 @@ except SeraException as e:
     [Browse example projects](https://github.com/sera-xyz/examples)
   </Card>
   <Card title="Community" icon="discord">
-    [Join developer community](https://discord.gg/datasphere)
+    [Join developer community](https://discord.gg/sera)
   </Card>
   <Card title="Support" icon="headset">
     [Get technical help](mailto:dev-support@sera.xyz)

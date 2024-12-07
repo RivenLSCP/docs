@@ -33,7 +33,7 @@ Sera is a pioneering decentralized platform running on the SUI blockchain and le
     icon="store"
     href="/features/marketplace"
   >
-    Buy, sell, and trade datasets, models, and vector databases. All assets are anchored on SUI for authenticity, with storage and retrieval facilitated by Walrus.
+    Decentralized marketplace for trading AI conversation data, with automated market makers and fixed-price listings secured by smart contracts.
   </Card>
   <Card
     title="AI Tools Suite"
@@ -51,35 +51,60 @@ Sera is a pioneering decentralized platform running on the SUI blockchain and le
   </Card>
 </CardGroup>
 
+## Technical Architecture
+
+```mermaid
+graph TD
+    A[Chrome Extension] -->|Capture| B[Data Processing]
+    B -->|Store| C[Walrus Network]
+    B -->|Record| D[SUI Blockchain]
+    D -->|Verify| E[Reward Distribution]
+    C -->|Serve| F[Data Marketplace]
+    D -->|Manage| F
+```
+
 ## Quick Links
 
 <CardGroup cols={2}>
   <Card
-    title="Get Started"
+    title="Start Contributing"
     icon="play"
     href="/quickstart"
   >
-    Quickly set up your environment. Connect your SUI wallet, explore AI interactions, and start earning $SERA tokens.
+    Install extension, connect SUI wallet, and start earning $SERA tokens for AI conversations.
   </Card>
   <Card
-    title="User Guides"
-    icon="book"
-    href="/guides/data-contributors"
+    title="Trade Data"
+    icon="store"
+    href="/guides/marketplace"
   >
-    Learn best practices to maximize your contributions, earn more rewards, and navigate our AI data ecosystem effectively.
+    Access the marketplace to buy or sell AI conversation datasets with transparent pricing and ownership.
   </Card>
   <Card
-    title="Technical Docs"
+    title="Developer Docs"
     icon="code"
     href="/technical/architecture"
   >
-    Delve into Sera’s technical architecture. Understand how SUI blockchain, Walrus storage, and off-chain compute form a synergistic infrastructure.
+    Integration guides for Walrus storage, SUI smart contracts, and marketplace APIs.
   </Card>
   <Card
     title="Community"
     icon="discord"
-    href="https://discord.gg/datasphere"
+    href="https://discord.gg/sera"
   >
-    Join our community of AI enthusiasts, developers, and contributors on Discord to share insights, ask questions, and shape the platform’s future.
+    Join our Discord to connect with other contributors and stay updated on platform developments.
   </Card>
 </CardGroup>
+
+## Key Features
+
+| Feature | Description | Technology |
+|---------|-------------|------------|
+| Data Storage | Distributed, fault-tolerant storage | Walrus |
+| Transactions | Trustless trading and rewards | SUI Blockchain |
+| Data Collection | Browser-based conversation capture | Chrome Extension |
+| Market Making | Automated pricing and liquidity | AMM Smart Contracts |
+
+<Note>
+Sera focuses on creating a sustainable ecosystem where AI conversation data can be efficiently collected, stored, and traded while ensuring fair compensation for contributors.
+</Note>

@@ -5,33 +5,33 @@ description: "Technical overview of Sera's decentralized AI infrastructure"
 
 ## Overview
 
-Our architecture is anchored by the SUI blockchain’s security and verifiability, integrated with Walrus decentralized storage and established off-chain resources. The result is a robust, scalable AI infrastructure where blockchain records ensure trust, while compute and data management occur off-chain for efficiency.
+Our architecture leverages SUI blockchain's native capabilities and Walrus storage protocol to create a practical AI infrastructure. The system uses SUI for transaction verification and governance, while Walrus handles efficient decentralized storage with its innovative Red Stuff encoding algorithm.
 
 ## System Components
 
 <CardGroup cols={2}>
   <Card title="Core Layer" icon="layer-group">
-    - • **SUI Blockchain** for immutable asset references and governance
-    - • Smart contracts for token economics and incentive mechanisms
-    - • On-chain governance for community-driven parameter tuning
-    - • Conversion mechanisms (off-chain points to on-chain tokens)
+    - • SUI Move Contracts for asset management and governance
+    - • Native SUI token integration for economic incentives
+    - • On-chain parameter management via SUI governance
+    - • Points-to-token conversion using SUI's programmable transaction blocks
   </Card>
   <Card title="Storage Layer" icon="database">
-    - • **Walrus Integration:** Decentralized content-addressed storage for datasets, model weights, and metadata
-    - • HuggingFace model/dataset references for external hosting and versioning
-    - • ChromaDB (off-chain vector database) references on-chain for indexing and retrieval pointers
-    - • Off-chain distributed storage validation and replication, anchored by on-chain checks
+    - • Walrus Integration: Erasure-coded storage with Red Stuff encoding
+    - • Content-addressed blob storage with 2D encoding for efficient recovery
+    - • Epoch-based storage committee management
+    - • Storage proofs and challenges via Walrus protocol
   </Card>
   <Card title="Compute Layer" icon="microchip">
-    - • Primarily off-chain compute resources (cloud providers, HPC clusters, decentralized compute marketplaces)
-    - • Integration with proven decentralized computing frameworks (e.g., Golem, Bacalhau) for scaling and redundancy 
-    - • Workload profiling, optimization, and fault tolerance managed off-chain, with results anchored on-chain
-    - • Training and inference checkpoints stored in Walrus, with references updated on SUI
+    - • Centralized compute providers with verifiable outputs
+    - • Training checkpoints stored in Walrus with CID references on SUI
+    - • Compute results verified through merkle proofs
+    - • Job scheduling and coordination through SUI smart contracts
   </Card>
   <Card title="Application Layer" icon="window">
-    - • Extensions and desktop apps that read on-chain references and pull data from Walrus
-    - • Developer APIs/SDKs leveraging SUI smart contracts for trust guarantees and Walrus endpoints for data retrieval
-    - • Integration frameworks enabling custom frontends and workflows
+    - • Direct Walrus blob retrieval for efficient data access
+    - • SUI SDK integration for transaction management
+    - • Walrus client libraries for storage operations
   </Card>
 </CardGroup>
 
@@ -42,53 +42,61 @@ Our architecture is anchored by the SUI blockchain’s security and verifiabilit
 </Frame>
 
 ## Core Components
-### Blockchain Infrastructure (SUI)
-SUI smart contracts store references, manage token incentives, and govern access controls. Payments and licensing happen via on-chain transactions, while the actual data and compute remain off-chain:
+
+### SUI Blockchain Integration
+The SUI blockchain provides our foundational trust layer through Move smart contracts:
+
 ```mermaid
 graph TD
-    A[Smart Contracts] --> B[Token & Incentive Mechanisms]
-    A --> C[Access Control Rules]
-    A --> D[Payment Channels]
-    B --> E[Reward Distribution Logistics]
-    C --> F[Permission Management Logic]
-    D --> G[Marketplace Transactions Integration]
+    A[Move Contracts] --> B[Token Economics]
+    A --> C[Storage Management]
+    A --> D[Payment Processing]
+    B --> E[Reward Distribution]
+    C --> F[Walrus Committee Management]
+    D --> G[SUI Native Token Integration]
 ```
 
-### Storage System
+### Walrus Storage System
 
 <Steps>
   1. **Data Ingestion**
-     - Content-addressed ingestion via Walrus for datasets, models
-     - HuggingFace links recorded on-chain for version references
-     - Checkpoint resume support for training off-chain, with references updated on-chain
+     - Content-addressed blob storage using Red Stuff encoding
+     - 2D erasure coding for efficient recovery
+     - Epoch-based storage committee management
+     - Storage proofs through Walrus protocol
 
   2. **Distribution**
-     - ChromaDB vector indexes off-chain, with reference CIDs on SUI
-     - Persistent client support ensures consistent retrieval from Walrus gateways
-     - On-chain updates reflect replication and distribution statuses
+     - Sliver distribution across storage committee
+     - Primary and secondary sliver management
+     - Automatic recovery mechanisms for failed nodes
+     - Epoch-based committee rotation
 
   3. **Retrieval**
-     - Batch queries orchestrated off-chain, guided by on-chain metadata
-     - Query optimization and indexing done by off-chain services
-     - Metadata management stored on-chain for verifiability
+     - Direct blob retrieval from Walrus nodes
+     - Best-effort and incentivized read paths
+     - Efficient recovery using 2D encoding
+     - Verification against on-chain commitments
 
-  4. **Verification**
-     - Off-chain data validation processes, with proofs (e.g., Merkle roots) stored on-chain
-     - Duplicate detection and quality scoring results hashed and anchored on SUI
+  4. **Storage Proofs**
+     - Asynchronous challenge protocol
+     - Epoch-based storage attestation
+     - Logarithmic scaling for proof costs
+     - Byzantine fault tolerant verification
 </Steps>
 
 ### Compute Network
 
 <CardGroup cols={2}>
   <Card title="Resource Management" icon="server">
-    - • Off-chain dynamic resource allocation using cloud and decentralized compute platforms
-    - • Load balancing and performance optimization strategies off-chain
-    - • Resource monitoring, with summaries and SLA proofs posted on SUI
+    - • Centralized compute providers with SLA commitments
+    - • Verifiable computation results with merkle proofs
+    - • Resource monitoring through SUI events
   </Card>
   <Card title="Workload Distribution" icon="network-wired">
-    - • Task scheduling and job queuing handled off-chain
-    - • Result aggregation performed by off-chain orchestrators, finalizing references on SUI
-    - • Error handling and retries managed off-chain, with event logs hashed and recorded on-chain
+    - • Job scheduling via Move contracts
+    - • Result verification through merkle proofs
+    - • Error handling with automatic retries
+    - • Computation proof storage on SUI
   </Card>
 </CardGroup>
 
@@ -97,17 +105,17 @@ graph TD
 
 <AccordionGroup>
   <Accordion title="Encryption">
-    - • End-to-end encryption before data enters Walrus
-    - • Distributed key management (off-chain) with references to keys on SUI
-    - • Erasure coding strategies tracked on-chain for transparency 
-    - • Merkle tree-based content verification proofs
+    - Client-side encryption before data enters Walrus
+    - Key management handled off-chain with hash references on SUI
+    - Red Stuff encoding for data redundancy and recovery
+    - Merkle proofs for content verification
   </Accordion>
   
   <Accordion title="Access Control">
-    - • On-chain role-based policies define who can request decryption keys off-chain
-    - • Multi-layer permission logic combining on-chain rules and off-chain enforcement gateways
-    - • Token gating ensures only rightful parties access high-value datasets
-    - • Byzantine-resistant audit logs hashed and stored on SUI
+    - On-chain role-based access control via SUI Move contracts
+    - Epoch-based committee membership verification
+    - Token-gated access control for premium datasets
+    - Audit logs with merkle roots stored on SUI
   </Accordion>
 </AccordionGroup>
 
@@ -115,27 +123,25 @@ graph TD
 
 ```mermaid
 graph LR
-    A[Client] --> B[Off-Chain Load Balancer]
-    B --> C[API Gateway / Proxy Layer]
-    C --> D[Off-Chain Authentication Service]
-    D --> E[Service Mesh / Routing Layer]
-    E --> F[Microservices Cluster]
+    A[Client] --> B[Load Balancer]
+    B --> C[API Gateway]
+    C --> D[Auth Service]
+    D --> E[Walrus Storage Nodes]
 ```
-(On-chain references ensure trust in these off-chain components.)
 
 ## Performance Optimization
 ### Caching Strategy
 
 <CardGroup cols={2}>
   <Card title="Content Cache" icon="bolt">
-    - • Distributed off-chain caching layers for frequently accessed embeddings/dataset
-    - • On-chain pointers updated when cache invalidations occur
-    - • Performance metrics aggregated off-chain, with summary hashes on SUI
+    - • Edge caching for frequently accessed blobs
+    - • Cache invalidation tracked through Walrus epochs
+    - • Performance metrics with on-chain summaries
   </Card>
   <Card title="Query Cache" icon="magnifying-glass">
-    - • Query optimization done off-chain, result caching for recurrent queries
-    - • Cache coherence strategies documented and anchored on-chain
-    - • Analytics off-chain, integrity hashes on-chain
+    - • Metadata caching with Walrus node coordination
+    - • Cache coherence managed through epochs
+    - • Analytics with integrity proofs on SUI
   </Card>
 </CardGroup>
 
@@ -143,16 +149,24 @@ graph LR
 
 <Steps>
   1. **Horizontal Scaling**
-     Add more off-chain nodes or providers
+     - Add more Walrus storage nodes
+     - Increase committee size through governance
+     - Scale API gateways independently
 
   2. **Vertical Scaling**
-     Increase capabilities of existing off-chain nodes
+     - Upgrade storage node capabilities
+     - Optimize Red Stuff encoding parameters
+     - Enhance API gateway performance
 
-  3. **Auto-scaling**
-     Dynamically adjust resources off-chain, reflect changes on SUI
+  3. **Epoch Management**
+     - Dynamic committee size adjustment
+     - Automated storage rebalancing
+     - Performance-based node selection
 
   4. **Load Distribution**
-     Smart workload balancing off-chain, verified by on-chain logs
+     - Geographic node distribution
+     - Smart routing based on node health
+     - Automatic failover mechanisms
 </Steps>
 
 ## Integration Points
@@ -161,96 +175,129 @@ graph LR
 
 ```mermaid
 graph TD
-    A[Client Applications] --> B[API Gateway (Off-Chain)]
-    B --> C[Authentication Service (Off-Chain)]
-    B --> D[Data Retrieval Service (Walrus-based)]
-    B --> E[Compute Coordination Service]
-    B --> F[Storage Metadata on SUI]
+    A[Client Applications] --> B[API Gateway]
+    B --> C[Authentication Service]
+    B --> D[Walrus Storage Interface]
+    B --> E[SUI Move Contract Interface]
+    
+    D --> F[Walrus Storage Nodes]
+    E --> G[SUI Network]
 ```
 
 ### Service Integration
 
 <CardGroup cols={2}>
-  <Card title="Internal Services" icon="gear">
-    - • Off-chain service discovery mechanisms
-    - • Load balancing and circuit breakers off-chain
-    - • Health checks reported as aggregated metrics on-chain
+  <Card title="Storage Integration" icon="database">
+    - • Direct Walrus client SDK integration
+    - • Blob storage and retrieval operations
+    - • Epoch-based committee management
+    - • Storage proof verification
   </Card>
-  <Card title="External Services" icon="plug">
-    - • API endpoints integrated with on-chain references
-    - • Webhooks inform the chain of off-chain events (via oracles)
-    - • Event streams (off-chain) with cryptographic proofs recorded on SUI
+  <Card title="Blockchain Integration" icon="link">
+    - • SUI Move contract interactions
+    - • Transaction management and verification
+    - • On-chain event monitoring
+    - • Governance participation
   </Card>
 </CardGroup>
 
 ## Monitoring & Observability
 ### System Metrics
 
-<Frame>
-  <img src="/images/system-metrics.png" alt="System Metrics Dashboard" />
-</Frame>
-Off-chain monitoring tools collect logs, traces, and metrics. Periodic integrity hashes are stored on SUI for transparency and immutability.
+<CardGroup cols={2}>
+  <Card title="Storage Metrics" icon="chart-line">
+    - • Blob storage utilization
+    - • Node health and availability
+    - • Committee participation rates
+    - • Storage proof success rates
+  </Card>
+  <Card title="Performance Metrics" icon="gauge">
+    - • Read/Write latency
+    - • Node response times
+    - • Sliver distribution health
+    - • Recovery operation stats
+  </Card>
+</CardGroup>
+
 ### Logging & Tracing
 
 ```python
-from sera.monitoring import Tracer
+from sera.monitoring import WalrusMonitor
 
-# Initialize off-chain tracer
-tracer = Tracer(service_name="compute-service")
+# Initialize Walrus monitor
+monitor = WalrusMonitor(
+    storage_nodes=config.WALRUS_NODES,
+    sui_endpoint=config.SUI_RPC_URL
+)
 
-with tracer.start_span("process-job") as span:
-    span.set_tag("job_id", job_id)
-    # Process occurs off-chain
-    span.log_kv({"event": "job_completed"})
-    # Post a hash of the log to SUI for auditability
+# Track storage operations
+async def track_storage_op():
+    metrics = await monitor.collect_metrics()
+    
+    # Store merkle root of metrics on SUI for auditability
+    await monitor.publish_metrics_root(metrics)
+    
+    # Alert on issues
+    if metrics.node_health < HEALTH_THRESHOLD:
+        await monitor.trigger_alert("node_health_degraded")
 ```
 
 ## Deployment Architecture
-### Infrastructure as Code (Off-Chain)
+### Infrastructure Components
 
 ```yaml
 version: '1.0'
 services:
-  api:
-    image: sera/api:latest
+  api_gateway:
+    image: sera/gateway:latest
     replicas: 3
-    resources:
-      limits:
-        cpu: "2"
-        memory: "4G"
-  compute:
-    image: sera/compute:latest
-    replicas: 5
-    resources:
-      limits:
-        gpu: "1"
-        memory: "16G"
+    environment:
+      WALRUS_NODES: ${WALRUS_NODES}
+      SUI_RPC_URL: ${SUI_RPC_URL}
+      
+  auth_service:
+    image: sera/auth:latest
+    replicas: 2
+    environment:
+      SUI_MOVE_PACKAGE: ${AUTH_PACKAGE}
 ```
-(Actual runtime references to these infrastructures can be recorded on SUI as proof of configuration.)
+
 ### Deployment Strategy
 
 <Steps>
-  1. **Testing**
-     End-to-end testing off-chain, SUI for final validation steps
+  1. **Pre-deployment**
+     - Verify SUI Move contracts
+     - Confirm Walrus node availability
+     - Test storage operations
+     - Validate committee membership
 
-  2. **Deployment**
-     Blue-green or canary deployments off-chain, recorded on SUI for audit
+  2. **Deployment Process**
+     - Rolling updates for API services
+     - Zero-downtime infrastructure updates
+     - Automatic health checking
+     - Fallback procedures
 
-  3. **Monitoring**
-     Track performance, health off-chain; store final metrics checksums on SUI
+  3. **Post-deployment**
+     - Monitor storage operations
+     - Track node performance
+     - Verify committee transitions
+     - Validate storage proofs
 
-  4. **Rollback**
-     Automated rollback triggers off-chain, with related events updated on-chain
+  4. **Maintenance**
+     - Regular node health checks
+     - Committee rotation monitoring
+     - Performance optimization
+     - Security updates
 </Steps>
 
 ## Further Reading
 
 <CardGroup cols={2}>
-  <Card title="API Documentation" icon="book">
-    [View API Reference](/api-reference)
+  <Card title="Walrus Documentation" icon="book">
+    [View Walrus Docs](https://mystenlabs.com/walrus)
   </Card>
-  <Card title="Security Docs" icon="shield">
-    [Security Guidelines](/security)
+  <Card title="SUI Move Guide" icon="code">
+    [SUI Move Reference](https://docs.sui.io/move)
   </Card>
   <Card title="Integration Guide" icon="puzzle-piece">
     [Integration Patterns](/integration)
@@ -261,5 +308,5 @@ services:
 </CardGroup>
 
 <Note>
-For detailed architecture discussions and technical support, join our [Developer Discord](https://discord.gg/datasphere).
+For detailed technical support and discussions, join our [Developer Discord](https://discord.gg/sera).
 </Note> 

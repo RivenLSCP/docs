@@ -11,7 +11,7 @@ description: 'Learn how to earn $SERA tokens by contributing AI interactions on 
     Latest version of Chrome required for our browser extension
   </Card>
   <Card title="SUI Wallet" icon="wallet">
-    A SUI-compatible wallet (e.g., Sui Wallet or OKX Wallet) to manage $SERA tokens and sign on-chain transactions
+    A SUI-compatible wallet (e.g., Sui Wallet or OKX Wallet) with sufficient SUI for gas fees
   </Card>
 </CardGroup>
 
@@ -19,69 +19,88 @@ description: 'Learn how to earn $SERA tokens by contributing AI interactions on 
 
 <Steps>
   1. **Install Chrome Extension**
-     Visit the [Chrome Web Store](https://chrome.google.com/webstore) and install our SUI-based AI Extension. This extension will help you interact with and record AI contributions while referencing SUI on-chain data and Walrus storage.
+     Visit the [Chrome Web Store](https://chrome.google.com/webstore) and install our extension. The extension facilitates interaction with SUI smart contracts and Walrus storage protocols.
 
   2. **Connect Wallet**
-     After installation, click the extension icon and connect your chosen SUI-compatible wallet. This allows you to sign transactions and claim earned $SERA tokens on the SUI network.
+     Connect your SUI wallet to sign transactions. You'll need a small amount of SUI for gas fees when submitting contributions.
 
-  3. **Configure Settings**
-     Set your privacy preferences and data sharing controls. You have full control over what metadata gets recorded on-chain versus stored off-chain in Walrus.
+  3. **Configure Storage Settings**
+     Your AI interactions are automatically processed:
+     - Metadata and verification proofs stored on SUI blockchain
+     - Interaction data stored in Walrus using Red Stuff encoding
+     - All storage costs covered by the protocol
+     - Data split into primary/secondary slivers per Walrus spec 
 
   4. **Start Contributing**
-     Begin interacting with supported off-chain AI models. Your interactions, validated for quality and uniqueness, are automatically recorded and referenced on SUI. Periodically, you will receive $SERA token rewards according to your contribution quality and other factors.
+     Begin interacting with supported AI models:
+     - Each interaction is processed in real-time
+     - Data is automatically encoded and distributed
+     - Earn $SERA tokens based on quality and volu
 </Steps>
 
-## Maximizing Rewards
+## Reward Mechanism
 
-### Reward Formula Explained
-Your rewards are calculated using a formula stored and verifiable on-chain:
+### Technical Implementation
+Rewards are calculated using verifiable on-chain parameters:
 
 $$
-R = α · Q(c) · V(s) · e^{-λt} · (1 + ΣβᵢMᵢ)
+R = α · Q(c) · M(t) · V(i) · (1 + B)
 $$
 
 Where:
-- $α$ (alpha): Base rate defined by on-chain parameters
-- $Q(c)$: Quality score of your contribution, computed off-chain but anchored on-chain for transparency
-- $V(s)$: Value score indicating how valuable your contribution is to the ecosystem
-- $λt$: Time decay factor, encouraging timely and continuous contributions
-- $βᵢMᵢ$: Model-specific multipliers tracked on-chain to incentivize interaction with certain models
+- $α$ (alpha): Base rate defined in smart contract
+- $Q(c)$: Quality score (0.1 to 1.0)
+- $M(t)$: Model tier multiplier (1.0x - 1.5x)
+- $V(i)$: Volume multiplier (1.0x - 1.5x)
+- $B$: Bonus multipliers (referrals, streaks)
 
 <Note>
-High-quality, unique interactions with AI models, as measured by off-chain audits and recorded on-chain, lead to significantly better $SERA rewards.
+Rewards are processed in batches aligned with Walrus storage epochs (approximately every 24 hours) to optimize gas costs.
 </Note>
 
 ### Quality Guidelines
 
 <CardGroup cols={2}>
-  <Card title="Best Practices" icon="check">
-    - • Natural, contextually rich conversations with the AI
-    - • Cover diverse topics and challenge the AI in meaningful ways
-    - • Provide depth and originality
-    - • Interact with multiple models for broader ecosystem support
+  <Card title="Technical Requirements" icon="check">
+    - • Minimum interaction length of 100 tokens
+    - • Complete conversation context preserved
+    - • Valid SUI transaction signatures
+    - • Proper metadata formatting
   </Card>
-  <Card title="Not Allowed" icon="xmark">
-    - • Submitting personal or sensitive information
-    - • Harmful, hateful, or disallowed content
-    - • Duplicate or spam submissions
-    - • Automated/bot-generated interactions without disclosure
-    - • Attempts to game or manipulate reward systems
+  <Card title="Storage Violations" icon="xmark">
+    - • Incomplete or truncated conversations
+    - • Duplicate submissions
+    - • Invalid metadata
+    - • Manipulation attempts
   </Card>
 </CardGroup>
 
-## Earning Opportunities
+## Earning Structure
 
 ### Model Tiers
 <AccordionGroup>
-  <Accordion title="Standard Models (β₁ = 1.0x)">
-    - Baseline models (e.g., GPT-3.5 variants, Claude 3 Haiku, Gemini 1.5 Flash)
-    - Standard reward rates
-    - Emphasis on maintaining quality to maximize returns
+  <Accordion title="Standard Models (1.0x multiplier)">
+    Requirements:
+    - Minimum interaction length: 100 tokens
+    - Maximum size: 10MB per interaction
+    - Standard quality checks
+    
+    Supported models:
+    - GPT-3.5
+    - Claude 3 Haiku
+    - Other base-tier models
   </Accordion>
-  <Accordion title="Premium Models (β₂ = 1.5-2.0x)">
-    - Premium tiers (e.g., GPT-4, Claude 3 Opus, Gemini 1.5 Pro)
-    - Higher multipliers for interacting with cutting-edge models
-    - Even stronger incentives for quality and innovation
+  
+  <Accordion title="Premium Models (1.5x multiplier)">
+    Requirements:
+    - Minimum interaction length: 200 tokens
+    - Maximum size: 50MB per interaction
+    - Enhanced quality checks
+    
+    Supported models:
+    - GPT-4
+    - Claude 3 Opus
+    - Other premium models
   </Accordion>
 </AccordionGroup>
 
@@ -89,79 +108,105 @@ High-quality, unique interactions with AI models, as measured by off-chain audit
 
 <CardGroup cols={2}>
   <Card title="Referral Program" icon="user-plus">
-    - • Earn a 10% commission on referred user contributions, anchored on-chain
-    - • Unlimited referrals
-    - • Track referral stats off-chain and verify totals on-chain
-    - • Unlock special achievements with higher referral counts
+    - • Earn 5% of referred users' rewards
+    - • Tracked through on-chain referral smart contract
+    - • Automatic distribution with main rewards
+    - • No limit on number of referrals
   </Card>
-  <Card title="Quest System" icon="trophy">
-    - • Daily, weekly, and special-event quests
-    - • Complete tasks to earn bonus $SERA
-    - • Challenges ranging from interacting with new models to achieving certain quality thresholds
-    - • On-chain records ensure transparency in quest completions
+  <Card title="Daily Tasks" icon="trophy">
+    - • Complete daily contribution goals
+    - • Bonus rewards for consistent participation
+    - • Special rewards for high-quality interactions
+    - • All tasks verified through smart contracts
   </Card>
 </CardGroup>
 
-## Competitions & Leaderboards
+## Contributor Rankings
 
-### Ranking System
+### Performance Metrics
 
 <CardGroup cols={2}>
-  <Card title="Global Rankings" icon="trophy">
-    - • Overall contribution score (on-chain reference)
-    - • Quality percentile vs. the entire contributor community
-    - • Innovation index for creative prompts
-    - • Community impact scores
+  <Card title="Quality Score" icon="star">
+    - • Interaction completeness
+    - • Context preservation
+    - • Response coherence
+    - • Updated daily on-chain
   </Card>
-  <Card title="Model-Specific" icon="ranking-star">
-    - • Per-model leaderboards to showcase expertise
-    - • Specialized achievements for focused contributions
-    - • Levels indicating your skill or experience with a given model
-    - • Performance metrics are recorded on-chain, allowing for trustless verification
+  <Card title="Volume Score" icon="chart-line">
+    - • Total daily contributions
+    - • Consistency bonus
+    - • Premium model usage
+    - • Real-time tracking
   </Card>
 </CardGroup>
 
 ## Privacy & Security
 
 ### Data Protection
-<Check>End-to-end encryption of sensitive metadata off-chain</Check>
-<Check>Anonymous contributions on-chain (wallet addresses pseudonymous)</Check>
-<Check>Selective sharing controls for how much data to reveal</Check>
-<Check>Data sovereignty, since you choose what to anchor on-chain and what to keep in Walrus</Check>
+<Check>Encrypted metadata using Walrus's Red Stuff encoding</Check>
+<Check>Pseudonymous contributions linked only to wallet addresses</Check>
+<Check>Optional data anonymization before storage</Check>
+<Check>Transparent on-chain verification of contributions</Check>
 
 ### User Controls
 <CardGroup cols={2}>
   <Card title="Privacy Settings" icon="shield">
-    - • Choose visibility levels for your contributions
-    - • Manage how metadata is stored in Walrus vs. what is summarized on-chain
-    - • Identity protection strategies
-    - • Export controls to retrieve your contribution data
+    - • Choose what data to contribute
+    - • Control metadata visibility
+    - • Basic anonymization options
+    - • Export your contribution history
   </Card>
   <Card title="Security Features" icon="lock">
-    - • 2FA and multi-signature wallet support for on-chain actions
-    - • Session management: easily revoke access tokens
-    - • Activity monitoring tools to track when and how contributions occur
-    - • Access controls so you decide who sees what
+    - • Standard SUI wallet security
+    - • Transaction signing for all actions
+    - • Activity monitoring dashboard
+    - • Contribution verification tools
   </Card>
 </CardGroup>
+
+## Technical Integration
+
+### Storage Architecture
+```mermaid
+graph TD
+    A[Chrome Extension] -->|Captures| B[AI Interaction]
+    B -->|Processes| C[Data Processor]
+    C -->|Metadata| D[SUI Blockchain]
+    C -->|Content| E[Walrus Storage]
+    E -->|Primary Slivers| F[Storage Nodes]
+    E -->|Secondary Slivers| F
+```
+
+### Implementation Details
+- Data is split and encoded using Walrus's Red Stuff protocol
+- Primary and secondary slivers ensure data availability
+- Metadata stored on SUI blockchain for verification
+- Storage costs handled by protocol treasury
+
+<Note>
+For technical details about our storage implementation, refer to the [Walrus documentation](https://docs.walrus.sui.io).
+</Note>
 
 ## Support & Resources
 
 <CardGroup cols={2}>
-  <Card title="Help Center" icon="circle-question">
-    Access FAQs and guides
+  <Card title="Documentation" icon="book">
+    Access technical guides and API docs at docs.sera.xyz
   </Card>
   <Card title="Community" icon="discord">
-    Join our Discord community
+    Join our [Discord](https://discord.gg/sera) for support
   </Card>
   <Card title="Updates" icon="bell">
-    Stay informed about new features
+    Follow our [Twitter](https://twitter.com/sera_xyz) for news
   </Card>
-  <Card title="Tutorials" icon="graduation-cap">
-    Learn optimization strategies
+  <Card title="GitHub" icon="github">
+    View our open-source components
   </Card>
 </CardGroup>
 
 <Note>
-Need help? Contact our support team at support@sera.xyz or join our [Discord community](https://discord.gg/datasphere).
+Need help? Contact our support team:
+- Email: support@sera.xyz
+- Discord: [Sera Community](https://discord.gg/sera)
+- Technical Support Hours: 24/7
 </Note>
