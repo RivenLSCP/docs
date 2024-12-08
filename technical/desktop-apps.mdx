@@ -1,489 +1,261 @@
 ---
-title: 'Desktop Applications'
-description: 'Native desktop applications for Windows, macOS, and Linux integrated with SUI and Walrus'
+title: 'Desktop Apps'
+description: 'Manage your AI assets, track earnings, and monitor storage nodes from your desktop'
 ---
 
 ## Overview
 
-We provide cross-platform desktop applications that serve as a client for managing data assets stored in Walrus and referenced on the SUI blockchain. These native applications allow you to:
+The Sera desktop app is your gateway to the AI marketplace, allowing you to:
 
-- Browse and manage blob references recorded on SUI
-- Upload and download data to/from Walrus storage nodes
-- Monitor storage node health and blob availability
-- Configure Walrus storage parameters and manage storage contracts
-- Track storage costs and manage storage payments
+- Manage AI models and datasets with built-in token earnings
+- Track storage node performance and staking rewards
+- Monitor marketplace activity and revenue streams
+- Handle secure wallet operations and transactions
 
 ## Available Versions
 
 <CardGroup cols={3}>
   <Card title="Windows" icon="windows">
-    - • Size: ~80 MB
+    - • Download size: ~80 MB
     - • Windows 10/11 (64-bit)
+    - • Built-in SUI wallet support
   </Card>
   <Card title="macOS ARM64" icon="apple">
-    - • Size: ~75 MB
-    - • For Apple Silicon (M1, M2)
-    - • macOS 11+
-  </Card>
-  <Card title="macOS x64" icon="apple">
-    - • Size: ~75 MB
-    - • Intel processors
-    - • macOS 10.15+
+    - • Download size: ~75 MB
+    - • For M1/M2 Macs
+    - • Native wallet integration
   </Card>
   <Card title="Linux" icon="linux">
-    - • Size: ~70 MB
-    - • Provided as AppImage
+    - • Download size: ~70 MB
+    - • AppImage format
+    - • Full node compatibility
   </Card>
 </CardGroup>
 
-## System Requirements
+## Key Features
 
-### Minimum Requirements
+### Marketplace Dashboard
 
-<AccordionGroup>
-  <Accordion title="Windows">
-    - Windows 10 or later (64-bit)
-    - 4GB RAM
-    - 2-core CPU
-    - 200MB free storage
-    - SUI wallet for transaction signing
-  </Accordion>
-  
-  <Accordion title="macOS">
-    - macOS 10.15+ (Intel) or 11+ (ARM)
-    - 4GB RAM
-    - 2-core CPU
-    - 200MB free storage
-    - SUI wallet for transaction signing
-  </Accordion>
+<Frame>
+  ![Marketplace Dashboard](/images/desktop-dashboard.png)
+</Frame>
 
-  <Accordion title="Linux">
-    - Modern Linux distribution
-    - 4GB RAM
-    - 2-core CPU
-    - 200MB free storage
-    - FUSE for AppImage support
-    - SUI wallet for transaction signing
-  </Accordion>
-</AccordionGroup>
+Monitor your AI marketplace activity:
+- Active model listings and revenue
+- Dataset contribution rewards
+- Storage node staking returns
+- Transaction history and analytics
 
-## Installation
+### Asset Management
 
-### Download & Setup
+<CardGroup cols={2}>
+  <Card title="For AI Creators" icon="robot">
+    - • List models with custom pricing
+    - • Track usage and revenue
+    - • Manage access controls
+    - • Monitor storage health
+  </Card>
+  <Card title="For Data Contributors" icon="coins">
+    - • Upload datasets and earn tokens
+    - • Track contribution rewards
+    - • Monitor usage analytics
+    - • Manage revenue shares
+  </Card>
+</CardGroup>
+
+### Storage Node Operations
+
+<CardGroup cols={2}>
+  <Card title="Node Management" icon="server">
+    ```yaml
+    storage:
+      stake_amount: 1000    # SUI tokens
+      min_uptime: 0.95     # 95% required
+      reward_share: 0.7    # 70% of fees
+      auto_compound: true  # Auto-stake rewards
+    ```
+  </Card>
+  <Card title="Performance Tracking" icon="chart-line">
+    ```yaml
+    metrics:
+      daily_rewards: 45.5    # SUI earned
+      storage_used: "2.1TB"
+      active_blobs: 127
+      challenge_success: 0.99
+    ```
+  </Card>
+</CardGroup>
+
+## Getting Started
+
+### Installation & Setup
 
 <Steps>
   1. **Download**
-     Get the appropriate version for your OS from our official release page
+     Get the app from our [official release page](https://sera.xyz/desktop)
 
-  2. **Verify**
-     Check the SHA-256 hash of the downloaded file against published values to ensure integrity
+  2. **Wallet Setup**
+     ```bash
+     # Import existing SUI wallet
+     sera-desktop wallet import --private-key=0x...
+     
+     # Or create new wallet
+     sera-desktop wallet create
+     ```
 
-  3. **Install**
-     Follow OS-specific installation steps below
+  3. **Configure Storage**
+     ```bash
+     # Set storage preferences
+     sera-desktop storage configure \
+       --min-nodes=7 \
+       --epochs=12 \
+       --redundancy=2
+     ```
 
-  4. **First Run**
-     Connect your SUI wallet to sign storage transactions and configure your Walrus storage preferences
+  4. **Connect to Marketplace**
+     Link your wallet to start earning from AI assets
 </Steps>
 
-### Platform-Specific Notes
+## Marketplace Features
+
+### Asset Management
 
 <CardGroup cols={2}>
-  <Card title="Windows Installation" icon="windows">
-    ```bash
-    # Verify hash (PowerShell)
-    Get-FileHash walrus-desktop.exe -Algorithm SHA256
-    
-    # Install silently
-    walrus-desktop.exe /S
+  <Card title="List Models" icon="tag">
+    ```python
+    # Create marketplace listing
+    await desktop.create_listing({
+        "model_id": "bert-v1",
+        "price": 1000,        # SUI tokens
+        "revenue_share": 0.1  # To contributors
+    })
     ```
   </Card>
-  <Card title="macOS Installation" icon="apple">
-    ```bash
-    # Verify hash
-    shasum -a 256 WalrusDesktop.dmg
-    
-    # Install via CLI
-    sudo hdiutil attach WalrusDesktop.dmg
-    cp -R "/Volumes/WalrusDesktop/WalrusDesktop.app" /Applications/
+  <Card title="Track Earnings" icon="money-bill">
+    ```python
+    # Monitor revenue streams
+    stats = await desktop.get_earnings()
+    print(f"Model revenue: {stats.model_revenue}")
+    print(f"Storage rewards: {stats.node_rewards}")
     ```
   </Card>
 </CardGroup>
 
-## Features
+### Storage Operations
 
-### Blob Management
+Monitor and manage your Walrus storage participation:
 
-<CardGroup cols={2}>
-  <Card title="Upload Tools" icon="upload">
-    - • Drag-and-drop interface for blob uploads
-    - • Automatic blob splitting and encoding using Red Stuff
-    - • Progress tracking for large uploads
-    - • Verification of successful storage across nodes
-  </Card>
-  <Card title="Storage Management" icon="database">
-    - • Track blob availability and storage node health
-    - • Monitor storage costs and contract duration
-    - • Manage storage node stake delegation
-    - • View storage proofs and challenge results
-  </Card>
-</CardGroup>
-
-### Storage Dashboard
-
-<Frame>
-  ![Storage Dashboard](/images/desktop-dashboard.png)
-</Frame>
-
-The dashboard provides real-time visibility into:
-- Blob storage status and availability
-- Storage node performance metrics
-- Storage costs and contract durations
-- Stake delegation status
-- Recent storage proofs and challenges
+```python
+# Check storage node performance
+node_stats = await desktop.get_node_stats()
+print(f"Active stake: {node_stats.stake} SUI")
+print(f"Daily rewards: {node_stats.daily_rewards}")
+print(f"Storage used: {node_stats.storage_used}")
+print(f"Challenge success: {node_stats.challenge_rate}")
+```
 
 ### Wallet Integration
 
-The desktop app integrates with SUI wallets to:
-- Sign storage transactions
-- Manage storage payments
-- Delegate stake to storage nodes
-- Track storage costs and rewards
-
-```typescript
-// Example of how the desktop app interfaces with SUI wallet
-interface WalrusStorageManager {
-  // Upload blob and create storage contract
-  async uploadBlob(
-    blob: Blob,
-    duration: number,  // epochs
-    payment: number    // SUI amount
-  ): Promise<BlobId>;
-
-  // Delegate stake to storage nodes
-  async delegateStake(
-    nodeId: string,
-    amount: number     // SUI amount
-  ): Promise<boolean>;
-
-  // Monitor blob availability
-  async checkBlobStatus(
-    blobId: string
-  ): Promise<{
-    available: boolean,
-    proofTimestamp: number,
-    storageNodesCount: number
-  }>;
-}
-```
-
-## Configuration
-
-### Storage Settings
-
-Manage your Walrus storage preferences and SUI blockchain interactions through the desktop application's configuration interface.
-
-<AccordionGroup>
-  <Accordion title="General Settings">
-    ```yaml
-    app:
-      theme: "dark"
-      language: "en"
-      updates: "automatic"
-      telemetry: false
-    storage:
-      default_duration: 30  # epochs
-      auto_renew: true
-      min_storage_nodes: 100
-    ```
-  </Accordion>
-  
-  <Accordion title="Network Settings">
-    ```yaml
-    network:
-      max_concurrent_uploads: 5
-      chunk_size: "64MB"
-      retry_attempts: 3
-      timeout: 30000  # ms
-    sui:
-      network: "mainnet"
-      gas_budget: 20000
-    ```
-  </Accordion>
-</AccordionGroup>
-
-### Resource Management
-
 <CardGroup cols={2}>
-  <Card title="Storage Management" icon="hard-drive">
-    - • Configure default storage duration
-    - • Set auto-renewal preferences
-    - • Manage storage node selection criteria
-    - • Configure minimum replication factor
+  <Card title="Transaction Management" icon="money-bill-transfer">
+    - • Sign marketplace transactions
+    - • Manage storage payments
+    - • Track staking rewards
+    - • Handle token transfers
   </Card>
-  <Card title="Network Settings" icon="network-wired">
-    - • Adjust upload/download concurrency
-    - • Configure chunk sizes for Red Stuff encoding
-    - • Set network timeouts and retry policies
-    - • Manage SUI network gas settings
+  <Card title="Security Features" icon="shield-check">
+    - • Encrypted key storage
+    - • Transaction confirmation
+    - • Activity monitoring
+    - • Secure RPC connections
   </Card>
 </CardGroup>
 
-## Integration
+## Node Operation
 
-### API Access
-
-The desktop app can communicate with local or remote off-chain APIs. SUI interactions are done through local CLI or integrated wallets, while Walrus and vector DB operations use off-chain endpoints.
+### Staking Management
 
 ```python
-from sera.desktop import DesktopClient
+# Configure node staking
+await desktop.configure_staking({
+    "stake_amount": 1000,    # SUI tokens
+    "auto_compound": True,   # Reinvest rewards
+    "min_duration": 30      # Epochs
+})
 
-client = DesktopClient()
-
-# Manage datasets: import a local dataset, then reference it on-chain
-dataset = client.import_dataset(
-    path="./local_dataset",
-    name="my_dataset",
-    description="Local dataset import"
-)
-
-# Deploy model off-chain, record references on-chain
-deployment = client.deploy_model(
-    model_path="./local_model",
-    resources={
-        "gpu": 1,
-        "memory": "4GB"
-    }
-)
+# Monitor staking returns
+rewards = await desktop.get_staking_rewards()
+print(f"Total rewards: {rewards.total} SUI")
+print(f"APY: {rewards.apy}%")
 ```
-
-### Automation
-
-You can set up workflows that run periodically or on triggers. Off-chain pipelines can be defined in the desktop app, and completion events are recorded on SUI.
-
-```python
-from sera.desktop.automation import Workflow
-
-# Create automated workflow
-workflow = Workflow("data_processing")
-workflow.add_step("import_data", source="./data")
-workflow.add_step("preprocess", config={"format": "parquet"})
-workflow.add_step("upload", destination="sera://datasets")
-
-# Schedule workflow
-workflow.schedule(
-    cron="0 0 * * *",  # Daily at midnight
-    notify=True
-)
-```
-
-## Security
-
-### Authentication
-
-<Steps>
-  1. **Wallet Connection**
-     Connect your SUI wallet for signing storage transactions and stake delegation
-
-  2. **Key Management**
-     Secure storage of local configuration and temporary encryption keys
-
-  3. **Session Management**
-     Automatic session expiry and wallet reconnection requirements
-
-  4. **Transaction Signing**
-     All storage operations require explicit wallet approval
-</Steps>
-
-### Data Protection
-
-<CardGroup cols={2}>
-  <Card title="Local Security" icon="shield-check">
-    - • Encrypted local cache for temporary blob chunks
-    - • Secure storage of configuration data
-    - • Automatic cleanup of temporary files
-    - • Session data protection
-  </Card>
-  <Card title="Network Security" icon="lock">
-    - • TLS encryption for all node communications
-    - • Verification of storage node identities
-    - • Proof verification for blob retrievals
-    - • Challenge response validation
-  </Card>
-</CardGroup>
-
-## Monitoring
 
 ### Storage Health
 
-Monitor the health and availability of your stored blobs:
-
-```typescript
-interface StorageMonitor {
-  // Check blob availability
-  async checkAvailability(blobId: string): Promise<{
-    available: boolean,
-    replicationFactor: number,
-    lastProofTime: number
-  }>;
-
-  // Monitor storage node performance
-  async getNodeMetrics(nodeId: string): Promise<{
-    uptime: number,
-    successfulChallenges: number,
-    totalStake: number,
-    delegatedStake: number
-  }>;
-
-  // Track storage costs
-  async getStorageMetrics(blobId: string): Promise<{
-    epochsRemaining: number,
-    costPerEpoch: number,
-    totalCost: number
-  }>;
-}
-```
-
-### Challenge Monitoring
-
-Track storage proofs and challenges:
-
-<CardGroup cols={2}>
-  <Card title="Proof Tracking" icon="check-circle">
-    - • View latest storage proofs
-    - • Monitor challenge responses
-    - • Track node performance
-    - • Verify data availability
-  </Card>
-  <Card title="Cost Tracking" icon="chart-line">
-    - • Monitor storage costs
-    - • Track stake rewards
-    - • View transaction history
-    - • Analyze storage efficiency
-  </Card>
-</CardGroup>
-
-## Troubleshooting
-
-### Common Issues
-
-<AccordionGroup>
-  <Accordion title="Upload Issues">
-    - Check network connection stability
-    - Verify sufficient SUI balance for storage fees
-    - Ensure blob size is within network limits
-    - Confirm wallet is properly connected
-    - Verify minimum storage nodes are available
-  </Accordion>
-  
-  <Accordion title="Storage Issues">
-    - Monitor blob availability status
-    - Check storage proof verification
-    - Verify storage duration hasn't expired
-    - Ensure sufficient storage nodes are active
-    - Check stake delegation status
-  </Accordion>
-
-  <Accordion title="Wallet Issues">
-    - Verify SUI wallet connection
-    - Check for sufficient gas balance
-    - Ensure wallet permissions are granted
-    - Verify network selection (mainnet/testnet)
-  </Accordion>
-</AccordionGroup>
-
-### Diagnostic Tools
-
-```bash
-# Log Locations
-# Windows
-%APPDATA%\WalrusDesktop\logs\
-
-# macOS
-~/Library/Logs/WalrusDesktop/
-
-# Linux
-~/.config/WalrusDesktop/logs/
-```
-
-### Diagnostic Commands
-```bash
-# Check blob status
-walrus-cli blob status <blob_id>
-
-# Verify storage nodes
-walrus-cli nodes list --active
-
-# Check stake delegation
-walrus-cli stake status --address <your_address>
-
-# Verify storage proofs
-walrus-cli proof verify <blob_id>
-```
-
-## Updates & Maintenance
-
-### Auto Updates
-
-<CardGroup cols={2}>
-  <Card title="Update Settings" icon="arrows-rotate">
-    ```yaml
-    updates:
-      channel: "stable"
-      automatic: true
-      check_interval: "daily"
-      download_in_background: true
-    ```
-  </Card>
-
-  <Card title="Version Management" icon="code-branch">
-    ```yaml
-    versions:
-      backup_config: true
-      keep_versions: 2
-      auto_cleanup: true
-    ```
-  </Card>
-</CardGroup>
-
-### Maintenance Tasks
-
 <Steps>
-  1. **Regular Checks**
-     - Monitor blob availability
-     - Review storage proofs
-     - Check stake delegation status
-     - Verify storage costs and duration
+  1. **Monitor Performance**
+     - Track storage proofs
+     - Monitor node uptime
+     - Check challenge responses
+     - Verify reward distribution
 
-  2. **Storage Management**
-     - Renew storage contracts before expiration
-     - Review and optimize storage costs
-     - Monitor stake rewards
-     - Update node delegation strategy
+  2. **Optimize Returns**
+     - Adjust stake amounts
+     - Monitor network demand
+     - Optimize storage allocation
+     - Track competitor metrics
 
-  3. **Security Updates**
-     - Keep desktop app updated
-     - Review wallet permissions
-     - Update network security settings
-     - Verify node identities
+  3. **Manage Resources**
+     - Monitor disk usage
+     - Track bandwidth usage
+     - Handle storage requests
+     - Maintain node health
 </Steps>
 
-## Support & Resources
+## Best Practices
+
+### Security
+
+<Check>Use hardware wallet when possible</Check>
+<Check>Enable automatic updates</Check>
+<Check>Monitor storage proofs regularly</Check>
+<Check>Back up wallet credentials securely</Check>
+<Cross>Don't share private keys</Cross>
+<Cross>Don't disable security features</Cross>
+
+### Performance
+
+<CardGroup cols={2}>
+  <Card title="Storage Optimization" icon="hard-drive">
+    - • Monitor disk usage
+    - • Track proof responses
+    - • Optimize chunk sizes
+    - • Maintain redundancy
+  </Card>
+  <Card title="Revenue Optimization" icon="chart-line">
+    - • Track market rates
+    - • Monitor stake returns
+    - • Optimize node resources
+    - • Adjust pricing strategy
+  </Card>
+</CardGroup>
+
+## Resources
 
 <CardGroup cols={2}>
   <Card title="Documentation" icon="book">
-    [Walrus Documentation](https://docs.walrus.storage)
+    [User Guide](/docs/desktop)
   </Card>
   <Card title="Community" icon="users">
-    [Walrus Forum](https://forum.walrus.storage)
-  </Card>
-  <Card title="Issues" icon="bug">
-    [GitHub Issues](https://github.com/walrus/desktop/issues)
+    [Discord Chat](https://discord.gg/sera)
   </Card>
   <Card title="Support" icon="headset">
-    [Help Center](mailto:support@walrus.storage)
+    [Get Help](mailto:support@sera.xyz)
+  </Card>
+  <Card title="Updates" icon="download">
+    [Latest Release](https://sera.xyz/desktop)
   </Card>
 </CardGroup>
 
 <Note>
-For enterprise support and custom desktop configurations, contact our enterprise team at enterprise@sera.xyz
+Want to earn passive income from AI storage? Join our [Discord](https://discord.gg/sera) to learn about running storage nodes.
 </Note> 

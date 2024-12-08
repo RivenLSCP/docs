@@ -1,208 +1,197 @@
 ---
 title: "AI-To-Earn"
-description: "Monetize your AI interactions securely on SUI with Walrus storage"
+description: "Earn tokens by contributing quality AI conversations to the Sera marketplace"
 ---
 
-**AI-To-Earn** enables users to monetize their AI model interactions while contributing to AI research advancement. Built natively on the SUI blockchain with Walrus storage integration, the protocol securely captures and stores your AI conversations while rewarding quality contributions with $SERA tokens.
+## Overview
 
+AI-To-Earn lets you monetize your AI interactions and earn $SERA tokens. Your conversations with leading AI models are securely stored using Walrus's decentralized storage and verified through SUI blockchain, creating a valuable dataset for AI advancement.
 
-## How It Works
+## Earning Opportunities
+
+<CardGroup cols={2}>
+  <Card title="Active Earnings" icon="coins">
+    - • Earn per quality conversation
+    - • Bonus rewards for premium models
+    - • Daily and weekly challenges
+    - • Referral commissions
+  </Card>
+  <Card title="Passive Income" icon="chart-line">
+    - • Stake tokens for yield
+    - • Dataset revenue sharing
+    - • Storage node rewards
+    - • Governance rewards
+  </Card>
+</CardGroup>
+
+## How to Start Earning
 
 <Steps>
-  1. **Connect Wallet**  
-     Connect your SUI-compatible wallet (e.g., Sui Wallet, OKX Wallet). This wallet manages your $SERA tokens and signs your interactions.
-
-  2. **Install Chrome Extension**  
-     Our browser extension captures your conversations with supported AI models, encrypts sensitive data, and generates content hashes.
-
-  3. **Secure Storage**  
-     Conversation data is split and encoded using Walrus's Red Stuff protocol, ensuring:
-     - Data redundancy across storage nodes
-     - Fast retrieval speeds
-     - Byzantine fault tolerance
-     - Privacy through encryption
-
-  4. **Earn SERA**  
-     - Conversations are quality-checked through our off-chain oracle network
-     - Quality scores and metadata are published on-chain
-     - Smart contracts distribute $SERA rewards based on contribution value
+  1. **Connect Wallet**
+     Link your SUI wallet to receive $SERA tokens
+  
+  2. **Install Extension**
+     Get our Chrome extension to capture AI conversations
+  
+  3. **Start Chatting**
+     Interact with supported AI models
+  
+  4. **Earn Tokens**
+     Receive rewards based on conversation quality and usage
 </Steps>
 
-## Token Utility
+## Reward Structure
+
+### Base Rewards
+```python
+# Example reward calculation
+reward = base_rate * quality_score * model_tier * (1 + bonuses)
+
+# Typical values
+base_rate = 10          # SERA tokens
+quality_score = 0.1-1.0 # Based on oracle rating
+model_tier = 1.0-1.5   # Premium models earn more
+bonuses = 0.0-0.5      # Streaks, referrals, etc.
+```
+
+### Model Tiers & Multipliers
+
 <CardGroup cols={2}>
-  <Card title="Staking Benefits" icon="coins">
-    - • Earn yield from protocol fees
-    - • Participate in governance voting
-    - • Access premium AI model interfaces
-    - • Boost earning rates up to 2x
-  </Card>
-  <Card title="Marketplace Access" icon="store">
-    - • Trade verified AI conversation datasets
-    - • Purchase model access credits
-    - • Join curated data pools
-    - • Access premium features
-  </Card>
-</CardGroup>
-
-## Supported Models
-
-All model access is managed through our Chrome extension, with conversation data stored on Walrus and metadata/proofs anchored on SUI:
-
-<CardGroup cols={3}>
-  <Card title="ChatGPT" icon="message-bot">
-    - • GPT-4
+  <Card title="Standard Models (1.0x)" icon="robot">
     - • GPT-3.5
-    - • GPT-3.5-turbo
+    - • Claude 3 Haiku
+    - • Gemini 1.5 Flash
+    - • Base reward rate
   </Card>
-  <Card title="Claude" icon="robot">
+  <Card title="Premium Models (1.5x)" icon="star">
+    - • GPT-4
     - • Claude 3 Opus
     - • Claude 3.5 Sonnet
-    - • Claude 3 Haiku
-  </Card>
-  <Card title="Gemini" icon="sparkles">
-    - • Gemini 1.5 Pro
-    - • Gemini 1.5 Flash
+    - • 50% reward bonus
   </Card>
 </CardGroup>
 
+## Boost Your Earnings
 
-## Reward System
-
-Contributions are evaluated through a combination of off-chain oracles and on-chain verification:
-  $$
-R = α · Q(c) · M(t) · V(i) · (1 + B)
-$$
-
-Where:
-- $α$ (alpha): Base rate defined in smart contract
-- $Q(c)$: Quality score (0.1 to 1.0)
-- $M(t)$: Model tier multiplier (1.0x - 1.5x)
-- $V(i)$: Volume multiplier (1.0x - 1.5x)
-- $B$: Bonus multipliers (referrals, streaks)
-
-## Model-Specific Multipliers
-
-The SUI blockchain stores multipliers for different model tiers, guiding the incentive structure:
+### Staking Benefits
 
 <CardGroup cols={2}>
-  <Card title="Standard Models" icon="chart-simple">
-    <p><strong>Base Multiplier:</strong> B = 1.0</p>
-    <div>
-      <p><strong>Supported Models</strong></p>
-      <ul>
-        <li>• GPT-3.5 & GPT-3.5-turbo</li>
-        <li>• Claude 3 Haiku</li>
-        <li>• Gemini 1.5 Flash</li>
-      </ul>
-    </div>
-    <div>
-      <p><strong>Benefits</strong></p>
-      <ul>
-        <li>• Standard reward rate</li>
-        <li>• Quality-focused incentives</li>
-      </ul>
-    </div>
+  <Card title="Reward Multipliers" icon="arrow-trend-up">
+    ```yaml
+    staking:
+      1000 SERA: 1.2x multiplier
+      5000 SERA: 1.5x multiplier
+      10000 SERA: 2.0x multiplier
+    ```
   </Card>
-
-  <Card title="Premium Models" icon="chart-line">
-    <p><strong>Base Multiplier:</strong> B = 1.5</p>
-    <div>
-      <p><strong>Supported Models</strong></p>
-      <ul>
-        <li>• GPT-4</li>
-        <li>• Claude 3 Opus & Claude 3.5 Sonnet</li>
-        <li>• Gemini 1.5 Pro</li>
-      </ul>
-    </div>
-    <div>
-      <p><strong>Benefits</strong></p>
-      <ul>
-        <li>• Premium reward rates</li>
-        <li>• Enhanced quality multipliers</li>
-      </ul>
-    </div>
+  <Card title="Extra Perks" icon="gift">
+    ```yaml
+    benefits:
+      - Premium model access
+      - Priority oracle rating
+      - Governance rights
+      - Revenue sharing
+    ```
   </Card>
 </CardGroup>
 
-## Incentive Programs
-
-### Referral System
-- Referrers earn 5% of referred users' rewards for 30 days
-- Referral relationships stored on-chain
-- Maximum of 100 active referrals per address
-- Minimum stake required to participate
-
 ### Achievement System
-Achievements are processed off-chain and verified on-chain:
 
 <AccordionGroup>
-  <Accordion title="Daily Goals">
-    - 5 quality conversations
-    - Minimum average quality score
-    - Multi-model usage bonus
+  <Accordion title="Daily Rewards">
+    - 5 quality conversations: +10 SERA
+    - Use multiple models: +5 SERA
+    - Maintain 0.8+ quality: +15 SERA
   </Accordion>
   
   <Accordion title="Weekly Challenges">
-    - Topical conversation targets
-    - Consistent quality maintenance
-    - Community-voted focus areas
+    - Topic-focused rewards
+    - Consistency bonuses
+    - Community competitions
+    - Special events
   </Accordion>
 </AccordionGroup>
 
-## Privacy & Security Architecture
+## Referral Program
 
-### Data Protection Flow
+Earn from your network:
+- 5% of referred users' rewards for 30 days
+- Bonus multipliers for active referrals
+- Special rewards for community builders
+- Maximum 100 active referrals
+
+## Security & Privacy
+
+### Data Protection
 
 <Steps>
-  1. **Local Encryption**
-     - Personal data encrypted in Chrome extension
-     - Uses AES-256 encryption
-     - Keys never leave user device
-
-  2. **Walrus Storage**
-     - Data split using Red Stuff encoding
-     - Encrypted slivers distributed across nodes
-     - Redundancy ensures 99.9% availability
-
-  3. **On-Chain Records**
-     - Only hashes and metadata stored on SUI
-     - No personal data on-chain
-     - Pseudonymous wallet addresses
+  1. **Local Security**
+     - Optional end-to-end encryption
+     - Local data control
+     - Secure key management
+  
+  2. **Decentralized Storage**
+     - Walrus Red Stuff encoding
+     - Byzantine fault tolerance
+     - 2-year maximum retention
+  
+  3. **Blockchain Verification**
+     - Only hashes on SUI chain
+     - Pseudonymous tracking
+     - Verifiable rewards
 </Steps>
 
-### Security Measures
+### Storage Architecture
 
 <CardGroup cols={2}>
-  <Card title="Extension Security" icon="shield">
-    - • Regular security audits
-    - • Sandboxed operations
-    - • Local-only key storage
+  <Card title="Walrus Storage" icon="database">
+    - • Efficient data splitting
+    - • Redundant storage
+    - • Fast retrieval
+    - • Proof verification
   </Card>
-  
-  <Card title="Storage Security" icon="database">
-    - • Walrus Byzantine fault tolerance
-    - • Distributed storage nodes
-    - • Encrypted data transmission
-    - • Periodic integrity checks
+  <Card title="SUI Integration" icon="link">
+    - • Smart contracts
+    - �� Token distribution
+    - • Access control
+    - • Proof validation
   </Card>
 </CardGroup>
 
-## Contact & Resources
+## Token Utility
 
 <CardGroup cols={2}>
-  <Card title="Developer Resources" icon="code">
-    - • [GitHub Repository](https://github.com/sera)
-    - • [API Documentation](https://docs.sera.xyz/api)
-    - • [Integration Guide](https://docs.sera.xyz/integration)
+  <Card title="Staking" icon="lock">
+    - • Earn yield from fees
+    - • Boost earning rates
+    - • Governance voting
+    - • Premium features
   </Card>
+  <Card title="Marketplace" icon="store">
+    - • Trade conversation data
+    - • Buy model credits
+    - • Join data pools
+    - • Access premium tools
+  </Card>
+</CardGroup>
 
-  <Card title="Community" icon="users">
-    - • [Discord Server](https://discord.gg/sera)
-    - • [Forum](https://forum.sera.xyz)
-    - • [Blog](https://blog.sera.xyz)
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Start Contributing" icon="rocket">
+    [Download Extension](https://chrome.sera.xyz)
+  </Card>
+  <Card title="Leaderboard" icon="trophy">
+    [View Rankings](https://sera.xyz/leaderboard)
+  </Card>
+  <Card title="Contributor Hub" icon="users">
+    [Join Community](https://discord.gg/sera)
+  </Card>
+  <Card title="Help Center" icon="circle-question">
+    [Get Support](https://help.sera.xyz/contributors)
   </Card>
 </CardGroup>
 
 <Note>
-For technical support or integration questions, please contact our developer team at dev@sera.xyz
+New to AI data contribution? Check out our [Beginner's Guide](https://sera.xyz/start) for tips on maximizing your earnings.
 </Note>

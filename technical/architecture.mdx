@@ -1,333 +1,213 @@
 ---
 title: "System Architecture"
-description: "Technical overview of Sera's decentralized AI infrastructure"
+description: "How Sera combines SUI blockchain and Walrus storage to power the AI data marketplace"
 ---
 
 ## Overview
 
-Our architecture leverages SUI blockchain's native capabilities and Walrus storage protocol to create a practical AI infrastructure. The system uses SUI for transaction verification and governance, while Walrus handles efficient decentralized storage with its innovative Red Stuff encoding algorithm.
+Sera creates a decentralized AI marketplace by combining SUI blockchain's programmable transactions with Walrus's efficient storage network. This enables:
 
-## System Components
-
-<CardGroup cols={2}>
-  <Card title="Core Layer" icon="layer-group">
-    - • SUI Move Contracts for asset management and governance
-    - • Native SUI token integration for economic incentives
-    - • On-chain parameter management via SUI governance
-    - • Points-to-token conversion using SUI's programmable transaction blocks
-  </Card>
-  <Card title="Storage Layer" icon="database">
-    - • Walrus Integration: Erasure-coded storage with Red Stuff encoding
-    - • Content-addressed blob storage with 2D encoding for efficient recovery
-    - • Epoch-based storage committee management
-    - • Storage proofs and challenges via Walrus protocol
-  </Card>
-  <Card title="Compute Layer" icon="microchip">
-    - • Centralized compute providers with verifiable outputs
-    - • Training checkpoints stored in Walrus with CID references on SUI
-    - • Compute results verified through merkle proofs
-    - • Job scheduling and coordination through SUI smart contracts
-  </Card>
-  <Card title="Application Layer" icon="window">
-    - • Direct Walrus blob retrieval for efficient data access
-    - • SUI SDK integration for transaction management
-    - • Walrus client libraries for storage operations
-  </Card>
-</CardGroup>
-
-## Architecture Diagram
-
-<Frame>
-  <img src="/images/architecture-diagram.png" alt="Architecture Diagram" />
-</Frame>
+- Secure AI model and dataset trading
+- Verifiable compute for AI training
+- AI-to-earn incentives for data contributors
+- Decentralized storage with 4-5x efficiency vs competitors
 
 ## Core Components
 
-### SUI Blockchain Integration
-The SUI blockchain provides our foundational trust layer through Move smart contracts:
+<CardGroup cols={2}>
+  <Card title="SUI Blockchain Layer" icon="link">
+    - • Handles all marketplace transactions
+    - • Manages economic incentives and rewards
+    - • Verifies compute results and proofs
+    - • Governs protocol parameters
+  </Card>
+  <Card title="Walrus Storage Layer" icon="database">
+    - • Stores AI models and datasets
+    - • Uses Red Stuff encoding for 4-5x efficiency
+    - • Ensures Byzantine fault tolerance
+    - • Provides verifiable storage proofs
+  </Card>
+</CardGroup>
+
+## How It Works
 
 ```mermaid
 graph TD
-    A[Move Contracts] --> B[Token Economics]
-    A --> C[Storage Management]
-    A --> D[Payment Processing]
-    B --> E[Reward Distribution]
-    C --> F[Walrus Committee Management]
-    D --> G[SUI Native Token Integration]
+    A[Data Contributors] --> B[Sera Marketplace]
+    C[AI Developers] --> B
+    B --> D[SUI Smart Contracts]
+    D --> E[Payment & Rewards]
+    D --> F[Access Control]
+    B --> G[Walrus Storage]
+    G --> H[Models & Datasets]
+    G --> I[Storage Proofs]
 
     style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px 
     style C fill:#bfb,stroke:#333,stroke-width:2px
     style D fill:#fbf,stroke:#333,stroke-width:2px
     style E fill:#ffb,stroke:#333,stroke-width:2px
     style F fill:#bff,stroke:#333,stroke-width:2px
     style G fill:#fbb,stroke:#333,stroke-width:2px
+    style H fill:#bfb,stroke:#333,stroke-width:2px
+    style I fill:#fbf,stroke:#333,stroke-width:2px
 ```
 
-### Walrus Storage System
+## Key Features
 
-<Steps>
-  1. **Data Ingestion**
-     - Content-addressed blob storage using Red Stuff encoding
-     - 2D erasure coding for efficient recovery
-     - Epoch-based storage committee management
-     - Storage proofs through Walrus protocol
-
-  2. **Distribution**
-     - Sliver distribution across storage committee
-     - Primary and secondary sliver management
-     - Automatic recovery mechanisms for failed nodes
-     - Epoch-based committee rotation
-
-  3. **Retrieval**
-     - Direct blob retrieval from Walrus nodes
-     - Best-effort and incentivized read paths
-     - Efficient recovery using 2D encoding
-     - Verification against on-chain commitments
-
-  4. **Storage Proofs**
-     - Asynchronous challenge protocol
-     - Epoch-based storage attestation
-     - Logarithmic scaling for proof costs
-     - Byzantine fault tolerant verification
-</Steps>
-
-### Compute Network
+### AI Data Marketplace
 
 <CardGroup cols={2}>
-  <Card title="Resource Management" icon="server">
-    - • Centralized compute providers with SLA commitments
-    - • Verifiable computation results with merkle proofs
-    - • Resource monitoring through SUI events
+  <Card title="For Data Contributors" icon="users">
+    - • Earn tokens for quality data contributions
+    - • Verifiable usage tracking
+    - • Revenue share from AI models
+    - • Stake to earn storage rewards
   </Card>
-  <Card title="Workload Distribution" icon="network-wired">
-    - • Job scheduling via Move contracts
-    - • Result verification through merkle proofs
-    - • Error handling with automatic retries
-    - • Computation proof storage on SUI
+  <Card title="For AI Developers" icon="robot">
+    - • Access curated datasets
+    - • Deploy models with verifiable compute
+    - • Pay only for storage used
+    - • Built-in monetization
   </Card>
 </CardGroup>
 
-## Security Architecture
+### Tokenomics & Incentives
+
+The protocol uses SUI's native capabilities for:
+
+- Data contribution rewards
+- Storage node staking
+- Compute verification
+- Marketplace fees
+- Protocol governance
+
+### Storage Architecture 
+
+Walrus provides efficient decentralized storage through:
+
+<Steps>
+  1. **Red Stuff Encoding**
+     - 4-5x more efficient than full replication
+     - Byzantine fault tolerant
+     - Fast recovery from node failures
+  
+  2. **Storage Proofs**
+     - Verifiable on SUI blockchain
+     - Automatic challenge/response
+     - Stake slashing for violations
+  
+  3. **Economic Security**
+     - Storage nodes stake tokens
+     - Rewards for reliable storage
+     - Penalties for data loss
+</Steps>
+
+## For Developers
+
+### Quick Start
+
+```python
+from sera.sdk import SeraClient
+
+# Initialize client
+client = SeraClient(
+    sui_endpoint="https://sui-rpc.example.com",
+    walrus_endpoint="https://walrus.example.com"
+)
+
+# Upload dataset and create marketplace listing
+dataset_id = await client.upload_dataset(
+    path="./my_dataset",
+    metadata={
+        "name": "Training Data v1",
+        "price": 1000, # in SUI tokens
+        "reward_share": 0.1 # 10% to contributors
+    }
+)
+
+# Deploy AI model
+model_id = await client.deploy_model(
+    model_path="./my_model",
+    input_dataset=dataset_id,
+    compute_config={
+        "gpu": "t4",
+        "batch_size": 32
+    }
+)
+```
+
+### Storage Integration
+
+```python
+# Store data with Walrus
+blob_id = await client.store_blob(
+    data=my_data,
+    config={
+        "min_nodes": 7,     # 2f+1 for Byzantine fault tolerance
+        "epochs": 12,       # Storage duration
+        "redundancy": 2     # Red Stuff encoding level
+    }
+)
+
+# Verify storage proof on SUI
+proof = await client.verify_storage(blob_id)
+```
+
+## Security Model
+
 ### Data Protection
 
 <AccordionGroup>
-  <Accordion title="Encryption">
-    - Client-side encryption before data enters Walrus
-    - Key management handled off-chain with hash references on SUI
-    - Red Stuff encoding for data redundancy and recovery
-    - Merkle proofs for content verification
+  <Accordion title="Storage Security">
+    - Byzantine fault tolerant with 2f+1 nodes
+    - Red Stuff encoding for efficient recovery
+    - Storage proofs verified on SUI
+    - Stake slashing for violations
   </Accordion>
   
-  <Accordion title="Access Control">
-    - On-chain role-based access control via SUI Move contracts
-    - Epoch-based committee membership verification
-    - Token-gated access control for premium datasets
-    - Audit logs with merkle roots stored on SUI
+  <Accordion title="Economic Security">
+    - Storage nodes stake SUI tokens
+    - Automatic rewards and penalties
+    - Market incentives for reliability
+    - Governance-controlled parameters
   </Accordion>
 </AccordionGroup>
 
-### Network Security
-
-```mermaid
-graph LR
-    A[Client] --> B[Load Balancer]
-    B --> C[API Gateway]
-    C --> D[Auth Service]
-    D --> E[Walrus Storage Nodes]
-
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#bfb,stroke:#333,stroke-width:2px
-    style D fill:#fbf,stroke:#333,stroke-width:2px
-    style E fill:#ffb,stroke:#333,stroke-width:2px
-```
-
-## Performance Optimization
-### Caching Strategy
+### Access Control
 
 <CardGroup cols={2}>
-  <Card title="Content Cache" icon="bolt">
-    - • Edge caching for frequently accessed blobs
-    - • Cache invalidation tracked through Walrus epochs
-    - • Performance metrics with on-chain summaries
+  <Card title="On-Chain" icon="lock">
+    - • SUI smart contract permissions
+    - • Token-gated access
+    - • Verifiable compute results
+    - • Automated payments
   </Card>
-  <Card title="Query Cache" icon="magnifying-glass">
-    - • Metadata caching with Walrus node coordination
-    - • Cache coherence managed through epochs
-    - • Analytics with integrity proofs on SUI
+  <Card title="Storage Layer" icon="shield">
+    - • Encrypted data storage
+    - • Byzantine fault tolerance
+    - • Storage proofs
+    - • Node stake requirements
   </Card>
 </CardGroup>
 
-### Scaling Mechanisms
-
-<Steps>
-  1. **Horizontal Scaling**
-     - Add more Walrus storage nodes
-     - Increase committee size through governance
-     - Scale API gateways independently
-
-  2. **Vertical Scaling**
-     - Upgrade storage node capabilities
-     - Optimize Red Stuff encoding parameters
-     - Enhance API gateway performance
-
-  3. **Epoch Management**
-     - Dynamic committee size adjustment
-     - Automated storage rebalancing
-     - Performance-based node selection
-
-  4. **Load Distribution**
-     - Geographic node distribution
-     - Smart routing based on node health
-     - Automatic failover mechanisms
-</Steps>
-
-## Integration Points
-
-### API Architecture
-
-```mermaid
-graph TD
-    A[Client Applications] --> B[API Gateway]
-    B --> C[Authentication Service]
-    B --> D[Walrus Storage Interface]
-    B --> E[SUI Move Contract Interface]
-    D --> F[Walrus Storage Nodes]
-    E --> G[SUI Network]
-
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#bfb,stroke:#333,stroke-width:2px
-    style D fill:#fbf,stroke:#333,stroke-width:2px
-    style E fill:#ffb,stroke:#333,stroke-width:2px
-    style F fill:#bff,stroke:#333,stroke-width:2px
-    style G fill:#fbb,stroke:#333,stroke-width:2px
-```
-
-### Service Integration
+## Resources
 
 <CardGroup cols={2}>
-  <Card title="Storage Integration" icon="database">
-    - • Direct Walrus client SDK integration
-    - • Blob storage and retrieval operations
-    - • Epoch-based committee management
-    - • Storage proof verification
+  <Card title="Documentation" icon="book">
+    [Developer Docs](/docs)
   </Card>
-  <Card title="Blockchain Integration" icon="link">
-    - • SUI Move contract interactions
-    - • Transaction management and verification
-    - • On-chain event monitoring
-    - • Governance participation
+  <Card title="Community" icon="users">
+    [Discord Community](https://discord.gg/sera)
   </Card>
-</CardGroup>
-
-## Monitoring & Observability
-### System Metrics
-
-<CardGroup cols={2}>
-  <Card title="Storage Metrics" icon="chart-line">
-    - • Blob storage utilization
-    - • Node health and availability
-    - • Committee participation rates
-    - • Storage proof success rates
+  <Card title="GitHub" icon="github">
+    [Source Code](https://github.com/sera)
   </Card>
-  <Card title="Performance Metrics" icon="gauge">
-    - • Read/Write latency
-    - • Node response times
-    - • Sliver distribution health
-    - • Recovery operation stats
-  </Card>
-</CardGroup>
-
-### Logging & Tracing
-
-```python
-from sera.monitoring import WalrusMonitor
-
-# Initialize Walrus monitor
-monitor = WalrusMonitor(
-    storage_nodes=config.WALRUS_NODES,
-    sui_endpoint=config.SUI_RPC_URL
-)
-
-# Track storage operations
-async def track_storage_op():
-    metrics = await monitor.collect_metrics()
-    
-    # Store merkle root of metrics on SUI for auditability
-    await monitor.publish_metrics_root(metrics)
-    
-    # Alert on issues
-    if metrics.node_health < HEALTH_THRESHOLD:
-        await monitor.trigger_alert("node_health_degraded")
-```
-
-## Deployment Architecture
-### Infrastructure Components
-
-```yaml
-version: '1.0'
-services:
-  api_gateway:
-    image: sera/gateway:latest
-    replicas: 3
-    environment:
-      WALRUS_NODES: ${WALRUS_NODES}
-      SUI_RPC_URL: ${SUI_RPC_URL}
-      
-  auth_service:
-    image: sera/auth:latest
-    replicas: 2
-    environment:
-      SUI_MOVE_PACKAGE: ${AUTH_PACKAGE}
-```
-
-### Deployment Strategy
-
-<Steps>
-  1. **Pre-deployment**
-     - Verify SUI Move contracts
-     - Confirm Walrus node availability
-     - Test storage operations
-     - Validate committee membership
-
-  2. **Deployment Process**
-     - Rolling updates for API services
-     - Zero-downtime infrastructure updates
-     - Automatic health checking
-     - Fallback procedures
-
-  3. **Post-deployment**
-     - Monitor storage operations
-     - Track node performance
-     - Verify committee transitions
-     - Validate storage proofs
-
-  4. **Maintenance**
-     - Regular node health checks
-     - Committee rotation monitoring
-     - Performance optimization
-     - Security updates
-</Steps>
-
-## Further Reading
-
-<CardGroup cols={2}>
-  <Card title="Walrus Documentation" icon="book">
-    [View Walrus Docs](https://mystenlabs.com/walrus)
-  </Card>
-  <Card title="SUI Move Guide" icon="code">
-    [SUI Move Reference](https://docs.sui.io/move)
-  </Card>
-  <Card title="Integration Guide" icon="puzzle-piece">
-    [Integration Patterns](/integration)
-  </Card>
-  <Card title="Best Practices" icon="star">
-    [Development Guidelines](/guidelines)
+  <Card title="Support" icon="headset">
+    [Technical Support](mailto:support@sera.xyz)
   </Card>
 </CardGroup>
 
 <Note>
-For detailed technical support and discussions, join our [Developer Discord](https://discord.gg/sera).
+Want to start earning from AI data? Join our [Discord](https://discord.gg/sera) to learn more about contribution opportunities.
 </Note> 

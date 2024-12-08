@@ -1,33 +1,23 @@
 ---
 title: "Guide for Developers"
-description: "Build and integrate AI data collection and management applications on SUI with Walrus storage"
+description: "Build token-incentivized AI applications using Sera's decentralized infrastructure"
 ---
-
-## Overview
-
-This guide helps developers integrate with our SUI-based AI data platform. The platform uses Walrus for decentralized storage of AI conversation data, model metadata, and related assets, while leveraging off-chain compute services for AI operations. Core platform data like ownership, access controls, and payment records are stored on the SUI blockchain.
-
-Key Components:
-
-- **SUI Smart Contracts**: Manage ownership, permissions, payments and marketplace logic
-- **Walrus Storage**: Store AI conversation data, model metadata, and other large assets
-- **Off-Chain Services**: Handle AI model training, inference, and data processing
 
 ## Quick Start
 
 ### Installation
-Install the SDK to interact with the platform:
+
 <CodeGroup>
 ```bash npm
 npm install @sera/sdk
 ```
 
-```bash yarn
-yarn add @sera/sdk
+```bash pip
+pip install sera-sdk
 ```
 
-```bash pip
-pip install sera-ai
+```bash go
+go get github.com/sera/sdk
 ```
 </CodeGroup>
 
@@ -35,383 +25,272 @@ pip install sera-ai
 
 ```python
 from sera import SeraClient
+from sera.wallet import SeraWallet
 
-# Initialize client with your SUI network settings
+# Initialize with wallet for token operations
 client = SeraClient(
-    sui_network="testnet",        # or "mainnet"
-    walrus_endpoint="https://walrus.sera.xyz",
-    sui_package_id="0x...packageId"
+    wallet=SeraWallet.from_private_key("0x..."),
+    network="mainnet",
+    config={
+        "default_stake": 1000,  # SERA tokens
+        "storage_epochs": 12    # ~3 months
+    }
+)
+```
+
+## Building Revenue Streams
+
+### Monetization Options
+
+<CardGroup cols={2}>
+  <Card title="Direct Revenue" icon="money-bill">
+    ```yaml
+    revenue_models:
+      pay_per_use: Per API call
+      subscription: Monthly access
+      data_sales: Dataset trading
+      model_licensing: Usage fees
+    ```
+  </Card>
+  <Card title="Passive Income" icon="chart-line">
+    ```yaml
+    passive_earnings:
+      staking: Infrastructure rewards
+      liquidity: Pool fees
+      referrals: Integration commissions
+      governance: Protocol rewards
+    ```
+  </Card>
+</CardGroup>
+
+### Integration Examples
+
+```python
+# Create monetized API endpoint
+api = await client.create_api_endpoint(
+    name="sentiment-analysis",
+    pricing={
+        "per_call": 1,        # SERA per call
+        "subscription": {
+            "monthly": 100,    # SERA per month
+            "min_stake": 50    # Required stake
+        }
+    },
+    revenue_share={
+        "developer": 0.7,     # 70% to you
+        "data_provider": 0.2, # 20% to data sources
+        "platform": 0.1       # 10% platform fee
+    }
 )
 
-# Check connectivity
-status = client.health_check()
-print(f"Connection status: {status}")
+# Monitor revenue
+stats = await api.get_stats()
+print(f"Total revenue: {stats.revenue} SERA")
+print(f"Active subscribers: {stats.subscribers}")
 ```
 
 ## Core SDKs
 
+### Data Management
+
+```python
+from sera.data import DataManager
+
+# Upload dataset with revenue sharing
+dataset = await DataManager.upload(
+    path="./training_data",
+    config={
+        "price": 1000,         # SERA tokens
+        "revenue_share": 0.1,  # Share with contributors
+        "min_purchase": 100,   # Minimum purchase size
+        "staking_required": 500 # Required stake
+    }
+)
+
+# Create marketplace listing
+listing = await dataset.create_listing(
+    pricing={
+        "fixed_price": True,
+        "allow_subscriptions": True
+    }
+)
+```
+
+### Model Deployment
+
+```python
+from sera.models import ModelDeployment
+
+# Deploy model with token incentives
+deployment = await ModelDeployment.create(
+    model_path="./my_model",
+    config={
+        "inference_price": 1,    # SERA per call
+        "batch_discount": 0.2,   # 20% bulk discount
+        "min_stake": 100,        # Required stake
+        "revenue_share": 0.1     # Share to data providers
+    }
+)
+
+# Monitor usage and revenue
+metrics = await deployment.get_metrics()
+print(f"Total calls: {metrics.total_calls}")
+print(f"Revenue: {metrics.revenue} SERA")
+```
+
+## Storage Integration
+
+### Walrus Configuration
+
 <CardGroup cols={2}>
-  <Card title="Conversation Data Management" icon="database">
-    Store and manage AI chat data on Walrus with metadata on SUI
-    ```python
-    from sera.data import ConversationManager
+  <Card title="Storage Tiers" icon="database">
+    ```yaml
+    storage_options:
+      basic: # 1000 SERA stake
+        redundancy: 3x
+        duration: 6 months
+        size_limit: 100GB
+      
+      premium: # 5000 SERA stake
+        redundancy: 5x
+        duration: 2 years
+        size_limit: 1TB
     ```
   </Card>
-  <Card title="Model Registry" icon="brain">
-    Register model metadata and configuration
-    ```python
-    from sera.model import ModelRegistry 
-    ```
-  </Card>
-  <Card title="Marketplace" icon="store">
-    Interact with the on-chain data marketplace
-    ```python
-    from sera.market import MarketClient
-    ```
-  </Card>
-  <Card title="Rewards" icon="coins">
-    Manage user rewards and payments
-    ```python
-    from sera.rewards import RewardClient
+  <Card title="Access Control" icon="lock">
+    ```yaml
+    access_options:
+      token_gating: Stake requirements
+      encryption: End-to-end
+      rate_limiting: Usage quotas
+      whitelisting: Approved addresses
     ```
   </Card>
 </CardGroup>
 
-## Authentication
-
-### Access Keys
-To interact with Walrus and submit transactions to SUI, you'll need appropriate keys:
-<Steps> 
-  1. **Generate SUI Address**
-     ```bash
-     # Generate a new SUI address using the SDK
-     sera-cli init
-     ```
-
-  2. **Set Credentials**
-     ```python
-     import sera
-     from sui.keypairs import SuiKeypair
-     
-     # Load your SUI keypair
-     keypair = SuiKeypair.from_file("~/.sera/keypair.json")
-     
-     # Initialize the client with authentication
-     client = sera.Client(
-         keypair=keypair,
-         walrus_api_key="your_walrus_api_key"  # Optional: For premium storage
-     )
-     ```
-
-  3. **Verify Access**
-     ```python
-     # Check if you have necessary permissions
-     status = client.verify_access()
-     print(f"Access Status: {status}")
-     ```
-</Steps>
-
-## Working with Data
-
-### Storing Conversation Data
-The platform primarily handles AI conversation data. Here's how to store and manage it:
+### Implementation
 
 ```python
-from sera.data import ConversationManager
-from datetime import datetime
-
-manager = ConversationManager()
-
-# Store a new conversation
-conversation_data = {
-    "model": "gpt-4",
-    "timestamp": datetime.now().isoformat(),
-    "messages": [
-        {"role": "user", "content": "What is machine learning?"},
-        {"role": "assistant", "content": "Machine learning is..."}
-    ],
-    "metadata": {
-        "browser": "chrome",
-        "extension_version": "1.0.0",
-        "user_settings": {"language": "en"}
+# Configure storage with token incentives
+storage = await client.configure_storage(
+    config={
+        "min_nodes": 7,     # 2f+1 for Byzantine fault tolerance
+        "epochs": 12,       # Storage duration
+        "redundancy": 2,    # Red Stuff encoding level
+        "stake_required": 1000  # Min SERA stake
     }
-}
-
-# Upload to Walrus and register on SUI
-result = manager.store_conversation(
-    conversation=conversation_data,
-    encryption=True,  # Enable client-side encryption
-    tags=["education", "ml-basics"]
 )
 
-print(f"Conversation stored with ID: {result.conversation_id}")
-print(f"Storage CID: {result.storage_cid}")
-print(f"Transaction: {result.tx_digest}")
-
-# Retrieve a conversation
-conversation = manager.get_conversation(result.conversation_id)
-```
-
-### Batch Operations
-For efficient handling of multiple conversations:
-
-```python
-# Store multiple conversations
-results = manager.store_conversations(
-    conversations=[conv1, conv2, conv3],
-    encryption=True
-)
-
-# Retrieve conversations by filter
-conversations = manager.list_conversations(
-    start_date="2024-01-01",
-    end_date="2024-01-31",
-    tags=["education"],
-    limit=100
+# Store data with revenue sharing
+blob_id = await storage.store(
+    data=my_data,
+    config={
+        "price": 100,          # SERA tokens
+        "revenue_share": 0.1,  # 10% to storage nodes
+        "access_control": {
+            "min_stake": 50,
+            "whitelist": ["0x..."]
+        }
+    }
 )
 ```
 
-### Data Marketplace Integration
-Make conversations available on the marketplace:
+## Token Economics
 
-```python
-from sera.market import MarketClient
+### Staking Benefits
 
-market = MarketClient()
+<CardGroup cols={2}>
+  <Card title="Developer Rewards" icon="gift">
+    ```yaml
+    staking_tiers:
+      basic: # 1000 SERA
+        fee_discount: 20%
+        api_rate_limit: 1000/min
+      
+      premium: # 5000 SERA
+        fee_discount: 50%
+        api_rate_limit: 5000/min
+        
+      elite: # 10000 SERA
+        fee_discount: 100%
+        api_rate_limit: Unlimited
+    ```
+  </Card>
+  <Card title="Infrastructure Benefits" icon="server">
+    ```yaml
+    compute_benefits:
+      priority_access: GPU/CPU
+      reduced_latency: Faster inference
+      higher_limits: Increased quotas
+      custom_support: Direct assistance
+    ```
+  </Card>
+</CardGroup>
 
-# List a conversation for sale
-listing = market.create_listing(
-    conversation_id="conv_123",
-    price=1000,  # Price in MIST (SUI's smallest unit)
-    license_type="academic",  # or "commercial"
-    description="Educational AI conversation about machine learning basics"
-)
+### Revenue Optimization
 
-# Purchase a conversation
-purchase = market.purchase_conversation(
-    listing_id="listing_123",
-    payment_tx="0x..." # SUI payment transaction
-)
-
-# Access purchased conversation
-conversation = manager.get_conversation(
-    purchase.conversation_id,
-    access_proof=purchase.proof  # Proves right to access
-)
-```
-
-### Rewards Distribution
-Handle rewards for conversation contributors:
-
-```python
-from sera.rewards import RewardClient
-
-rewards = RewardClient()
-
-# Calculate rewards for a time period
-earnings = rewards.calculate_earnings(
-    user_address="0x...",
-    start_date="2024-01-01",
-    end_date="2024-01-31"
-)
-
-# Distribute rewards (executed by authorized admin)
-distribution = rewards.distribute_rewards(
-    earnings_period="2024-01",
-    proof_of_contribution=earnings.proof
-)
-```
-
-## Model Management
-### Registering Models
-Instead of deploying GPU/CPU instances on-chain, model training and serving are done by trusted off-chain providers. Store model weights and configuration in Walrus, record references on SUI:
-```python
-from sera.model import ModelRegistry
-
-registry = ModelRegistry()
-
-# Upload model weights to Walrus
-model_cid = registry.upload_model_weights(
-    model_path="./model_weights",
-    encryption=True
-)
-
-# Register model on SUI
-model_tx = registry.register_model(
-    cid=model_cid,
-    model_name="MyNLPModel",
-    version="1.0.0",
-    metadata={"description": "A transformer-based NLP model"}
-)
-```
-
-### Inference and Training Jobs
-For inference or training, create a job on an off-chain compute service. Once completed, results are uploaded to Walrus and the SUI state is updated:
-```python
-from sera.model import ComputeTask
-
-task = ComputeTask(
-    model_name="MyNLPModel",
-    inputs=["example input 1", "example input 2"]
-)
-
-# Trigger off-chain inference job
-job_id = task.submit_job()
-
-# Poll for completion (off-chain)
-status = task.check_status(job_id)
-if status == "completed":
-    # Download results from Walrus
-    predictions = task.retrieve_results(job_id)
-    print(predictions)
-    
-    # Optionally store summarized results back on SUI
-    task.record_inference_result_on_sui(job_id, summary="Inference on 2 inputs")
-```
-
-### Storage Management with Walrus
-
-```python
-from sera.storage import WalrusClient
-
-storage = WalrusClient(api_key="your_walrus_api_key")
-
-# Store arbitrary data (e.g. processed dataset)
-cid = storage.store(
-    data_path="./processed_data",
-    redundancy=3,
-    encryption=True
-)
-
-# Retrieve data off-chain
-storage.retrieve(
-    cid=cid,
-    destination="./retrieved_data"
-)
-```
-Record the CID and any related metadata on SUI to ensure transparency and immutability:
-```python
-from sera.data import DatasetManager
-manager.update_dataset_reference_on_sui(dataset_id="ds_123", cid=cid)
-```
-## Monitoring & Analytics
-
-```python
-from sera.analytics import Analytics
-
-analytics = Analytics()
-
-# Get basic usage metrics
-metrics = analytics.get_metrics(
-    user_address="0x...",
-    start_date="2024-01-01",
-    end_date="2024-01-31",
-    metrics=[
-        "conversations_stored",
-        "data_purchased",
-        "rewards_earned"
-    ]
-)
-
-# Get storage usage
-storage_stats = analytics.get_storage_stats(
-    user_address="0x...",
-    include_deleted=False
-)
-
-# Monitor marketplace activity
-market_stats = analytics.get_market_stats(
-    timeframe="24h",  # or "7d", "30d"
-    categories=["education", "ml-basics"]
-)
-```
-
-## Error Handling
-
-```python
-from sera.exceptions import (
-    SeraException,
-    StorageException,
-    MarketplaceException,
-    AuthenticationException
-)
-
-try:
-    result = client.store_conversation(conversation_data)
-except StorageException as e:
-    if e.code == "storage_limit_exceeded":
-        # Handle storage limit
-        print(f"Storage limit exceeded: {e.message}")
-    elif e.code == "invalid_data_format":
-        # Handle invalid data
-        print(f"Invalid data format: {e.message}")
-    else:
-        # Handle other storage errors
-        raise
-
-try:
-    purchase = market.purchase_conversation(listing_id)
-except MarketplaceException as e:
-    if e.code == "insufficient_balance":
-        # Handle insufficient funds
-        print(f"Insufficient balance: {e.message}")
-    elif e.code == "listing_not_found":
-        # Handle invalid listing
-        print(f"Listing not found: {e.message}")
-    else:
-        # Handle other marketplace errors
-        raise
-```
+<Steps>
+  1. **Stake SERA**
+     - Reduce platform fees
+     - Access premium features
+     - Earn infrastructure rewards
+  
+  2. **Optimize Pricing**
+     - Monitor usage patterns
+     - Adjust fee structures
+     - Implement bulk discounts
+  
+  3. **Maximize Returns**
+     - Enable revenue sharing
+     - Join liquidity pools
+     - Participate in governance
+</Steps>
 
 ## Best Practices
 
-<AccordionGroup>
-  <Accordion title="Data Storage">
-    - Store conversation data in chunks of 32MB or less for optimal Walrus performance
-    - Use client-side encryption for sensitive data
-    - Include relevant metadata and tags for better discoverability
-    - Implement retry logic for failed uploads
-  </Accordion>
-  
-  <Accordion title="Marketplace">
-    - Verify payment transactions before granting access
-    - Set reasonable prices based on data quality and volume
-    - Include clear licensing terms
-    - Implement access control checks
-  </Accordion>
+### Security
 
-  <Accordion title="Security">
-    - Never expose private keys or API tokens
-    - Use environment variables for configuration
-    - Implement rate limiting in your application
-    - Validate all input data before storage
-  </Accordion>
+<Check>Implement proper token gating</Check>
+<Check>Use secure key management</Check>
+<Check>Monitor usage and revenue</Check>
+<Check>Verify storage proofs</Check>
+<Cross>Don't expose private keys</Cross>
+<Cross>Don't skip access controls</Cross>
 
-  <Accordion title="Performance">
-    - Batch store operations when possible
-    - Cache frequently accessed metadata
-    - Use pagination for large datasets
-    - Monitor storage usage and costs
-  </Accordion>
-</AccordionGroup>
-
-## Support & Resources
+### Performance
 
 <CardGroup cols={2}>
-  <Card title="API Reference" icon="book-open">
-    [View detailed API documentation](/api-reference)
+  <Card title="Storage Optimization" icon="hard-drive">
+    - • Use recommended chunk sizes
+    - • Enable proper redundancy
+    - • Monitor node health
+    - • Implement caching
   </Card>
-  <Card title="Sample Code" icon="code">
-    [Browse example projects](https://github.com/sera-xyz/examples)
+  <Card title="Revenue Management" icon="chart-line">
+    - • Track usage metrics
+    - • Monitor costs
+    - • Optimize pricing
+    - • Manage stake
   </Card>
-  <Card title="Community" icon="discord">
-    [Join developer community](https://discord.gg/sera)
+</CardGroup>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="code">
+    [Full Documentation](https://dev.sera.xyz/api)
   </Card>
-  <Card title="Support" icon="headset">
-    [Get technical help](mailto:dev-support@sera.xyz)
+  <Card title="Developer Tools" icon="toolbox">
+    [SDK & Tools](https://github.com/sera/dev-tools)
+  </Card>
+  <Card title="Dev Community" icon="code-branch">
+    [Dev Forum](https://dev.sera.xyz/forum)
+  </Card>
+  <Card title="Integration Support" icon="puzzle-piece">
+    [Integration Help](https://dev.sera.xyz/support)
   </Card>
 </CardGroup>
 
 <Note>
-For enterprise support and custom integrations, contact our developer relations team at dev-relations@sera.xyz
-</Note> 
+Need help with integration? Book a [1:1 session](https://dev.sera.xyz/office-hours) with our developer advocates.
+</Note>

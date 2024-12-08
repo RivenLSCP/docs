@@ -1,519 +1,261 @@
 ---
 title: 'Vector Database'
-description: 'Scalable vector database leveraging SUI blockchain and Walrus for secure AI applications'
+description: 'Decentralized vector database for AI assets with built-in token incentives'
 ---
 
 ## Overview
-Our vector database architecture combines an off-chain vector search engine with SUI blockchain's smart contracts and Walrus decentralized storage. This design separates computational concerns while maintaining data integrity and verifiability through blockchain integration.
 
-**Key Highlights:**
+Our vector database enables AI-powered search and similarity matching for marketplace assets while maintaining decentralization through SUI blockchain and Walrus storage. Key features include:
 
-- **Off-chain Vector Engine:** Optimized vector similarity search using established solutions like ChromaDB
-- **SUI Smart Contracts:** Manage access control, metadata, and configuration state
-- **Walrus Integration:** Reliable blob storage for vector data with erasure coding for redundancy
-- **Hybrid Architecture:** Balance between performance and decentralization
+- Token incentives for vector data contributions
+- Decentralized storage with Byzantine fault tolerance
+- Built-in marketplace integration
+- Verifiable search results
 
-## Key Features
+## Key Benefits
 
 <CardGroup cols={2}>
-  <Card title="Performance" icon="bolt">
-    - • Optimized off-chain vector search
-    - • Efficient data retrieval from Walrus using Red Stuff encoding
-    - • Local caching strategies
-    - • Batched operations support
+  <Card title="For AI Developers" icon="robot">
+    - • Build token-incentivized AI apps
+    - • Access verified vector datasets
+    - • Pay only for storage used
+    - • Verifiable search results
   </Card>
-  <Card title="Scalability" icon="arrow-up-right-dots">
-    - • Horizontal scaling of off-chain nodes
-    - • Walrus epoch-based storage management
-    - • Smart contract-based configuration
-    - • Load distribution across storage nodes
-  </Card>
-  <Card title="Reliability" icon="shield-check">
-    - • Walrus erasure coding for data redundancy
-    - • SUI-based access control and permissions
-    - • Verifiable data integrity
-    - • Automated recovery mechanisms
-  </Card>
-  <Card title="Integration" icon="puzzle-piece">
-    - • Native SUI Move integration
-    - • Walrus blob storage API
-    - • REST API for vector operations
-    - • Multi-language client SDKs
+  <Card title="For Data Contributors" icon="coins">
+    - • Earn tokens for vector data
+    - • Track usage and revenue
+    - • Automated reward distribution
+    - • Built-in data marketplace
   </Card>
 </CardGroup>
 
+## Architecture
+
+```mermaid
+graph TD
+    A[Vector Data] --> B[Sera Vector DB]
+    B --> C[SUI Smart Contracts]
+    B --> D[Walrus Storage]
+    C --> E[Token Rewards]
+    C --> F[Access Control]
+    D --> G[Vector Storage]
+    D --> H[Storage Proofs]
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#fbf,stroke:#333,stroke-width:2px
+    style E fill:#ffb,stroke:#333,stroke-width:2px
+    style F fill:#bff,stroke:#333,stroke-width:2px
+    style G fill:#fbb,stroke:#333,stroke-width:2px
+    style H fill:#fbf,stroke:#333,stroke-width:2px
+```
+
 ## Getting Started
-### Installation
-Install our SDK to interact with the vector database system:
 
-<CodeGroup>
-```bash npm
-npm install @myproject/vector-db-sdk
-```
-
-```bash pip
-pip install myproject-vector-db
-```
-
-```bash go
-go get github.com/myproject/vector-db-sdk
-```
-</CodeGroup>
-
-### Basic Usage
+### Quick Start
 
 ```python
-from myproject.vector import VectorDB
+from sera.vector import VectorDB
+from sera.wallet import SeraWallet
 
-# Initialize with SUI and Walrus connections
-db = VectorDB.connect(
-    sui_client="https://sui-rpc.example.com",
-    walrus_endpoint="https://walrus.example.com",
-    private_key="0x..." # SUI wallet private key
+# Initialize with wallet for rewards
+db = VectorDB(
+    wallet=SeraWallet.from_private_key("0x..."),
+    config={
+        "reward_share": 0.1,  # Share for data contributors
+        "min_stake": 100      # Min SUI tokens to contribute
+    }
 )
 
-# Create collection (metadata on SUI, data in Walrus)
+# Create collection with token incentives
 collection = await db.create_collection(
     name="embeddings",
     dimension=768,
-    storage_config={
-        "replication_factor": 3,
-"epoch_duration": 1000 # Walrus epochs
-}
+    rewards_config={
+        "base_reward": 10,     # SUI per contribution
+        "usage_share": 0.05    # 5% of usage fees
+    }
 )
 
-# Add vectors (stored in Walrus with Red Stuff encoding)
-blob_id = await collection.add(
+# Add vectors and earn tokens
+result = await collection.add(
     vectors=embeddings,
     metadata=metadata,
-    ids=unique_ids
+    stake_amount=100  # Stake SUI tokens
 )
-
-# Query vectors (off-chain search with Walrus data retrieval)
-results = collection.query(
-    vector=query_vector,
-    top_k=10
-)
+print(f"Earned rewards: {result.rewards} SUI")
 ```
 
-## Advanced Features
+## Vector Management
 
-### Collection Management
-Collections are managed through SUI smart contracts while vector data is stored in Walrus:
+### Adding Vectors
+
+<Steps>
+  1. **Prepare Data**
+     ```python
+     # Stake tokens and add vectors
+     await collection.add_vectors(
+         vectors=embeddings,
+         stake_amount=1000,    # SUI tokens
+         metadata={
+             "source": "training_data_v1",
+             "quality_score": 0.95
+         }
+     )
+     ```
+
+  2. **Configure Storage**
+     ```python
+     # Set storage parameters
+     await collection.configure_storage(
+         min_nodes=7,     # 2f+1 for fault tolerance
+         epochs=12,       # Storage duration
+         redundancy=2     # Red Stuff encoding level
+     )
+     ```
+
+  3. **Monitor Rewards**
+     ```python
+     # Track earnings
+     stats = await collection.get_contributor_stats()
+     print(f"Total rewards: {stats.total_rewards}")
+     print(f"Active stake: {stats.staked_amount}")
+     ```
+</Steps>
+
+### Search Operations
+
+<CardGroup cols={2}>
+  <Card title="Basic Search" icon="magnifying-glass">
+    ```python
+    # Search with token payment
+    results = await collection.search(
+        vector=query,
+        top_k=10,
+        payment_amount=1  # SUI per query
+    )
+    ```
+  </Card>
+  <Card title="Batch Operations" icon="layer-group">
+    ```python
+    # Bulk search with rewards
+    async for batch in collection.batch_search(
+        vectors=queries,
+        reward_config={
+            "per_query": 0.1,  # SUI tokens
+            "bulk_bonus": 0.2  # 20% bonus
+        }
+    ):
+        process_results(batch)
+    ```
+  </Card>
+</CardGroup>
+
+## Token Economics
+
+### Reward System
+
+<CardGroup cols={2}>
+  <Card title="Contribution Rewards" icon="gift">
+    ```python
+    # Configure rewards
+    await collection.set_rewards({
+        "base_rate": 10,      # SUI per vector
+        "quality_bonus": 0.2,  # 20% for high quality
+        "stake_bonus": 0.1    # 10% for staking
+    })
+    ```
+  </Card>
+  <Card title="Usage Fees" icon="money-bill">
+    ```python
+    # Set usage pricing
+    await collection.set_usage_fees({
+        "query_fee": 1,       # SUI per query
+        "bulk_discount": 0.2, # 20% for bulk
+        "min_stake": 100     # Required stake
+    })
+    ```
+  </Card>
+</CardGroup>
+
+### Staking Mechanics
+
+```python
+# Configure staking parameters
+await collection.configure_staking({
+    "min_stake": 1000,     # Minimum SUI tokens
+    "lock_period": 30,     # Epochs
+    "reward_share": 0.7,   # 70% to stakers
+    "slashing_rate": 0.1   # 10% for violations
+})
+
+# Monitor staking returns
+stake_info = await collection.get_stake_info()
+print(f"APY: {stake_info.apy}%")
+print(f"Total staked: {stake_info.total_staked}")
+```
+
+## Security & Performance
+
+### Data Protection
 
 <AccordionGroup>
-  <Accordion title="Creation & Configuration">
-    ```python
-    # Create collection with Walrus storage configuration
-    collection = await db.create_collection(
-        name="my_collection",
-        dimension=768,
-        storage_config={
-            "blob_size_limit": 32 * 1024 * 1024,  # 32MB per blob
-            "replication_factor": 3,
-            "epoch_duration": 1000
-        },
-        similarity_metric="cosine"  # or "euclidean", "dot"
-    )
-    ```
-    This creates necessary smart contract objects on SUI and initializes storage parameters for Walrus.
+  <Accordion title="Storage Security">
+    - Byzantine fault tolerant storage
+    - Red Stuff encoding for redundancy
+    - Storage proofs on SUI blockchain
+    - Stake slashing for violations
   </Accordion>
   
-  <Accordion title="Vector Indexing">
-    ```python
-    # Configure off-chain index settings
-    await collection.configure_index(
-        index_type="hnsw",  # Hierarchical Navigable Small World
-        params={
-            "max_elements": 1_000_000,
-            "ef_construction": 200,
-            "M": 16
-        }
-    )
-    ```
-    Index configuration is stored in SUI for verification, while actual indexing happens off-chain.
+  <Accordion title="Access Control">
+    - Token-gated access
+    - Stake-based permissions
+    - Verifiable query results
+    - Automated reward distribution
   </Accordion>
 </AccordionGroup>
 
-### Query Operations
-Queries utilize off-chain vector search with data retrieved from Walrus:
-
-```python
-# Basic similarity search
-results = await collection.query(
-    vector=query_vector,
-    top_k=10,
-    consistency_level="strong"  # Ensures latest epoch data
-)
-
-# Batch query with pagination
-async for batch in collection.batch_query(
-    vectors=query_vectors,
-    top_k=5,
-    batch_size=50,  # Process in smaller batches
-    timeout=300  # 5 minute timeout
-):
-    process_batch(batch)
-```
-
-### Data Management
-
-#### Blob Storage Strategy
-Vectors are stored in Walrus using an efficient batching strategy:
-
-```python
-# Configure blob packing settings
-await collection.configure_storage(
-    max_vectors_per_blob=10000,
-    compression_enabled=True,
-    blob_format="binary"  # Efficient binary format for vectors
-)
-
-# Add vectors with automatic blob management
-blob_ids = await collection.add_vectors(
-    vectors=new_vectors,
-    metadata=metadata,
-    auto_pack=True  # Automatically pack into optimal blob sizes
-)
-```
-
-#### Epoch Management
-Work with Walrus epochs for data consistency:
-
-```python
-# Get current epoch info
-epoch_info = await collection.get_epoch_info()
-print(f"Current epoch: {epoch_info.number}")
-print(f"Epoch ends in: {epoch_info.remaining_time}s")
-
-# Wait for next epoch before querying
-await collection.wait_for_next_epoch()
-results = await collection.query(
-    vector=query_vector,
-    epoch=epoch_info.number + 1
-)
-```
-
-### Security & Access Control
-
-#### SUI-based Permissions
-Leverage SUI's native capabilities for access control:
-
-```python
-# Configure collection permissions
-await collection.set_permissions(
-    owner=sui_address,
-    authorized_writers=[writer1_address, writer2_address],
-    authorized_readers=[reader_address],
-    permissions={
-        "add_vectors": ["writers"],
-        "query": ["readers", "writers"],
-        "configure": ["owner"]
-    }
-)
-
-# Verify permissions
-can_write = await collection.check_permission(
-    address=sui_address,
-    action="add_vectors"
-)
-```
-
-#### Data Integrity
-Ensure vector data integrity using Walrus's Red Stuff encoding:
-
-```python
-# Verify blob integrity
-integrity_check = await collection.verify_blob_integrity(
-    blob_id="0x...",
-    verification_level="full"  # or "quick" for basic checks
-)
-
-# Get blob availability proof
-proof = await collection.get_availability_proof(blob_id="0x...")
-```
-
 ### Performance Optimization
 
-#### Batch Operations
-Optimize vector operations through batching:
-
-```python
-# Efficient batch vector addition
-async with collection.batch_operation() as batch:
-    for vector_chunk in chunks(vectors, size=1000):
-        await batch.add_vectors(
-            vectors=vector_chunk,
-            optimize_storage=True
-        )
-```
-
-#### Query Optimization
-Configure query behavior for better performance:
-
-```python
-# Set query optimization parameters
-await collection.configure_query(
-    max_concurrent_requests=50,
-    timeout_ms=5000,
-    retry_strategy={
-        "max_attempts": 3,
-        "backoff_ms": 1000
-    }
-)
-```
-
-## Performance Optimization
-
-### Indexing Strategies
-
 <Steps>
-  1. **Choose Index Type**
-     On-chain records which index type (e.g., HNSW) is used, while off-chain services build and maintain the index.
+  1. **Query Optimization**
+     - Efficient vector indexing
+     - Parallel search operations
+     - Result caching
+     - Load balancing
 
-  2. **Configure Parameters**
-     Tune index parameters off-chain but record them on-chain for auditing.
+  2. **Storage Efficiency**
+     - Red Stuff encoding
+     - Optimal chunk sizes
+     - Proof verification
+     - Node health monitoring
 
-  3. **Monitor Performance**
-     Gather query latency and resource usage off-chain. Store summary metrics on-chain for integrity.
-
-  4. **Optimize**
-     Adjust parameters based on off-chain monitoring and update SUI records accordingly.
+  3. **Economic Efficiency**
+     - Dynamic pricing
+     - Reward optimization
+     - Stake management
+     - Fee distribution
 </Steps>
 
-### Caching
-
-<CardGroup cols={2}>
-  <Card title="Query Cache" icon="database">
-    ```python
-    collection.configure_cache(
-        cache_size="10GB",
-        ttl=3600
-    )
-    ```
-    Off-chain caching improves response times. Cache settings can be recorded on-chain for transparency.
-  </Card>
-  <Card title="Result Cache" icon="bolt">
-    ```python
-    collection.enable_result_cache(
-        max_size=1000,
-        expire_after=300
-    )
-    ```
-    Off-chain caching of frequent queries. On-chain references let you audit cache policies.
-  </Card>
-</CardGroup>
-
-## Data Management
-
-### Backup & Recovery
-Backups occur off-chain (e.g., to cloud storage or Walrus snapshots). The backup ID and associated metadata can be recorded on SUI for verifiability:
-
-```python
-# Create backup off-chain and store reference on-chain
-backup_id = db.create_backup(
-    collections=["embeddings"],
-    destination="walrus://backup-cid"
-)
-
-# Restore from backup (off-chain), referencing SUI records to ensure correct state
-db.restore_backup(
-    backup_id=backup_id,
-    target_cluster="new-cluster"
-)
-```
-
-### Replication
-
-<CardGroup cols={2}>
-  <Card title="Configure Replication" icon="copy">
-    ```python
-    collection.configure_replication(
-        replicas=3,
-        consistency="strong"
-    )
-    ```
-    SUI tracks replication policies. Off-chain nodes replicate accordingly.
-  </Card>
-  <Card title="Monitor Status" icon="gauge">
-    ```python
-    status = collection.get_replication_status()
-    print(f"Sync status: {status.state}")
-    ```
-    Results reflect off-chain cluster state, anchored by on-chain policy references.
-  </Card>
-</CardGroup>
-
-## Monitoring & Maintenance
-
-### Health Checks
-Monitor system health across all components:
-
-```python
-# Check system health
-health = await db.check_health()
-
-# Component-specific checks
-sui_health = health.sui_connection
-walrus_health = health.walrus_storage
-vector_engine_health = health.vector_engine
-
-# Get detailed Walrus storage metrics
-storage_stats = await collection.get_storage_stats()
-print(f"Total blobs: {storage_stats.blob_count}")
-print(f"Storage used: {storage_stats.bytes_stored}")
-print(f"Current epoch: {storage_stats.current_epoch}")
-```
-
-### Performance Metrics
-
-```python
-# Get collection metrics
-metrics = await collection.get_metrics(
-    timeframe="1h",
-    include=[
-        "query_count",
-        "average_query_time",
-        "blob_read_operations",
-        "vector_count"
-    ]
-)
-
-# Monitor Walrus storage operations
-storage_metrics = await collection.get_storage_metrics(
-    start_epoch=current_epoch - 10,
-    end_epoch=current_epoch
-)
-```
-
-### Maintenance Operations
-
-#### Data Compaction
-Optimize blob storage periodically:
-
-```python
-# Start blob compaction
-compaction_job = await collection.compact_blobs(
-    min_blob_utilization=0.7,
-    target_blob_size=32 * 1024 * 1024,  # 32MB
-    dry_run=True  # Preview changes first
-)
-
-# Monitor compaction progress
-status = await compaction_job.get_status()
-if status.is_complete:
-    print(f"Freed storage: {status.bytes_recovered}")
-```
-
-#### Epoch Management
-Handle epoch transitions and data consistency:
-
-```python
-# Subscribe to epoch changes
-async for epoch_event in collection.watch_epochs():
-    if epoch_event.is_transition:
-        # Perform epoch transition tasks
-        await collection.verify_epoch_integrity(epoch_event.number)
-        
-# Get epoch-specific storage info
-epoch_info = await collection.get_epoch_storage_info(
-    epoch_number=current_epoch
-)
-```
-
-## Disaster Recovery
-
-### Backup Operations
-Implement backup strategies using Walrus's blob storage:
-
-```python
-# Create collection backup
-backup_job = await collection.create_backup(
-    name=f"backup_{datetime.now().isoformat()}",
-    include_metadata=True,
-    storage_config={
-        "replication_factor": 3,
-        "retention_epochs": 10
-    }
-)
-
-# Monitor backup progress
-backup_status = await backup_job.get_status()
-if backup_status.is_complete:
-    print(f"Backup CID: {backup_status.backup_cid}")
-```
-
-### Recovery Operations
-
-```python
-# Restore from backup
-restore_job = await collection.restore_from_backup(
-    backup_cid="0x...",
-    verify_integrity=True,
-    recovery_config={
-        "parallel_downloads": 10,
-        "verification_level": "full"
-    }
-)
-
-# Verify restoration
-verify_result = await collection.verify_restoration(
-    original_backup_cid="0x...",
-    restored_collection_id="0x..."
-)
-```
-
-## Best Practices
-
-### Performance Optimization
-
-<Check>Store vectors in appropriately sized blobs (recommended: 16-32MB)</Check>
-<Check>Use batch operations for vector additions</Check>
-<Check>Monitor and respect epoch boundaries for consistency</Check>
-<Check>Implement proper error handling and retries</Check>
-<Cross>Don't exceed Walrus blob size limits</Cross>
-<Cross>Avoid frequent small vector additions</Cross>
-
-### Reliability Guidelines
-
-<Steps>
-  1. **Storage Configuration**
-     - Configure appropriate replication factors
-     - Monitor blob storage utilization
-     - Implement regular integrity checks
-
-  2. **Epoch Management**
-     - Align operations with epoch boundaries
-     - Verify data consistency across epochs
-     - Monitor epoch transitions
-
-  3. **Error Handling**
-     - Implement proper retry mechanisms
-     - Handle network partitions gracefully
-     - Monitor and log all operations
-
-  4. **Resource Management**
-     - Monitor SUI gas usage
-     - Track Walrus storage utilization
-     - Manage vector engine resources
-</Steps>
-
-## Support & Resources
+## Resources
 
 <CardGroup cols={2}>
   <Card title="Documentation" icon="book">
-    - [SUI Integration Guide](/sui-integration)
-    - [Walrus Storage Guide](/walrus-storage)
-    - [Vector Engine Docs](/vector-engine)
+    [Vector DB Guide](/vector-db)
   </Card>
   <Card title="Examples" icon="code">
-    - [Sample Applications](https://github.com/myproject/examples)
-    - [Integration Tests](https://github.com/myproject/tests)
-    - [Benchmarks](https://github.com/myproject/benchmarks)
+    [Sample Code](https://github.com/sera/examples)
+  </Card>
+  <Card title="Community" icon="users">
+    [Discord Chat](https://discord.gg/sera)
+  </Card>
+  <Card title="Support" icon="headset">
+    [Get Help](mailto:support@sera.xyz)
   </Card>
 </CardGroup>
 
 <Note>
-For technical support or custom implementation assistance, please contact our team at support@sera.xyz
+Want to earn tokens by contributing vector data? Join our [Discord](https://discord.gg/sera) to learn more about data contribution opportunities.
 </Note>
 

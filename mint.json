@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "SΞRA",
+  "name": "KYNΞ",
   "logo": {
     "dark": "/images/hero-dark.svg",
     "light": "/images/hero-light.svg"
@@ -36,12 +36,12 @@
     {
       "name": "Support",
       "icon": "support",
-      "url": "mailto:support@sera.xyz"
+      "url": "mailto:support@kyne.xyz"
     },
     {
       "name": "GitHub",
       "icon": "github",
-      "url": "https://github.com/DataSphere-xyz"
+      "url": "https://github.com/kyne-xyz"
     }
   ],
   "colors": {
@@ -80,8 +80,7 @@
       "pages": [
         "features/ai-to-earn",
         "features/marketplace",
-        "features/ai-tools",
-        "features/infrastructure"
+        "features/ai-tools"
       ]
     },
     {

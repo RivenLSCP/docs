@@ -1,360 +1,258 @@
 ---
 title: 'Guide for Data Owners'
-description: 'Learn how to securely manage and monetize your AI data assets on SUI with Walrus storage'
+description: 'Monetize your AI data assets and earn SERA tokens through our decentralized marketplace'
 ---
 
-## Overview
-
-As a data owner in the SERA ecosystem, you can securely store and monetize AI-related data assets through a hybrid architecture:
-- Large files (datasets, models, embeddings) are stored on Walrus with content addressing
-- Metadata, access controls, and payment logic are managed via SUI smart contracts
-- The SERA protocol handles orchestration between storage and blockchain layers
-
-## Supported Asset Types
-
-<CardGroup cols={3}>
-  <Card title="Conversations" icon="comments">
-    - • AI chat logs stored as compressed JSON
-    - • Metadata and access controls on-chain
-  </Card>
-  <Card title="Datasets" icon="database">
-    - • Training data stored in Walrus as parquet files
-    - • CIDs and permissions tracked on SUI
-  </Card>
-  <Card title="Models" icon="brain">
-    - • Model weights stored as binary files
-    - • Version history and lineage on-chain
-  </Card>
-  <Card title="Vector DBs" icon="layer-group">
-    - • FAISS/HNSW indexes stored on Walrus
-    - • Metadata and query access managed on SUI
-  </Card>
-  <Card title="Environments" icon="microchip">
-    - • Docker images stored on Walrus
-    - • Image digests verified on-chain
-  </Card>
-</CardGroup>
-
-## Getting Started
+## Quick Start
 
 <Steps>
-  1. **Create Account**
-     - Install the SUI wallet
-     - Obtain testnet/mainnet SUI tokens
-     - Connect wallet to SERA platform
-
-  2. **Upload Assets**
-     ```python
-     from sera.upload import WalrusUploader
-     
-     # Initialize uploader with your SUI wallet
-     uploader = WalrusUploader(
-         wallet_address="0x...",
-         gateway_url="https://gateway.sera.xyz"
-     )
-     
-     # Upload dataset and register on SUI
-     cid = uploader.upload_dataset(
-         path="./conversations.parquet",
-         metadata={
-             "description": "AI Chat Logs Q4 2024",
-             "schema_version": "1.0",
-             "record_count": 10000
-         }
-     )
-     ```
-
-  3. **List for Sale**
-     ```python
-     from sera.market import Market
-     
-     # List dataset with fixed price
-     market = Market(wallet_address="0x...")
-     listing_id = market.create_listing(
-         cid=cid,
-         price_sui=1000,  # Price in SUI
-         min_purchase=100  # Minimum records per purchase
-     )
-     ```
+  1. **Connect Wallet**
+     - Install SUI wallet
+     - Get SERA tokens for staking
+     - Connect to marketplace
+  
+  2. **List Your Assets**
+     - Upload data to Walrus storage
+     - Set pricing and terms
+     - Enable revenue sharing
+  
+  3. **Start Earning**
+     - Direct sales revenue
+     - Usage-based earnings
+     - Staking rewards
+     - Liquidity pool fees
 </Steps>
 
-## Data Management
-### Uploading Data to Walrus
-Instead of uploading large datasets or model weights directly to the blockchain, you'll use Walrus. Walrus provides decentralized, redundant storage and returns a CID that you register on SUI:
+## Earning Opportunities
 
-```python
-from sera.upload import WalrusUploader
-
-# Initialize uploader for a dataset asset
-uploader = WalrusUploader(
-    asset_type="dataset",
-    privacy_level="private",
-    walrus_gateway="https://walrus-gateway.example.com"
-)
-
-# Upload with metadata off-chain, get CID
-cid = uploader.upload(
-    path="./my_dataset",
-    metadata={
-        "description": "Training dataset for NLP",
-        "format": "parquet",
-        "size": "10GB"
-    }
-)
-
-# Once uploaded, store CID on SUI
-tx_digest = uploader.register_on_sui(
-    cid=cid,
-    name="My_NLP_Training_Dataset",
-    category="nlp"
-)
-print(f"Dataset registered on SUI: {tx_digest}")
-```
-
-## Data Management
-
-### Uploading Data to Walrus
-
-Walrus provides content-addressed storage with built-in redundancy. Here's how to upload and manage your data:
-
-```python
-from sera.upload import WalrusUploader
-
-# Initialize uploader
-uploader = WalrusUploader(
-    wallet_address="0x...",
-    gateway_url="https://gateway.sera.xyz"
-)
-
-# Upload dataset and get CID
-cid = uploader.upload(
-    path="./my_dataset.parquet",
-    metadata={
-        "description": "Training dataset",
-        "format": "parquet",
-        "size_bytes": 1024 * 1024 * 100  # 100MB
-    }
-)
-
-# Register CID on SUI
-tx = uploader.register_on_sui(
-    cid=cid,
-    name="training_dataset_v1",
-    category="training"
-)
-print(f"Dataset registered with tx: {tx.digest}")
-```
-
-### Version Management
-
-<CardGroup cols={2}>
-  <Card title="Asset Versioning" icon="code-branch">
-    - • Store version CIDs on SUI
-    - • Link versions using Move objects
-    - • Track lineage with on-chain references
-  </Card>
-  <Card title="Quality Control" icon="check">
-    - • Validate data formats before upload
-    - • Store data checksums on-chain
-    - • Track version hashes for integrity
-  </Card>
-</CardGroup>
-
-## Monetization
-
-### Basic Pricing Models
-
-Walrus and SUI support these core pricing models:
-
-<AccordionGroup>
-  <Accordion title="Fixed Price">
-    ```move
-    module sera::fixed_price {
-        struct Listing has key {
-            id: UID,
-            owner: address,
-            cid: vector<u8>,
-            price_sui: u64,
-            min_records: u64,
-        }
-        
-        public fun create_listing(
-            cid: vector<u8>, 
-            price_sui: u64,
-            min_records: u64,
-            ctx: &mut TxContext
-        )
-    }
-    ```
-  </Accordion>
-  
-  <Accordion title="Subscription">
-    ```move
-    module sera::subscription {
-        struct Subscription has key {
-            id: UID,
-            subscriber: address,
-            access_until: u64,  // Timestamp
-            access_rights: vector<vector<u8>>, // CIDs
-        }
-    }
-    ```
-  </Accordion>
-</AccordionGroup>
-
-### Payment Flows
+### Revenue Streams
 
 <CardGroup cols={2}>
   <Card title="Direct Sales" icon="money-bill">
-    - • One-time purchases in SUI
-    - • Automatic CID delivery post-payment
+    ```yaml
+    revenue_options:
+      fixed_price: 97.5% to seller
+      subscription: Monthly recurring
+      usage_based: Per-query pricing
+      royalties: 2.5% on resales
+    ```
   </Card>
-  <Card title="Subscriptions" icon="calendar">
-    - • Time-based access to CIDs
-    - • Automatic renewal capabilities
+  <Card title="Passive Income" icon="chart-line">
+    ```yaml
+    passive_earnings:
+      staking: Up to 20% APY
+      liquidity: 0.3% pool fees
+      referrals: 5% commission
+      governance: Token rewards
+    ```
   </Card>
 </CardGroup>
 
-## Security & Compliance
+## Asset Types & Pricing
+
+### Supported Assets
+
+<CardGroup cols={3}>
+  <Card title="AI Conversations" icon="comments">
+    - • Quality-rated chat logs
+    - • Verified authenticity
+    - • Usage analytics
+    - • Revenue sharing
+  </Card>
+  <Card title="Training Data" icon="database">
+    - • Curated datasets
+    - • Clear licensing
+    - • Preview samples
+    - • Usage tracking
+  </Card>
+  <Card title="Models" icon="brain">
+    - • Trained models
+    - • Version control
+    - • Performance metrics
+    - • Access controls
+  </Card>
+</CardGroup>
+
+### Pricing Models
+
+```python
+from sera.market import MarketClient
+
+# Initialize with your wallet
+market = MarketClient(wallet_address="0x...")
+
+# Create fixed price listing
+listing = await market.create_listing(
+    asset_id="0x...",
+    config={
+        "price": 1000,         # SERA tokens
+        "royalty": 0.025,      # 2.5% on resales
+        "min_purchase": 100,   # Minimum purchase
+        "staking_required": 500 # Required stake
+    }
+)
+
+# Create subscription plan
+subscription = await market.create_subscription(
+    asset_id="0x...",
+    config={
+        "monthly_price": 100,  # SERA per month
+        "discount_rate": 0.2,  # 20% annual discount
+        "min_duration": 3      # Minimum months
+    }
+)
+```
+
+## Storage & Distribution
+
+### Walrus Integration
+
+<CardGroup cols={2}>
+  <Card title="Storage Options" icon="database">
+    ```yaml
+    storage_tiers:
+      basic: # 1000 SERA stake
+        duration: 6 months
+        redundancy: 3x
+        size_limit: 100GB
+      
+      premium: # 5000 SERA stake
+        duration: 2 years
+        redundancy: 5x
+        size_limit: 1TB
+    ```
+  </Card>
+  <Card title="Distribution" icon="network-wired">
+    ```yaml
+    delivery_options:
+      instant: Direct Walrus access
+      batched: Bulk downloads
+      streaming: Real-time access
+      api: Query interface
+    ```
+  </Card>
+</CardGroup>
+
+## Boost Your Revenue
+
+### Staking Benefits
+
+<CardGroup cols={2}>
+  <Card title="Revenue Multipliers" icon="arrow-trend-up">
+    ```yaml
+    staking_tiers:
+      basic: # 1000 SERA
+        fee_discount: 20%
+        revenue_boost: 1.2x
+      
+      premium: # 5000 SERA
+        fee_discount: 50%
+        revenue_boost: 1.5x
+        
+      elite: # 10000 SERA
+        fee_discount: 100%
+        revenue_boost: 2.0x
+    ```
+  </Card>
+  <Card title="Extra Perks" icon="star">
+    ```yaml
+    benefits:
+      - Priority listing placement
+      - Advanced analytics
+      - Governance rights
+      - Early access features
+      - Premium support
+    ```
+  </Card>
+</CardGroup>
+
+### Liquidity Pools
+
+<Steps>
+  1. **Provide Liquidity**
+     - Stake SERA + data assets
+     - Earn 0.3% trading fees
+     - Get LP tokens
+  
+  2. **Boost Returns**
+     - Stake LP tokens
+     - Earn bonus rewards
+     - Get governance rights
+  
+  3. **Optimize Earnings**
+     - Monitor pool performance
+     - Adjust pricing strategy
+     - Manage inventory
+</Steps>
+
+## Security & Controls
+
+### Access Management
+
+```python
+# Configure access controls
+await listing.set_access_control({
+    "min_stake": 1000,      # Required SERA stake
+    "whitelist": ["0x..."], # Allowed addresses
+    "usage_limit": 1000,    # Max queries/downloads
+    "encryption": True      # Enable encryption
+})
+```
 
 ### Data Protection
 
-<Steps>
-  1. **Client-Side Encryption**
-     ```python
-     from sera.crypto import DataEncryptor
-     
-     # Initialize encryptor with your keys
-     encryptor = DataEncryptor()
-     
-     # Encrypt before upload
-     encrypted_data = encryptor.encrypt_file(
-         path="./sensitive_data.parquet",
-         metadata={
-             "schema_version": "1.0",
-             "encryption": "AES-256-GCM"
-         }
-     )
-     
-     # Upload encrypted data
-     cid = uploader.upload(
-         data=encrypted_data,
-         is_encrypted=True
-     )
-     ```
-
-  2. **Access Control**
-     ```move
-     module sera::access_control {
-         struct AccessPolicy has key {
-             id: UID,
-             owner: address,
-             cid: vector<u8>,
-             allowed_readers: vector<address>,
-             expiry: u64
-         }
-         
-         public fun grant_access(
-             policy: &mut AccessPolicy,
-             reader: address,
-             ctx: &mut TxContext
-         ) {
-             // Verify caller is owner
-             assert!(tx_context::sender(ctx) == policy.owner, ERROR_NOT_OWNER);
-             vector::push_back(&mut policy.allowed_readers, reader);
-         }
-     }
-     ```
-
-  3. **Audit Logging**
-     ```python
-     from sera.audit import AuditLogger
-     
-     # Log access events on-chain
-     logger = AuditLogger(wallet_address="0x...")
-     logger.log_access(
-         cid=cid,
-         accessor=user_address,
-         action="read",
-         timestamp=int(time.time())
-     )
-     ```
-</Steps>
-
-### Compliance Tools
-
 <CardGroup cols={2}>
-  <Card title="Data Rights" icon="shield">
-    - • On-chain access policies
-    - • Automated expiry enforcement
-    - • Revocation capabilities
+  <Card title="Storage Security" icon="shield">
+    - • Red Stuff encoding
+    - • Byzantine fault tolerance
+    - • Proof verification
+    - • Access logging
   </Card>
-  <Card title="Audit Trail" icon="list-check">
-    - • Immutable access logs
-    - • Usage analytics
-    - • Compliance reporting
+  <Card title="Revenue Protection" icon="lock">
+    - • Smart contract escrow
+    - • Automated distributions
+    - • Usage verification
+    - • Dispute resolution
   </Card>
 </CardGroup>
 
 ## Analytics & Reporting
 
-### Usage Metrics
+### Performance Metrics
 
 ```python
-from sera.analytics import MetricsCollector
-
-# Initialize metrics collector
-collector = MetricsCollector(
-    wallet_address="0x...",
-    start_time=yesterday,
-    end_time=today
+# Get earnings analytics
+stats = await market.get_asset_stats(
+    asset_id="0x...",
+    timeframe="30d"
 )
 
-# Get basic metrics
-metrics = collector.get_metrics(cid)
 print(f"""
-Dataset Usage:
-- Total Downloads: {metrics.download_count}
-- Unique Users: {metrics.unique_users}
-- Revenue: {metrics.revenue_sui} SUI
+Performance Metrics:
+- Total Revenue: {stats.revenue} SERA
+- Active Users: {stats.users}
+- Usage Volume: {stats.queries}
+- Avg Rating: {stats.rating}
 """)
-
-# Get detailed access logs
-logs = collector.get_access_logs(cid)
-for log in logs:
-    print(f"Access by {log.user} at {log.timestamp}")
 ```
 
-### Performance Dashboard
+## Resources
 
 <CardGroup cols={2}>
-  <Card title="Real-time Metrics" icon="chart-line">
-    - • Download counts
-    - • Revenue tracking
-    - • User engagement
+  <Card title="Asset Dashboard" icon="gauge">
+    [Manage Assets](https://owner.sera.xyz)
   </Card>
-  <Card title="Historical Data" icon="clock">
-    - • Trend analysis
-    - • Revenue reports
-    - • Usage patterns
+  <Card title="Revenue Analytics" icon="chart-pie">
+    [Track Earnings](https://owner.sera.xyz/analytics)
   </Card>
-</CardGroup>
-
-## Support Resources
-
-<CardGroup cols={2}>
-  <Card title="Documentation" icon="book">
-    - • [API Reference](https://docs.sera.xyz/api)
-    - • [Smart Contract Docs](https://docs.sera.xyz/contracts)
-    - • [Integration Guides](https://docs.sera.xyz/guides)
+  <Card title="Owner Network" icon="building-user">
+    [Owner Forum](https://forum.sera.xyz/owners)
   </Card>
-  <Card title="Developer Tools" icon="code">
-    - • SDK Downloads
-    - • Code Examples
-    - • Testing Tools
+  <Card title="Enterprise Support" icon="headset">
+    [Priority Support](https://enterprise.sera.xyz)
   </Card>
 </CardGroup>
 
 <Note>
-For enterprise support and custom solutions, contact our team at enterprise@sera.xyz
+Looking to maximize your asset revenue? Schedule a [free consultation](https://sera.xyz/owner-consult) with our monetization experts.
 </Note>

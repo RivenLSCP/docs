@@ -1,246 +1,259 @@
 ---
 title: 'AI Tools Suite'
-description: 'Comprehensive tools for AI development, training, and model hosting in a SUI-based decentralized environment'
+description: 'Build and monetize AI models with built-in token incentives and decentralized infrastructure'
 ---
 
 ## Overview
 
-Our AI Tools Suite provides essential infrastructure for AI developers to build and deploy models in a decentralized environment. We leverage Sui blockchain for transparent governance and payment processing, while using Walrus for efficient, decentralized storage of datasets and model artifacts. The system combines on-chain and off-chain components to deliver a practical developer experience.
+Our AI Tools Suite helps developers build, deploy, and monetize AI models using Sera's decentralized infrastructure. Leverage SUI blockchain for transparent payments and governance, while using Walrus for efficient model storage and distribution.
 
-## Key Features
+## Key Benefits
 
 <CardGroup cols={2}>
-  <Card title="Model Training" icon="dumbbell">
-    - • Distributed training infrastructure with verifiable compute resources
-    - • Training metadata and results stored on Sui for auditability
-    - • Model checkpoints stored in Walrus with CIDs recorded on-chain
+  <Card title="For Model Creators" icon="coins">
+    - • Monetize models with token payments
+    - • Built-in revenue sharing
+    - • Verifiable usage tracking
+    - • Automated reward distribution
   </Card>
-  <Card title="Model Hosting" icon="cloud">
-    - • Dedicated inference infrastructure with usage tracking
-    - • Model versions and metadata recorded on Sui
-    - • Model artifacts stored in Walrus with redundancy
-  </Card>
-  <Card title="Data Processing" icon="gears">
-    - • Dataset preprocessing with results stored in Walrus
-    - • Dataset CIDs and metadata recorded on Sui
-    - • Automated format validation and conversion
-  </Card>
-  <Card title="Monitoring" icon="chart-line">
-    - • Usage metrics recorded on Sui for transparency
-    - • Resource utilization tracking for billing
-    - • Cost analytics and optimization recommendations
+  <Card title="For Tool Builders" icon="wrench">
+    - • Pay-per-use infrastructure
+    - • Token-based access control
+    - • Decentralized model hosting
+    - • Built-in marketplace integration
   </Card>
 </CardGroup>
 
-## Development Tools
+## Features & Pricing
 
-### Training Client
+### Computing Resources
 
-The training process leverages our compute infrastructure while maintaining transparency through Sui and Walrus:
-
-```python
-from sera.training import TrainingClient
-
-# Initialize training client
-client = TrainingClient(
-    model_type="transformer",
-    dataset_cid="walrus://datasets/my-dataset"  # Reference to Walrus-stored dataset
-)
-
-# Configure training
-client.configure(
-    batch_size=32,
-    learning_rate=3e-4,
-    epochs=10
-)
-
-# Start training - checkpoints stored in Walrus, metadata on Sui
-training_job = client.train(
-    compute_tier="gpu-standard",  # Specifies compute resources
-    checkpoint_interval=1000
-)
-```
-
-### Model Deployment
-
-Model deployment occurs off-chain, but references and version history are recorded via SUI smart contracts. The model weights and artifacts are stored in Walrus:
-
-```python
-from sera.deployment import ModelDeployment 
-
-# Deploy model using Walrus CID and Sui package reference
-deployment = ModelDeployment(
-    model_cid="walrus://models/my-model",  
-    sui_package_id="0x...package_id",
-    version="1.0.0"
-)
-
-# Configure basic scaling rules
-deployment.configure(
-    min_instances=1,
-    max_instances=5,
-    scaling_metric="requests_per_second",
-    scaling_threshold=100
-)
-
-# Start deployment
-deployment.start()
-```
-
-## Security Features
-
-<AccordionGroup>
-  <Accordion title="Secure Training Environment">
-    - Isolated compute resources with access control
-    - Encrypted data transmission between storage and compute nodes
-    - Access policies validated through Sui smart contracts
-    - Training logs stored in Walrus with references on Sui
-  </Accordion>
-  
-  <Accordion title="Model Protection">
-    - Model artifacts stored in Walrus with encryption
-    - Access control managed through Sui smart contracts
-    - Version history tracked on-chain
-    - Role-based permissions enforced by smart contracts
-  </Accordion>
-</AccordionGroup>
-
-## Integration Support
-
-### Supported Frameworks
-- PyTorch (model weights stored in Walrus)
-- Hugging Face Transformers (model files stored in Walrus)
-- ONNX format support for standardized model export
-
-### API Endpoints
-
-Our REST APIs provide access to the platform's core functionality:
-
-<ResponseField name="Training API" type="POST">
-  Start a new training job
-  ```bash
-  POST /api/v1/training/start
-  {
-    "model_type": "transformer",
-    "dataset_cid": "walrus://datasets/my-dataset",
-    "sui_address": "0x..."
-  }
-  ```
-</ResponseField>
-
-<ResponseField name="Deployment API" type="POST">
-  Deploy a trained model
-  ```bash
-  POST /api/v1/deployment/create
-  {
-    "model_cid": "walrus://models/my-model",
-    "sui_package_id": "0x...",
-    "version": "1.0.0"
-  }
-  ```
-</ResponseField>
-
-## Available Resources
-
-### Computing Options
 <CardGroup cols={2}>
-  <Card title="GPU Resources" icon="microchip">
-    - • Managed GPU clusters (NVIDIA A100, A6000)
-    - • Usage tracking via Sui smart contracts
-    - • Pay-per-use billing with $SERA tokens
+  <Card title="Training Infrastructure" icon="microchip">
+    ```yaml
+    gpu_options:
+      A100:
+        price: 100 SERA/hour
+        min_stake: 1000 SERA
+      A6000:
+        price: 50 SERA/hour
+        min_stake: 500 SERA
+    ```
   </Card>
-  <Card title="CPU Options" icon="server">
-    - • General-purpose compute nodes for inference
-    - • Automated scaling based on demand
-    - • Resource allocation tracked on-chain
+  <Card title="Inference Hosting" icon="server">
+    ```yaml
+    hosting_tiers:
+      standard:
+        price: 10 SERA/1M requests
+        min_stake: 100 SERA
+      premium:
+        price: 20 SERA/1M requests
+        min_stake: 200 SERA
+    ```
   </Card>
 </CardGroup>
 
-### Storage Architecture
-- Primary storage via Walrus for datasets and model artifacts
-- CIDs and metadata recorded on Sui blockchain
-- Automatic garbage collection for expired data
-- Content-addressed storage for deduplication
+### Storage Options
 
-## Monitoring & Analytics
-
-<Frame>
-  <img src="/images/monitoring-dashboard.png" alt="Monitoring Dashboard" />
-</Frame>
-
-Our monitoring system provides:
-- Real-time compute resource utilization metrics
-- Training progress and model performance tracking
-- Cost analysis and resource optimization insights
-- Usage analytics for deployed models
-
-### Data Flow
-```mermaid
-graph LR
-    A[Client] --> B[API Gateway]
-    B --> C[Compute Cluster]
-    C --> D[Walrus Storage]
-    C --> E[Sui Blockchain]
-    D --> E
-
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#bfb,stroke:#333,stroke-width:2px
-    style D fill:#fbf,stroke:#333,stroke-width:2px
-    style E fill:#ffb,stroke:#333,stroke-width:2px
-```
+<CardGroup cols={2}>
+  <Card title="Model Storage" icon="database">
+    - • Pay in SERA tokens
+    - • Up to 2 years retention
+    - • Byzantine fault tolerance
+    - • Verifiable availability
+  </Card>
+  <Card title="Dataset Storage" icon="hard-drive">
+    - • Efficient Red Stuff encoding
+    - • Pay only for space used
+    - • Automated redundancy
+    - • Built-in marketplace listing
+  </Card>
+</CardGroup>
 
 ## Getting Started
 
+### Quick Start
+
+```python
+from sera.tools import AIToolkit
+from sera.wallet import SeraWallet
+
+# Initialize with wallet for payments
+toolkit = AIToolkit(
+    wallet=SeraWallet.from_private_key("0x..."),
+    config={
+        "default_storage_epochs": 12,
+        "min_stake": 100  # SERA tokens
+    }
+)
+
+# Deploy model with revenue sharing
+deployment = await toolkit.deploy_model(
+    model_path="./my_model",
+    pricing={
+        "inference": 1,      # SERA per request
+        "revenue_share": 0.1 # 10% to contributors
+    },
+    compute_config={
+        "gpu": "a100",
+        "min_instances": 1
+    }
+)
+
+# Monitor earnings
+stats = await deployment.get_stats()
+print(f"Total revenue: {stats.revenue} SERA")
+print(f"Active users: {stats.unique_users}")
+```
+
+### Training Pipeline
+
 <Steps>
-  1. **Create Account**
-     - Register your Sui wallet address
-     - Acquire $SERA tokens for service payments
-     - Set up API credentials
-
-  2. **Install SDK**
-     ```bash
-     pip install sera-ai
-     ```
-     The SDK provides interfaces to:
-     - Interact with Walrus storage
-     - Manage training jobs
-     - Deploy models
-     - Track resource usage
-
-  3. **Configure Access**
+  1. **Reserve Resources**
      ```python
-     from sera import Client
-     
-     client = Client(
-         sui_address="0x...",
-         api_key="your_api_key",
-         environment="mainnet"
+     # Stake tokens for training
+     reservation = await toolkit.reserve_training(
+         gpu_type="a100",
+         duration_hours=24,
+         stake_amount=1000  # SERA tokens
      )
      ```
 
-  4. **Start Development**
-     - Upload datasets to Walrus
-     - Train models using our compute resources
-     - Deploy models for inference
-     - Monitor usage and costs
+  2. **Train Model**
+     ```python
+     # Start training with marketplace integration
+     training_job = await toolkit.train_model(
+         dataset_id="0x...",  # From marketplace
+         config={
+             "share_checkpoints": True,  # List on marketplace
+             "revenue_share": 0.1       # To dataset providers
+         }
+     )
+     ```
+
+  3. **Deploy & Monetize**
+     ```python
+     # Deploy with token incentives
+     deployment = await training_job.deploy(
+         pricing={
+             "requests": 1,    # SERA per request
+             "subscription": { # Monthly access
+                 "price": 100,
+                 "min_stake": 50
+             }
+         }
+     )
+     ```
 </Steps>
 
-## Pricing
+## Token Economics
 
-Our platform uses a pay-as-you-go model with $SERA tokens:
+### Staking Benefits
 
-| Resource | Unit | Price ($SERA) |
-|----------|------|---------------|
-| GPU Training (A100) | Hour | TBD |
-| GPU Training (A6000) | Hour | TBD |
-| CPU Inference | Million requests | TBD |
-| Walrus Storage | GB/Month | Free |
+<CardGroup cols={2}>
+  <Card title="Resource Access" icon="lock">
+    ```yaml
+    staking_tiers:
+      basic:
+        amount: 1000 SERA
+        benefits:
+          - Standard GPU access
+          - Basic support
+      premium:
+        amount: 5000 SERA
+        benefits:
+          - Priority GPU access
+          - Premium support
+          - Revenue share boost
+    ```
+  </Card>
+  <Card title="Revenue Sharing" icon="money-bill">
+    ```yaml
+    revenue_distribution:
+      model_creator: 70%
+      data_providers: 20%
+      infrastructure: 10%
+      
+    bonus_multipliers:
+      stake_bonus: 1.2x
+      long_term_bonus: 1.5x
+    ```
+  </Card>
+</CardGroup>
 
-- All costs are paid in $SERA tokens
-- Storage costs are subsidized  
-- Volume discounts available for enterprise users
+### Cost Optimization
+
+<Steps>
+  1. **Stake for Discounts**
+     - Higher stakes = Lower fees
+     - Long-term staking bonuses
+     - Volume-based discounts
+  
+  2. **Efficient Resource Use**
+     - Pay only for compute used
+     - Automatic scaling
+     - Storage optimization
+  
+  3. **Revenue Optimization**
+     - Dynamic pricing
+     - Subscription options
+     - Bundle discounts
+</Steps>
+
+## Security & Compliance
+
+### Access Control
+
+<CardGroup cols={2}>
+  <Card title="Token Gating" icon="key">
+    - • Stake-based access levels
+    - • Role-based permissions
+    - • Usage quotas
+    - • API key management
+  </Card>
+  <Card title="Model Protection" icon="shield">
+    - • Encrypted storage
+    - • Access logging
+    - • Usage verification
+    - • Revenue tracking
+  </Card>
+</CardGroup>
+
+### Infrastructure Security
+
+<AccordionGroup>
+  <Accordion title="Compute Security">
+    - Isolated training environments
+    - Secure model deployment
+    - Resource monitoring
+    - Usage verification
+  </Accordion>
+  
+  <Accordion title="Storage Security">
+    - Walrus Red Stuff encoding
+    - Byzantine fault tolerance
+    - Proof verification
+    - Access control
+  </Accordion>
+</AccordionGroup>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Developer Portal" icon="code">
+    [API Documentation](https://dev.sera.xyz)
+  </Card>
+  <Card title="SDK Downloads" icon="download">
+    [Get Latest SDKs](https://github.com/sera/sdk)
+  </Card>
+  <Card title="Builder Community" icon="discord">
+    [Developer Chat](https://discord.gg/sera-devs)
+  </Card>
+  <Card title="Technical Support" icon="wrench">
+    [Dev Support](https://dev.sera.xyz/support)
+  </Card>
+</CardGroup>
 
 <Note>
-We're currently in beta, and features are being actively developed. Join our [Discord community](https://discord.gg/sera_gg) to provide feedback and stay updated on our progress.
+Building something interesting? Apply for our [Builder Grants Program](https://sera.xyz/grants) to get funded.
 </Note>

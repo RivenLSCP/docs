@@ -1,30 +1,31 @@
 ---
 title: 'HuggingFace Integration'
-description: 'Store HuggingFace models and datasets using Walrus storage'
+description: 'Monetize and distribute AI models from HuggingFace through the Sera marketplace'
 ---
 
 ## Overview
 
-This integration enables storing HuggingFace models and datasets in Walrus's decentralized storage network while managing metadata through SUI smart contracts. The system operates in three parts:
+Turn HuggingFace models into revenue-generating assets on Sera's decentralized AI marketplace. This integration enables:
 
-1. Off-chain HuggingFace data retrieval service
-2. Walrus blob storage with Red Stuff encoding
-3. SUI-based metadata management
+- Secure model distribution with verifiable usage tracking
+- Token-based monetization of HuggingFace models
+- Efficient storage using Walrus's Red Stuff encoding
+- Automated rewards for model creators and data contributors
 
-## Architecture
+## Key Benefits
 
 <CardGroup cols={2}>
-  <Card title="Storage Layer" icon="database">
-    - • Models/datasets stored as encoded blobs in Walrus
-    - • Red Stuff encoding for data redundancy
-    - • Minimum of 2f+1 storage nodes for Byzantine fault tolerance
-    - • Epoch-based availability guarantees
+  <Card title="For Model Creators" icon="coins">
+    - • Monetize your HuggingFace models
+    - • Track usage and earn rewards
+    - • Verifiable compute metrics
+    - • Built-in revenue sharing
   </Card>
-  <Card title="Control Layer" icon="gear">
-    - • Metadata stored in SUI smart contracts
-    - • Blob registration and lifecycle management
-    - • Storage space allocation tracking
-    - • Access control management
+  <Card title="For Model Users" icon="robot">
+    - • Access popular models with token payments
+    - • Guaranteed model availability
+    - • Pay only for storage used
+    - • Verifiable model authenticity
   </Card>
 </CardGroup>
 
@@ -34,303 +35,201 @@ This integration enables storing HuggingFace models and datasets in Walrus's dec
 
 <Steps>
   1. **HuggingFace Setup**
-     Create an account and get your access token from [HuggingFace](https://huggingface.co)
+     Get your HuggingFace access token from [HuggingFace](https://huggingface.co)
 
-  2. **Walrus Configuration**
-     ```bash
-     # Install the SDK
-     pip install sera-sdk
+  2. **Sera Wallet**
+     Connect a SUI wallet for marketplace transactions
      
-     # Configure Walrus endpoint
-     export WALRUS_ENDPOINT="https://walrus-gateway.example.com"
-     ```
-
-  3. **SUI Setup**
+  3. **SDK Installation**
      ```bash
-     # Configure SUI connection
-     export SUI_RPC_URL="https://sui-rpc.example.com"
-     export SUI_PACKAGE_ID="0x..." # Your deployed package ID
+     pip install sera-sdk
      ```
 </Steps>
 
-### Basic Usage
+### Quick Start
 
 ```python
-from sera.storage import WalrusClient
-from sera.huggingface import HFDownloader
-from sera.sui import MetadataManager
+from sera.integrations import HuggingFaceMarket
+from sera.wallet import SeraWallet
 
-# Initialize clients
-walrus = WalrusClient()
-hf_downloader = HFDownloader(token="your_hf_token")
-metadata = MetadataManager()
-
-# 1. Download model from HuggingFace (off-chain)
-model_path = hf_downloader.download("bert-base-uncased")
-
-# 2. Store in Walrus with Red Stuff encoding
-blob_id = walrus.store_blob(
-    file_path=model_path,
-    epochs=12,  # Store for 12 epochs
-    min_nodes=7  # 2f+1 where f=3
+# Initialize with your wallet
+market = HuggingFaceMarket(
+    wallet=SeraWallet.from_private_key("0x..."),
+    hf_token="your_hf_token"
 )
 
-# 3. Register metadata on SUI
-await metadata.register_model(
-    blob_id=blob_id,
-    model_name="bert-base-uncased",
-    version="1.0",
-    size_bytes=model_path.stat().st_size
+# List a model on the marketplace
+listing = await market.list_model(
+    model_id="bert-base-uncased",
+    price=1000,  # Price in SUI tokens
+    config={
+        "revenue_share": 0.1,  # Share for data contributors
+        "storage_epochs": 12    # Storage duration
+    }
 )
+
+# Track model usage and earnings
+stats = await market.get_model_stats(listing.id)
+print(f"Total earnings: {stats.earnings} SUI")
+print(f"Total uses: {stats.usage_count}")
 ```
 
 ## Model Management
 
-### Storing Models
+### Publishing Models
 
-Models are stored using Walrus's Red Stuff encoding protocol, which provides efficient storage with high availability:
+<Steps>
+  1. **Import Model**
+     ```python
+     # Import model from HuggingFace
+     model = await market.import_model(
+         "bert-base-uncased",
+         verify_integrity=True
+     )
+     ```
 
-```python
-from sera.storage import WalrusClient, StorageConfig
-from sera.utils import BlobPreprocessor
+  2. **Configure Storage**
+     ```python 
+     # Set storage parameters
+     storage = await model.configure_storage(
+         min_nodes=7,     # 2f+1 for fault tolerance
+         epochs=12,       # Storage duration
+         redundancy=2     # Red Stuff encoding level
+     )
+     ```
 
-# Configure storage parameters
-storage_config = StorageConfig(
-    min_storage_nodes=7,    # 2f+1 where f=3 for Byzantine fault tolerance
-    epochs=12,              # Number of epochs to store
-    redundancy_level=2      # Uses Red Stuff encoding with 2D redundancy
-)
+  3. **Create Listing**
+     ```python
+     # List on marketplace
+     listing = await model.create_listing(
+         price=1000,              # Base price in SUI
+         usage_fee=10,            # Per-use fee
+         revenue_share=0.1        # Share for contributors
+     )
+     ```
+</Steps>
 
-# Preprocess model for efficient storage
-preprocessor = BlobPreprocessor()
-processed_model = preprocessor.prepare_model_files(
-    model_path="./downloaded_model",
-    chunk_size=64*1024*1024  # 64MB chunks for optimal Walrus storage
-)
-
-# Store model with Red Stuff encoding
-blob_id = walrus.store_blob(
-    data=processed_model,
-    config=storage_config
-)
-
-# Verify storage across nodes
-storage_proof = walrus.verify_storage(blob_id)
-```
-
-### Reading Models
-
-Reading models requires coordination with Walrus storage nodes and proper handling of Red Stuff encoded data:
-
-```python
-from sera.storage import WalrusReader
-from sera.utils import ModelReconstructor
-
-# Initialize reader with proper Byzantine fault tolerance settings
-reader = WalrusReader(
-    min_honest_nodes=4,  # f+1 nodes needed for reconstruction
-    timeout=30           # Seconds to wait for node responses
-)
-
-# Read encoded blob from Walrus
-encoded_data = reader.read_blob(blob_id)
-
-# Reconstruct model from encoded data
-reconstructor = ModelReconstructor()
-model_path = reconstructor.reconstruct_model(
-    encoded_data,
-    output_dir="./reconstructed_model"
-)
-```
-
-## Dataset Integration
-
-### Importing Datasets
-
-Datasets are processed off-chain and stored in Walrus with metadata on SUI:
-
-```python
-from sera.integrations.huggingface import DatasetImporter
-
-# Initialize dataset importer
-importer = DatasetImporter(
-    walrus_client=walrus,
-    chunk_size=64*1024*1024  # 64MB chunks
-)
-
-# Import dataset
-dataset_id = await importer.import_dataset(
-    repo_id="squad",
-    split="train",
-    storage_config=storage_config
-)
-
-# Register dataset metadata on SUI
-await metadata.register_dataset(
-    blob_id=dataset_id,
-    dataset_name="squad",
-    split="train",
-    size_bytes=importer.get_size()
-)
-```
-
-### Batch Processing & Progress Tracking
+### Monetization Settings
 
 <CardGroup cols={2}>
-  <Card title="Resume Support" icon="rotate-right">
-    Support for resuming interrupted imports:
+  <Card title="Pricing Models" icon="money-bill">
     ```python
-    dataset_id = await importer.import_dataset(
-        repo_id="large-dataset",
-        resume_from=checkpoint_id
-    )
+    # Configure flexible pricing
+    await model.set_pricing({
+        "base_price": 1000,    # One-time access
+        "subscription": {      # Subscription pricing
+            "monthly": 500,
+            "yearly": 5000
+        },
+        "usage_fees": {       # Pay-per-use
+            "inference": 1,
+            "training": 10
+        }
+    })
     ```
   </Card>
-  <Card title="Progress Tracking" icon="bars-progress">
-    Track progress with callbacks:
+  <Card title="Revenue Sharing" icon="chart-pie">
     ```python
-    def progress_callback(bytes_processed, total_bytes):
-        progress = (bytes_processed / total_bytes) * 100
-        print(f"Progress: {progress:.2f}%")
-        
-    await importer.import_dataset(
-        repo_id="large-dataset",
-        progress_callback=progress_callback
-    )
+    # Set revenue distribution
+    await model.set_revenue_sharing({
+        "creator": 0.7,       # Model creator
+        "contributors": 0.2,  # Data contributors
+        "platform": 0.1       # Platform fee
+    })
     ```
   </Card>
 </CardGroup>
 
-## Advanced Features
+## Storage & Distribution
 
-### Storage Optimization
+### Efficient Storage
+
+Sera uses Walrus's Red Stuff encoding to store models efficiently:
+
+```python
+# Configure storage with Byzantine fault tolerance
+await model.optimize_storage(
+    chunk_size=64*1024*1024,  # 64MB chunks
+    min_nodes=7,              # 2f+1 nodes
+    redundancy=2              # Red Stuff encoding level
+)
+
+# Monitor storage health
+health = await model.check_storage_health()
+print(f"Storage nodes: {health.active_nodes}")
+print(f"Availability: {health.availability_score}")
+```
+
+### Access Control
 
 <CardGroup cols={2}>
-  <Card title="Memory Management" icon="memory">
-    Configure memory usage for large datasets:
+  <Card title="Token Gating" icon="lock">
     ```python
-    importer.configure(
-        max_memory="16GB",
-        use_disk_buffer=True
-    )
+    # Set access requirements
+    await model.set_access_control({
+        "min_stake": 1000,    # Min SUI stake
+        "whitelist": ["0x.."] # Allowed addresses
+    })
     ```
   </Card>
-  <Card title="Performance Tuning" icon="gauge">
-    Optimize processing parameters:
+  <Card title="Usage Tracking" icon="chart-line">
     ```python
-    importer.configure(
-        chunk_size=32*1024*1024,  # 32MB chunks
-        concurrent_uploads=4
+    # Monitor model usage
+    stats = await model.get_usage_stats(
+        timeframe="7d"
     )
+    print(f"Revenue: {stats.revenue} SUI")
     ```
   </Card>
 </CardGroup>
-
-## Error Handling
-
-```python
-from sera.exceptions import (
-    WalrusStorageError,
-    HuggingFaceError,
-    SuiTransactionError
-)
-
-try:
-    # Attempt to store model
-    blob_id = await walrus.store_blob(processed_model)
-except WalrusStorageError as e:
-    if e.code == "insufficient_storage_nodes":
-        # Not enough available storage nodes
-        logger.error("Network capacity issue: %s", e)
-    elif e.code == "encoding_failed":
-        # Red Stuff encoding failed
-        logger.error("Processing error: %s", e)
-except HuggingFaceError as e:
-    if e.code == "model_not_found":
-        logger.error("Model does not exist: %s", e)
-    elif e.code == "rate_limit":
-        # Implement exponential backoff
-        await handle_rate_limit(e)
-except SuiTransactionError as e:
-    if e.code == "insufficient_gas":
-        logger.error("Increase gas budget: %s", e)
-    elif e.code == "metadata_registration_failed":
-        # Handle metadata registration failure
-        await handle_metadata_failure(e)
-```
 
 ## Best Practices
 
-### Performance Optimization
+### Security
+
+<Check>Always verify model integrity after import</Check>
+<Check>Use appropriate Byzantine fault tolerance settings</Check>
+<Check>Monitor storage proofs and challenges</Check>
+<Check>Implement proper access controls</Check>
+<Cross>Don't share API keys or private keys</Cross>
+<Cross>Don't skip storage verification steps</Cross>
+
+### Performance
 
 <Steps>
-  1. **Chunking Strategy**
-     - Use 64MB chunks for optimal Red Stuff encoding
-     - Process large files in streaming mode
-     - Implement resumable uploads for reliability
-  
-  2. **Network Efficiency**
-     - Cache frequently accessed models locally
-     - Use compression for network transfers
-     - Implement connection pooling for multiple requests
-  
-  3. **Resource Management**
-     - Monitor memory usage during encoding
-     - Implement graceful degradation under load
-     - Use disk buffering for large datasets
-  
-  4. **Error Recovery**
-     - Implement exponential backoff for retries
-     - Store intermediate states for long operations
-     - Log detailed error information for debugging
+  1. **Optimize Storage**
+     - Use recommended chunk sizes
+     - Configure proper redundancy levels
+     - Monitor storage node health
+
+  2. **Manage Access**
+     - Implement token gating
+     - Track usage metrics
+     - Monitor revenue distribution
+
+  3. **Monitor Health**
+     - Check storage proofs
+     - Verify node availability
+     - Track marketplace performance
 </Steps>
 
-### Security Considerations
-
-<Check>Store API tokens securely using environment variables or secret management systems</Check>
-<Check>Validate all input data before storage operations</Check>
-<Check>Implement proper access control for model/dataset access</Check>
-<Check>Monitor and log all storage operations for audit purposes</Check>
-<Cross>Do not store sensitive credentials in code or version control</Cross>
-<Cross>Do not share API tokens between environments</Cross>
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="Storage Issues">
-    - **Node Availability**: Ensure minimum required nodes (2f+1) are available
-    - **Encoding Failures**: Verify input data integrity and chunk sizes
-    - **Network Timeouts**: Check network connectivity and retry with backoff
-    - **Resource Exhaustion**: Monitor memory and storage usage
-  </Accordion>
-  
-  <Accordion title="Common Solutions">
-    - Verify Walrus network status and node health
-    - Check SUI network gas prices and adjust accordingly
-    - Validate HuggingFace API rate limits and quotas
-    - Monitor system resources during large operations
-  </Accordion>
-</AccordionGroup>
-
-## Support Resources
+## Resources
 
 <CardGroup cols={2}>
   <Card title="Documentation" icon="book">
-    - • [Walrus Documentation](https://docs.walrus.xyz)
-    - • [SUI Developer Portal](https://docs.sui.io)
-    - • [HuggingFace API Docs](https://huggingface.co/docs/api-inference)
+    [Integration Guide](/integration)
+  </Card>
+  <Card title="Examples" icon="code">
+    [Sample Code](https://github.com/sera/examples)
   </Card>
   <Card title="Community" icon="users">
-    - • [Walrus Discord](https://discord.gg/walrus)
-    - • [SUI Forum](https://forums.sui.io)
-    - • [GitHub Issues](https://github.com/MystenLabs/walrus/issues)
+    [Discord Chat](https://discord.gg/sera)
+  </Card>
+  <Card title="Support" icon="headset">
+    [Get Help](mailto:support@sera.xyz)
   </Card>
 </CardGroup>
 
 <Note>
-For production deployments:
-- Monitor epoch transitions in Walrus
-- Implement proper error handling and recovery
-- Set up automated health checks
-- Keep dependencies updated
+Ready to monetize your AI models? Join our [Discord](https://discord.gg/sera) to learn more about marketplace opportunities.
 </Note>

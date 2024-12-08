@@ -1,130 +1,225 @@
 ---
 title: 'AI Data Marketplace'
-description: 'Decentralized marketplace for AI data assets'
+description: 'Trade AI assets and earn tokens in our decentralized marketplace'
 ---
 
 ## Overview
 
-The Sera Data Marketplace enables peer-to-peer trading of AI data assets. Built on SUI blockchain for settlement and Walrus for storage, it provides a trustless environment for buying and selling AI conversation data and derived assets.
+The Sera Marketplace enables peer-to-peer trading of AI assets with built-in token incentives. Powered by SUI blockchain for secure transactions and Walrus for efficient storage, our marketplace lets you:
 
-## How It Works
-
-1. **Sellers** upload their data to Walrus and create listings with price, duration, and terms
-2. **Buyers** browse listings, purchase access rights, and retrieve data from Walrus
-3. **Smart Contracts** handle escrow, payments, and access rights
-4. **Automated Market Maker (AMM)** enables liquid trading of popular datasets
+- Buy and sell AI conversation data
+- Trade curated datasets and models
+- Earn from data contributions
+- Participate in liquidity pools
 
 ## Asset Types
 
 <CardGroup cols={2}>
-  <Card title="Raw Conversations" icon="comments">
-    - • AI chat logs and interactions
-    - • Priced per conversation or in bulk
-    - • Quality scores and metadata on-chain
+  <Card title="AI Conversations" icon="comments">
+    - • Quality-rated chat logs
+    - • Token rewards per contribution
+    - • Revenue sharing for usage
+    - • Verifiable authenticity
   </Card>
   <Card title="Curated Datasets" icon="database">
-    - • Processed and labeled data collections
-    - • Clear licensing and usage rights
-    - • Preview samples available
+    - • Vetted collections
+    - • Clear revenue rights
+    - • Preview samples
+    - • Usage analytics
   </Card>
-  <Card title="Trading Pairs" icon="arrows-rotate">
-    - • Liquid pools for popular datasets
-    - • Automated price discovery
-    - • Instant swaps available
+  <Card title="Trading Pools" icon="arrows-rotate">
+    - • Automated pricing
+    - • Liquidity rewards
+    - • Instant swaps
+    - • Staking benefits
   </Card>
-  <Card title="Data Bundles" icon="box-archive">
-    - • Themed collections
-    - • Bulk discount pricing
-    - • Cross-seller packages
+  <Card title="Model Bundles" icon="box-archive">
+    - • Package deals
+    - • Bulk discounts
+    - • Cross-seller rewards
+    - • Revenue sharing
   </Card>
 </CardGroup>
 
-## Market Types
+## Trading Options
 
 ### Fixed Price Listings
-```typescript
-interface FixedPriceListing {
-    blob_id: string;          // Walrus storage identifier
-    price_mist: number;       // Price in SUI mist
-    seller: string;           // Seller's address
-    duration_epochs: number;  // Listing duration
-    royalty_rate: number;    // Future resale royalty
-}
-```
-
-### AMM Pools
-```typescript
-interface DataPool {
-    token_address: string;    // Pool token address
-    data_size: number;       // Total data size in pool
-    liquidity: number;       // Pool liquidity in SUI
-    fee_rate: number;        // Trading fee percentage
-}
-```
-
-## Trading Interface
 
 ```python
 from sera.market import MarketClient
-from sera.storage import WalrusClient
 
-# Initialize clients
-market = MarketClient(wallet)
-storage = WalrusClient()
+# Create listing with token incentives
+listing = await market.create_listing(
+    blob_id="0x...",
+    price=1000,         # SERA tokens
+    config={
+        "royalty": 0.025,    # 2.5% royalty
+        "epochs": 12,        # Storage duration
+        "min_stake": 100     # Min stake to buy
+    }
+)
 
-# Create fixed price listing
-async def create_listing(data_path: str, price_sui: float):
-    # Upload to Walrus
-    blob_id = await storage.store_blob(
-        path=data_path,
-        metadata={
-            "content_type": "ai_conversations",
-            "preview_sample": "first_10_rows",
-            "schema": {"version": "1.0"}
-        }
-    )
-    
-    # Create marketplace listing
-    listing = await market.create_fixed_price_listing(
-        blob_id=blob_id,
-        price_mist=int(price_sui * 1e9),
-        duration_epochs=90,
-        royalty_rate=250  # 2.5%
-    )
-    return listing.id
-
-# Buy from AMM pool
-async def swap_data(pool_id: str, sui_amount: float):
-    # Execute swap
-    swap_tx = await market.swap_sui_for_data(
-        pool_id=pool_id,
-        sui_amount=sui_amount,
-        min_data_out=1000,  # Minimum data size to receive
-        deadline=int(time.time()) + 1800  # 30 min deadline
-    )
-    
-    # Download data if swap successful
-    if swap_tx.status == "success":
-        data = await storage.read_blob(swap_tx.blob_id)
-        return data
+# Track listing performance
+stats = await listing.get_stats()
+print(f"Total sales: {stats.total_sales} SERA")
+print(f"Royalties earned: {stats.royalties} SERA")
 ```
 
-## Fees & Rewards
+### Liquidity Pools
 
-| Action | Fee/Reward |
-|--------|------------|
-| List Asset | 0.1% listing fee |
-| Purchase Asset | 1% marketplace fee |
-| Provide Liquidity | 0.3% of pool trades |
-| Early Access | 20% discount |
+<CardGroup cols={2}>
+  <Card title="Pool Creation" icon="plus">
+    ```python
+    # Create trading pool
+    pool = await market.create_pool(
+        dataset_id="0x...",
+        initial_liquidity=10000,  # SERA
+        fee_rate=0.003,          # 0.3%
+        min_stake=500            # Required stake
+    )
+    ```
+  </Card>
+  <Card title="Trading" icon="arrows-rotate">
+    ```python
+    # Swap tokens for data
+    swap = await market.swap(
+        pool_id="0x...",
+        amount=1000,    # SERA to spend
+        min_data=100,   # Min MB to receive
+        deadline=30     # Timeout in epochs
+    )
+    ```
+  </Card>
+</CardGroup>
 
-## Price Discovery
+## Earning Opportunities
 
-- AMM pools provide automated price discovery based on supply/demand
-- Fixed price listings can be automatically adjusted based on market activity
-- Historical price data available on-chain
-- Price feeds for popular datasets
+### Seller Benefits
+
+<CardGroup cols={2}>
+  <Card title="Direct Sales" icon="tag">
+    ```yaml
+    revenue_streams:
+      sales: 97.5%    # Of listing price
+      royalties: 2.5%  # Of resales
+      referrals: 1%    # Of referred sales
+    ```
+  </Card>
+  <Card title="Pool Rewards" icon="chart-line">
+    ```yaml
+    pool_earnings:
+      trading_fees: 0.3%
+      liquidity_rewards: Variable
+      staking_bonus: Up to 2x
+    ```
+  </Card>
+</CardGroup>
+
+### Liquidity Provider Rewards
+
+<Steps>
+  1. **Provide Liquidity**
+     - Stake SERA tokens + data
+     - Earn 0.3% of pool trades
+     - Get LP tokens for governance
+  
+  2. **Boost Earnings**
+     - Stake LP tokens
+     - Long-term bonuses
+     - Volume rewards
+  
+  3. **Extra Benefits**
+     - Priority listing access
+     - Reduced trading fees
+     - Governance rights
+</Steps>
+
+## Storage & Delivery
+
+### Walrus Integration
+
+<CardGroup cols={2}>
+  <Card title="Asset Storage" icon="database">
+    - • Red Stuff encoding
+    - • Byzantine fault tolerance
+    - • 2-year max duration
+    - • Proof verification
+  </Card>
+  <Card title="Preview System" icon="eye">
+    - • Instant samples
+    - • Partial retrieval
+    - • Quality verification
+    - • Usage tracking
+  </Card>
+</CardGroup>
+
+### Access Control
+
+```python
+# Configure access requirements
+await listing.set_access_control({
+    "min_stake": 1000,      # Required SERA stake
+    "whitelist": ["0x..."], # Allowed addresses
+    "usage_limit": 1000,    # Max downloads
+    "time_lock": 30         # Epochs until tradeable
+})
+```
+
+## Fees & Economics
+
+### Trading Fees
+
+| Action | Fee (SERA) | Reward Distribution |
+|--------|------------|-------------------|
+| List Asset | 0.1% | Protocol Treasury |
+| Buy Asset | 1% | 70% LP, 30% Treasury |
+| Pool Trade | 0.3% | 100% to LPs |
+| Early Access | -20% | Staking Discount |
+
+### Staking Benefits
+
+<CardGroup cols={2}>
+  <Card title="Trading Benefits" icon="percent">
+    ```yaml
+    staking_tiers:
+      basic: # 1000 SERA
+        trading_discount: 10%
+        pool_fee_reduction: 20%
+      
+      premium: # 5000 SERA
+        trading_discount: 25%
+        pool_fee_reduction: 50%
+    ```
+  </Card>
+  <Card title="Extra Perks" icon="star">
+    ```yaml
+    staking_perks:
+      - Priority listing access
+      - Preview all assets
+      - Governance rights
+      - Revenue sharing
+      - Early access to pools
+    ```
+  </Card>
+</CardGroup>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Trading Dashboard" icon="chart-candlestick">
+    [Open Markets](https://trade.sera.xyz)
+  </Card>
+  <Card title="Market Analytics" icon="chart-line">
+    [View Stats](https://sera.xyz/stats)
+  </Card>
+  <Card title="Trader Community" icon="comments-dollar">
+    [Trading Chat](https://discord.gg/sera-traders)
+  </Card>
+  <Card title="Market Updates" icon="newspaper">
+    [Weekly Report](https://sera.xyz/market-updates)
+  </Card>
+</CardGroup>
 
 <Note>
-All trades are final and executed trustlessly through smart contracts. Always verify data quality through preview samples before large purchases.
+Looking for trading strategies? Join our [Weekly Trading Workshop](https://sera.xyz/workshops) to learn from experienced traders.
 </Note>
