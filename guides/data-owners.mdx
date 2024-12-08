@@ -1,6 +1,6 @@
 ---
 title: 'Guide for Data Owners'
-description: 'Monetize your AI data assets and earn SERA tokens through our decentralized marketplace'
+description: 'Monetize your AI data assets and earn KYNE tokens through our decentralized marketplace'
 ---
 
 ## Quick Start
@@ -8,7 +8,7 @@ description: 'Monetize your AI data assets and earn SERA tokens through our dece
 <Steps>
   1. **Connect Wallet**
      - Install SUI wallet
-     - Get SERA tokens for staking
+     - Get KYNE tokens for staking
      - Connect to marketplace
   
   2. **List Your Assets**
@@ -76,7 +76,7 @@ description: 'Monetize your AI data assets and earn SERA tokens through our dece
 ### Pricing Models
 
 ```python
-from sera.market import MarketClient
+from kyne.market import MarketClient
 
 # Initialize with your wallet
 market = MarketClient(wallet_address="0x...")
@@ -85,7 +85,7 @@ market = MarketClient(wallet_address="0x...")
 listing = await market.create_listing(
     asset_id="0x...",
     config={
-        "price": 1000,         # SERA tokens
+        "price": 1000,         # KYNE tokens
         "royalty": 0.025,      # 2.5% on resales
         "min_purchase": 100,   # Minimum purchase
         "staking_required": 500 # Required stake
@@ -96,7 +96,7 @@ listing = await market.create_listing(
 subscription = await market.create_subscription(
     asset_id="0x...",
     config={
-        "monthly_price": 100,  # SERA per month
+        "monthly_price": 100,  # KYNE per month
         "discount_rate": 0.2,  # 20% annual discount
         "min_duration": 3      # Minimum months
     }
@@ -111,12 +111,12 @@ subscription = await market.create_subscription(
   <Card title="Storage Options" icon="database">
     ```yaml
     storage_tiers:
-      basic: # 1000 SERA stake
+      basic: # 1000 KYNE stake
         duration: 6 months
         redundancy: 3x
         size_limit: 100GB
       
-      premium: # 5000 SERA stake
+      premium: # 5000 KYNE stake
         duration: 2 years
         redundancy: 5x
         size_limit: 1TB
@@ -141,15 +141,15 @@ subscription = await market.create_subscription(
   <Card title="Revenue Multipliers" icon="arrow-trend-up">
     ```yaml
     staking_tiers:
-      basic: # 1000 SERA
+      basic: # 1000 KYNE
         fee_discount: 20%
         revenue_boost: 1.2x
       
-      premium: # 5000 SERA
+      premium: # 5000 KYNE
         fee_discount: 50%
         revenue_boost: 1.5x
         
-      elite: # 10000 SERA
+      elite: # 10000 KYNE
         fee_discount: 100%
         revenue_boost: 2.0x
     ```
@@ -170,7 +170,7 @@ subscription = await market.create_subscription(
 
 <Steps>
   1. **Provide Liquidity**
-     - Stake SERA + data assets
+     - Stake KYNE + data assets
      - Earn 0.3% trading fees
      - Get LP tokens
   
@@ -192,7 +192,7 @@ subscription = await market.create_subscription(
 ```python
 # Configure access controls
 await listing.set_access_control({
-    "min_stake": 1000,      # Required SERA stake
+    "min_stake": 1000,      # Required KYNE stake
     "whitelist": ["0x..."], # Allowed addresses
     "usage_limit": 1000,    # Max queries/downloads
     "encryption": True      # Enable encryption
@@ -229,7 +229,7 @@ stats = await market.get_asset_stats(
 
 print(f"""
 Performance Metrics:
-- Total Revenue: {stats.revenue} SERA
+- Total Revenue: {stats.revenue} KYNE
 - Active Users: {stats.users}
 - Usage Volume: {stats.queries}
 - Avg Rating: {stats.rating}
@@ -240,19 +240,19 @@ Performance Metrics:
 
 <CardGroup cols={2}>
   <Card title="Asset Dashboard" icon="gauge">
-    [Manage Assets](https://owner.sera.xyz)
+    [Manage Assets](https://owner.kyne.xyz)
   </Card>
   <Card title="Revenue Analytics" icon="chart-pie">
-    [Track Earnings](https://owner.sera.xyz/analytics)
+    [Track Earnings](https://owner.kyne.xyz/analytics)
   </Card>
   <Card title="Owner Network" icon="building-user">
-    [Owner Forum](https://forum.sera.xyz/owners)
+    [Owner Forum](https://forum.kyne.xyz/owners)
   </Card>
   <Card title="Enterprise Support" icon="headset">
-    [Priority Support](https://enterprise.sera.xyz)
+    [Priority Support](https://enterprise.kyne.xyz)
   </Card>
 </CardGroup>
 
 <Note>
-Looking to maximize your asset revenue? Schedule a [free consultation](https://sera.xyz/owner-consult) with our monetization experts.
+Looking to maximize your asset revenue? Schedule a [free consultation](https://kyne.xyz/owner-consult) with our monetization experts.
 </Note>

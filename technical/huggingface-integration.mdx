@@ -5,7 +5,7 @@ description: 'Monetize and distribute AI models from HuggingFace through the Ser
 
 ## Overview
 
-Turn HuggingFace models into revenue-generating assets on Sera's decentralized AI marketplace. This integration enables:
+Turn HuggingFace models into revenue-generating assets on Kyne's decentralized AI marketplace. This integration enables:
 
 - Secure model distribution with verifiable usage tracking
 - Token-based monetization of HuggingFace models
@@ -37,24 +37,24 @@ Turn HuggingFace models into revenue-generating assets on Sera's decentralized A
   1. **HuggingFace Setup**
      Get your HuggingFace access token from [HuggingFace](https://huggingface.co)
 
-  2. **Sera Wallet**
+  2. **SUI Wallet**
      Connect a SUI wallet for marketplace transactions
      
   3. **SDK Installation**
      ```bash
-     pip install sera-sdk
+     pip install kyne-sdk
      ```
 </Steps>
 
 ### Quick Start
 
 ```python
-from sera.integrations import HuggingFaceMarket
-from sera.wallet import SeraWallet
+from kyne.integrations import HuggingFaceMarket
+from kyne.wallet import KyneWallet
 
 # Initialize with your wallet
 market = HuggingFaceMarket(
-    wallet=SeraWallet.from_private_key("0x..."),
+    wallet=KyneWallet.from_private_key("0x..."),
     hf_token="your_hf_token"
 )
 
@@ -220,16 +220,16 @@ print(f"Availability: {health.availability_score}")
     [Integration Guide](/integration)
   </Card>
   <Card title="Examples" icon="code">
-    [Sample Code](https://github.com/sera/examples)
+    [Sample Code](https://github.com/kyne/examples)
   </Card>
   <Card title="Community" icon="users">
-    [Discord Chat](https://discord.gg/sera)
+    [Discord Chat](https://discord.gg/kyne)
   </Card>
   <Card title="Support" icon="headset">
-    [Get Help](mailto:support@sera.xyz)
+    [Get Help](mailto:support@kyne.xyz)
   </Card>
 </CardGroup>
 
 <Note>
-Ready to monetize your AI models? Join our [Discord](https://discord.gg/sera) to learn more about marketplace opportunities.
+Ready to monetize your AI models? Join our [Discord](https://discord.gg/kyne) to learn more about marketplace opportunities.
 </Note>

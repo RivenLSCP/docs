@@ -60,12 +60,12 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:support@sera.xyz"
+      "url": "mailto:support@kyne.xyz"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://app.sera.xyz"
+    "url": "https://app.kyne.xyz"
   },
   "navigation": [
     {
@@ -103,9 +103,9 @@
   ],
   "footer": {
     "socials": {
-      "twitter": "https://twitter.com/DataSphere_xyz",
-      "github": "https://github.com/DataSphere-xyz",
-      "discord": "https://discord.gg/datasphere"
+      "twitter": "https://twitter.com/kyne-xyz",
+      "github": "https://github.com/kyne-xyz",
+      "discord": "https://discord.gg/kyne"
     }
   },
   "modeToggle": {
@@ -118,7 +118,7 @@
   },
   "analytics": {
     "plausible": {
-      "domain": "sera.xyz"
+      "domain": "kyne.xyz"
     }
   }
 }

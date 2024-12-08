@@ -33,7 +33,7 @@ Our vector database enables AI-powered search and similarity matching for market
 
 ```mermaid
 graph TD
-    A[Vector Data] --> B[Sera Vector DB]
+    A[Vector Data] --> B[Kyne Vector DB]
     B --> C[SUI Smart Contracts]
     B --> D[Walrus Storage]
     C --> E[Token Rewards]
@@ -56,12 +56,12 @@ graph TD
 ### Quick Start
 
 ```python
-from sera.vector import VectorDB
-from sera.wallet import SeraWallet
+from kyne.vector import VectorDB
+from kyne.wallet import KyneWallet
 
 # Initialize with wallet for rewards
 db = VectorDB(
-    wallet=SeraWallet.from_private_key("0x..."),
+    wallet=KyneWallet.from_private_key("0x..."),
     config={
         "reward_share": 0.1,  # Share for data contributors
         "min_stake": 100      # Min SUI tokens to contribute
@@ -245,17 +245,17 @@ print(f"Total staked: {stake_info.total_staked}")
     [Vector DB Guide](/vector-db)
   </Card>
   <Card title="Examples" icon="code">
-    [Sample Code](https://github.com/sera/examples)
+    [Sample Code](https://github.com/kyne/examples)
   </Card>
   <Card title="Community" icon="users">
-    [Discord Chat](https://discord.gg/sera)
+    [Discord Chat](https://discord.gg/kyne)
   </Card>
   <Card title="Support" icon="headset">
-    [Get Help](mailto:support@sera.xyz)
+    [Get Help](mailto:support@kyne.xyz)
   </Card>
 </CardGroup>
 
 <Note>
-Want to earn tokens by contributing vector data? Join our [Discord](https://discord.gg/sera) to learn more about data contribution opportunities.
+Want to earn tokens by contributing vector data? Join our [Discord](https://discord.gg/kyne) to learn more about data contribution opportunities.
 </Note>
 

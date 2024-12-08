@@ -5,7 +5,7 @@ description: 'Build and monetize AI models with built-in token incentives and de
 
 ## Overview
 
-Our AI Tools Suite helps developers build, deploy, and monetize AI models using Sera's decentralized infrastructure. Leverage SUI blockchain for transparent payments and governance, while using Walrus for efficient model storage and distribution.
+Our AI Tools Suite helps developers build, deploy, and monetize AI models using Kyne's decentralized infrastructure. Leverage SUI blockchain for transparent payments and governance, while using Walrus for efficient model storage and distribution.
 
 ## Key Benefits
 
@@ -33,22 +33,22 @@ Our AI Tools Suite helps developers build, deploy, and monetize AI models using 
     ```yaml
     gpu_options:
       A100:
-        price: 100 SERA/hour
-        min_stake: 1000 SERA
+        price: 100 KYNE/hour
+        min_stake: 1000 KYNE
       A6000:
-        price: 50 SERA/hour
-        min_stake: 500 SERA
+        price: 50 KYNE/hour
+        min_stake: 500 KYNE
     ```
   </Card>
   <Card title="Inference Hosting" icon="server">
     ```yaml
     hosting_tiers:
       standard:
-        price: 10 SERA/1M requests
-        min_stake: 100 SERA
+        price: 10 KYNE/1M requests
+        min_stake: 100 KYNE
       premium:
-        price: 20 SERA/1M requests
-        min_stake: 200 SERA
+        price: 20 KYNE/1M requests
+        min_stake: 200 KYNE
     ```
   </Card>
 </CardGroup>
@@ -57,7 +57,7 @@ Our AI Tools Suite helps developers build, deploy, and monetize AI models using 
 
 <CardGroup cols={2}>
   <Card title="Model Storage" icon="database">
-    - • Pay in SERA tokens
+    - • Pay in KYNE tokens
     - • Up to 2 years retention
     - • Byzantine fault tolerance
     - • Verifiable availability
@@ -83,7 +83,7 @@ toolkit = AIToolkit(
     wallet=SeraWallet.from_private_key("0x..."),
     config={
         "default_storage_epochs": 12,
-        "min_stake": 100  # SERA tokens
+        "min_stake": 100  # KYNE tokens
     }
 )
 
@@ -91,7 +91,7 @@ toolkit = AIToolkit(
 deployment = await toolkit.deploy_model(
     model_path="./my_model",
     pricing={
-        "inference": 1,      # SERA per request
+        "inference": 1,      # KYNE per request
         "revenue_share": 0.1 # 10% to contributors
     },
     compute_config={
@@ -102,7 +102,7 @@ deployment = await toolkit.deploy_model(
 
 # Monitor earnings
 stats = await deployment.get_stats()
-print(f"Total revenue: {stats.revenue} SERA")
+print(f"Total revenue: {stats.revenue} KYNE")
 print(f"Active users: {stats.unique_users}")
 ```
 
@@ -115,7 +115,7 @@ print(f"Active users: {stats.unique_users}")
      reservation = await toolkit.reserve_training(
          gpu_type="a100",
          duration_hours=24,
-         stake_amount=1000  # SERA tokens
+         stake_amount=1000  # KYNE tokens
      )
      ```
 
@@ -136,7 +136,7 @@ print(f"Active users: {stats.unique_users}")
      # Deploy with token incentives
      deployment = await training_job.deploy(
          pricing={
-             "requests": 1,    # SERA per request
+             "requests": 1,    # KYNE per request
              "subscription": { # Monthly access
                  "price": 100,
                  "min_stake": 50
@@ -155,12 +155,12 @@ print(f"Active users: {stats.unique_users}")
     ```yaml
     staking_tiers:
       basic:
-        amount: 1000 SERA
+        amount: 1000 KYNE
         benefits:
           - Standard GPU access
           - Basic support
       premium:
-        amount: 5000 SERA
+        amount: 5000 KYNE
         benefits:
           - Priority GPU access
           - Premium support
@@ -241,16 +241,16 @@ print(f"Active users: {stats.unique_users}")
 
 <CardGroup cols={2}>
   <Card title="Developer Portal" icon="code">
-    [API Documentation](https://dev.sera.xyz)
+    [API Documentation](https://dev.kyne.xyz)
   </Card>
   <Card title="SDK Downloads" icon="download">
-    [Get Latest SDKs](https://github.com/sera/sdk)
+    [Get Latest SDKs](https://github.com/kyne/sdk)
   </Card>
   <Card title="Builder Community" icon="discord">
-    [Developer Chat](https://discord.gg/sera-devs)
+    [Developer Chat](https://discord.gg/kyne-devs)
   </Card>
   <Card title="Technical Support" icon="wrench">
-    [Dev Support](https://dev.sera.xyz/support)
+    [Dev Support](https://dev.kyne.xyz/support)
   </Card>
 </CardGroup>
 

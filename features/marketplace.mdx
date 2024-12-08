@@ -5,7 +5,7 @@ description: 'Trade AI assets and earn tokens in our decentralized marketplace'
 
 ## Overview
 
-The Sera Marketplace enables peer-to-peer trading of AI assets with built-in token incentives. Powered by SUI blockchain for secure transactions and Walrus for efficient storage, our marketplace lets you:
+The Kyne Marketplace enables peer-to-peer trading of AI assets with built-in token incentives. Powered by SUI blockchain for secure transactions and Walrus for efficient storage, our marketplace lets you:
 
 - Buy and sell AI conversation data
 - Trade curated datasets and models
@@ -46,12 +46,12 @@ The Sera Marketplace enables peer-to-peer trading of AI assets with built-in tok
 ### Fixed Price Listings
 
 ```python
-from sera.market import MarketClient
+from kyne.market import MarketClient
 
 # Create listing with token incentives
 listing = await market.create_listing(
     blob_id="0x...",
-    price=1000,         # SERA tokens
+    price=1000,         # KYNE tokens
     config={
         "royalty": 0.025,    # 2.5% royalty
         "epochs": 12,        # Storage duration
@@ -61,8 +61,8 @@ listing = await market.create_listing(
 
 # Track listing performance
 stats = await listing.get_stats()
-print(f"Total sales: {stats.total_sales} SERA")
-print(f"Royalties earned: {stats.royalties} SERA")
+print(f"Total sales: {stats.total_sales} KYNE")
+print(f"Royalties earned: {stats.royalties} KYNE")
 ```
 
 ### Liquidity Pools
@@ -73,7 +73,7 @@ print(f"Royalties earned: {stats.royalties} SERA")
     # Create trading pool
     pool = await market.create_pool(
         dataset_id="0x...",
-        initial_liquidity=10000,  # SERA
+        initial_liquidity=10000,  # KYNE
         fee_rate=0.003,          # 0.3%
         min_stake=500            # Required stake
     )
@@ -84,7 +84,7 @@ print(f"Royalties earned: {stats.royalties} SERA")
     # Swap tokens for data
     swap = await market.swap(
         pool_id="0x...",
-        amount=1000,    # SERA to spend
+        amount=1000,    # KYNE to spend
         min_data=100,   # Min MB to receive
         deadline=30     # Timeout in epochs
     )
@@ -119,7 +119,7 @@ print(f"Royalties earned: {stats.royalties} SERA")
 
 <Steps>
   1. **Provide Liquidity**
-     - Stake SERA tokens + data
+     - Stake KYNE tokens + data
      - Earn 0.3% of pool trades
      - Get LP tokens for governance
   
@@ -158,7 +158,7 @@ print(f"Royalties earned: {stats.royalties} SERA")
 ```python
 # Configure access requirements
 await listing.set_access_control({
-    "min_stake": 1000,      # Required SERA stake
+    "min_stake": 1000,      # Required KYNE stake
     "whitelist": ["0x..."], # Allowed addresses
     "usage_limit": 1000,    # Max downloads
     "time_lock": 30         # Epochs until tradeable
@@ -169,7 +169,7 @@ await listing.set_access_control({
 
 ### Trading Fees
 
-| Action | Fee (SERA) | Reward Distribution |
+| Action | Fee (KYNE) | Reward Distribution |
 |--------|------------|-------------------|
 | List Asset | 0.1% | Protocol Treasury |
 | Buy Asset | 1% | 70% LP, 30% Treasury |
@@ -182,11 +182,11 @@ await listing.set_access_control({
   <Card title="Trading Benefits" icon="percent">
     ```yaml
     staking_tiers:
-      basic: # 1000 SERA
+      basic: # 1000 KYNE
         trading_discount: 10%
         pool_fee_reduction: 20%
       
-      premium: # 5000 SERA
+      premium: # 5000 KYNE
         trading_discount: 25%
         pool_fee_reduction: 50%
     ```
@@ -207,19 +207,19 @@ await listing.set_access_control({
 
 <CardGroup cols={2}>
   <Card title="Trading Dashboard" icon="chart-candlestick">
-    [Open Markets](https://trade.sera.xyz)
+    [Open Markets](https://trade.kyne.xyz)
   </Card>
   <Card title="Market Analytics" icon="chart-line">
-    [View Stats](https://sera.xyz/stats)
+    [View Stats](https://kyne.xyz/stats)
   </Card>
   <Card title="Trader Community" icon="comments-dollar">
-    [Trading Chat](https://discord.gg/sera-traders)
+    [Trading Chat](https://discord.gg/kyne-traders)
   </Card>
   <Card title="Market Updates" icon="newspaper">
-    [Weekly Report](https://sera.xyz/market-updates)
+    [Weekly Report](https://kyne.xyz/market-updates)
   </Card>
 </CardGroup>
 
 <Note>
-Looking for trading strategies? Join our [Weekly Trading Workshop](https://sera.xyz/workshops) to learn from experienced traders.
+Looking for trading strategies? Join our [Weekly Trading Workshop](https://kyne.xyz/workshops) to learn from experienced traders.
 </Note>

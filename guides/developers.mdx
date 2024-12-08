@@ -1,6 +1,6 @@
 ---
 title: "Guide for Developers"
-description: "Build token-incentivized AI applications using Sera's decentralized infrastructure"
+description: "Build token-incentivized AI applications using Kyne's decentralized infrastructure"
 ---
 
 ## Quick Start
@@ -9,30 +9,30 @@ description: "Build token-incentivized AI applications using Sera's decentralize
 
 <CodeGroup>
 ```bash npm
-npm install @sera/sdk
+npm install @kyne/sdk
 ```
 
 ```bash pip
-pip install sera-sdk
+pip install kyne-sdk
 ```
 
 ```bash go
-go get github.com/sera/sdk
+go get github.com/kyne/sdk
 ```
 </CodeGroup>
 
 ### Basic Setup
 
 ```python
-from sera import SeraClient
-from sera.wallet import SeraWallet
+from kyne import KyneClient
+from kyne.wallet import KyneWallet
 
 # Initialize with wallet for token operations
-client = SeraClient(
-    wallet=SeraWallet.from_private_key("0x..."),
+client = KyneClient(
+    wallet=KyneWallet.from_private_key("0x..."),
     network="mainnet",
     config={
-        "default_stake": 1000,  # SERA tokens
+        "default_stake": 1000,  # KYNE tokens
         "storage_epochs": 12    # ~3 months
     }
 )
@@ -70,9 +70,9 @@ client = SeraClient(
 api = await client.create_api_endpoint(
     name="sentiment-analysis",
     pricing={
-        "per_call": 1,        # SERA per call
+        "per_call": 1,        # KYNE per call
         "subscription": {
-            "monthly": 100,    # SERA per month
+            "monthly": 100,    # KYNE per month
             "min_stake": 50    # Required stake
         }
     },
@@ -85,7 +85,7 @@ api = await client.create_api_endpoint(
 
 # Monitor revenue
 stats = await api.get_stats()
-print(f"Total revenue: {stats.revenue} SERA")
+print(f"Total revenue: {stats.revenue} KYNE")
 print(f"Active subscribers: {stats.subscribers}")
 ```
 
@@ -94,13 +94,13 @@ print(f"Active subscribers: {stats.subscribers}")
 ### Data Management
 
 ```python
-from sera.data import DataManager
+from kyne.data import DataManager
 
 # Upload dataset with revenue sharing
 dataset = await DataManager.upload(
     path="./training_data",
     config={
-        "price": 1000,         # SERA tokens
+        "price": 1000,         # KYNE tokens
         "revenue_share": 0.1,  # Share with contributors
         "min_purchase": 100,   # Minimum purchase size
         "staking_required": 500 # Required stake
@@ -119,13 +119,13 @@ listing = await dataset.create_listing(
 ### Model Deployment
 
 ```python
-from sera.models import ModelDeployment
+from kyne.models import ModelDeployment
 
 # Deploy model with token incentives
 deployment = await ModelDeployment.create(
     model_path="./my_model",
     config={
-        "inference_price": 1,    # SERA per call
+        "inference_price": 1,    # KYNE per call
         "batch_discount": 0.2,   # 20% bulk discount
         "min_stake": 100,        # Required stake
         "revenue_share": 0.1     # Share to data providers
@@ -135,7 +135,7 @@ deployment = await ModelDeployment.create(
 # Monitor usage and revenue
 metrics = await deployment.get_metrics()
 print(f"Total calls: {metrics.total_calls}")
-print(f"Revenue: {metrics.revenue} SERA")
+print(f"Revenue: {metrics.revenue} KYNE")
 ```
 
 ## Storage Integration
@@ -146,12 +146,12 @@ print(f"Revenue: {metrics.revenue} SERA")
   <Card title="Storage Tiers" icon="database">
     ```yaml
     storage_options:
-      basic: # 1000 SERA stake
+      basic: # 1000 KYNE stake
         redundancy: 3x
         duration: 6 months
         size_limit: 100GB
       
-      premium: # 5000 SERA stake
+      premium: # 5000 KYNE stake
         redundancy: 5x
         duration: 2 years
         size_limit: 1TB
@@ -177,7 +177,7 @@ storage = await client.configure_storage(
         "min_nodes": 7,     # 2f+1 for Byzantine fault tolerance
         "epochs": 12,       # Storage duration
         "redundancy": 2,    # Red Stuff encoding level
-        "stake_required": 1000  # Min SERA stake
+        "stake_required": 1000  # Min KYNE stake
     }
 )
 
@@ -185,7 +185,7 @@ storage = await client.configure_storage(
 blob_id = await storage.store(
     data=my_data,
     config={
-        "price": 100,          # SERA tokens
+        "price": 100,          # KYNE tokens
         "revenue_share": 0.1,  # 10% to storage nodes
         "access_control": {
             "min_stake": 50,
@@ -203,15 +203,15 @@ blob_id = await storage.store(
   <Card title="Developer Rewards" icon="gift">
     ```yaml
     staking_tiers:
-      basic: # 1000 SERA
+      basic: # 1000 KYNE
         fee_discount: 20%
         api_rate_limit: 1000/min
       
-      premium: # 5000 SERA
+      premium: # 5000 KYNE
         fee_discount: 50%
         api_rate_limit: 5000/min
         
-      elite: # 10000 SERA
+      elite: # 10000 KYNE
         fee_discount: 100%
         api_rate_limit: Unlimited
     ```
@@ -230,7 +230,7 @@ blob_id = await storage.store(
 ### Revenue Optimization
 
 <Steps>
-  1. **Stake SERA**
+  1. **Stake KYNE**
      - Reduce platform fees
      - Access premium features
      - Earn infrastructure rewards
@@ -278,19 +278,19 @@ blob_id = await storage.store(
 
 <CardGroup cols={2}>
   <Card title="API Reference" icon="code">
-    [Full Documentation](https://dev.sera.xyz/api)
+    [Full Documentation](https://dev.kyne.xyz/api)
   </Card>
   <Card title="Developer Tools" icon="toolbox">
-    [SDK & Tools](https://github.com/sera/dev-tools)
+    [SDK & Tools](https://github.com/kyne/dev-tools)
   </Card>
   <Card title="Dev Community" icon="code-branch">
-    [Dev Forum](https://dev.sera.xyz/forum)
+    [Dev Forum](https://dev.kyne.xyz/forum)
   </Card>
   <Card title="Integration Support" icon="puzzle-piece">
-    [Integration Help](https://dev.sera.xyz/support)
+    [Integration Help](https://dev.kyne.xyz/support)
   </Card>
 </CardGroup>
 
 <Note>
-Need help with integration? Book a [1:1 session](https://dev.sera.xyz/office-hours) with our developer advocates.
+Need help with integration? Book a [1:1 session](https://dev.kyne.xyz/office-hours) with our developer advocates.
 </Note>

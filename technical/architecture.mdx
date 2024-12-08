@@ -1,11 +1,11 @@
 ---
 title: "System Architecture"
-description: "How Sera combines SUI blockchain and Walrus storage to power the AI data marketplace"
+description: "How Kyne combines SUI blockchain and Walrus storage to power the AI data marketplace"
 ---
 
 ## Overview
 
-Sera creates a decentralized AI marketplace by combining SUI blockchain's programmable transactions with Walrus's efficient storage network. This enables:
+Kyne creates a decentralized AI marketplace by combining SUI blockchain's programmable transactions with Walrus's efficient storage network. This enables:
 
 - Secure AI model and dataset trading
 - Verifiable compute for AI training
@@ -33,7 +33,7 @@ Sera creates a decentralized AI marketplace by combining SUI blockchain's progra
 
 ```mermaid
 graph TD
-    A[Data Contributors] --> B[Sera Marketplace]
+    A[Data Contributors] --> B[Kyne Marketplace]
     C[AI Developers] --> B
     B --> D[SUI Smart Contracts]
     D --> E[Payment & Rewards]
@@ -108,10 +108,10 @@ Walrus provides efficient decentralized storage through:
 ### Quick Start
 
 ```python
-from sera.sdk import SeraClient
+from kyne.sdk import KyneClient
 
 # Initialize client
-client = SeraClient(
+client = KyneClient(
     sui_endpoint="https://sui-rpc.example.com",
     walrus_endpoint="https://walrus.example.com"
 )
@@ -198,16 +198,16 @@ proof = await client.verify_storage(blob_id)
     [Developer Docs](/docs)
   </Card>
   <Card title="Community" icon="users">
-    [Discord Community](https://discord.gg/sera)
+    [Discord Community](https://discord.gg/kyne)
   </Card>
   <Card title="GitHub" icon="github">
-    [Source Code](https://github.com/sera)
+    [Source Code](https://github.com/kyne)
   </Card>
   <Card title="Support" icon="headset">
-    [Technical Support](mailto:support@sera.xyz)
+    [Technical Support](mailto:support@kyne.xyz)
   </Card>
 </CardGroup>
 
 <Note>
-Want to start earning from AI data? Join our [Discord](https://discord.gg/sera) to learn more about contribution opportunities.
+Want to start earning from AI data? Join our [Discord](https://discord.gg/kyne) to learn more about contribution opportunities.
 </Note> 
